@@ -11,15 +11,18 @@ get_header();
 <!-- Home Hero Section -->
 <section class="home-hero">
     <div class="hero-card">
-        <div class="hero-pill">EST. 1910 • KANSAS CITY, MO</div>
-        <h1 class="hero-title">
-            POWERING THE FUTURE<br>
-            WITH <span class="gold-text">SKILLED LABOR</span>
-        </h1>
-        <p class="hero-subtext">Building excellence through skilled electrical work, union solidarity, and commitment to our members and community.</p>
-        <div class="hero-buttons">
-            <a href="#" class="btn btn-primary">Join the Brotherhood →</a>
-            <a href="<?php echo home_url('/events'); ?>" class="btn btn-secondary">View Upcoming Events</a>
+        <div class="hero-background-overlay"></div>
+        <div class="hero-content">
+            <div class="hero-pill">Est. 1910 • Kansas City, MO</div>
+            <h1 class="hero-title">
+                POWERING THE FUTURE<br>
+                <span>WITH <span class="gold-text">SKILLED LABOR</span></span>
+            </h1>
+            <p class="hero-subtext">IBEW Local 53 is dedicated to providing the highest quality electrical workers<br>for our communities while securing fair wages, benefits, and safety for our<br>members.</p>
+            <div class="hero-buttons">
+                <a href="#" class="btn btn-primary">Join the Brotherhood <span class="btn-icon">arrow_forward</span></a>
+                <a href="<?php echo home_url('/events'); ?>" class="btn btn-secondary">View Upcoming Events</a>
+            </div>
         </div>
     </div>
 </section>
@@ -27,32 +30,40 @@ get_header();
 <!-- Feature Chips (Overlapping Hero) -->
 <section class="feature-chips">
     <div class="chips-container">
-        <div class="feature-chip">
-            <div class="chip-icon">🛡️</div>
+        <div class="feature-chip chip-priority">
+            <div class="chip-icon-wrapper">
+                <span class="material-icons">security</span>
+            </div>
             <div class="chip-content">
-                <h3>Safety First</h3>
-                <p>Protecting workers and communities</p>
+                <div class="chip-label">Priority</div>
+                <div class="chip-title">Safety First</div>
             </div>
         </div>
-        <div class="feature-chip">
-            <div class="chip-icon">🤝</div>
+        <div class="feature-chip chip-community">
+            <div class="chip-icon-wrapper">
+                <span class="material-icons">handshake</span>
+            </div>
             <div class="chip-content">
-                <h3>Brotherhood</h3>
-                <p>United in solidarity</p>
+                <div class="chip-label">Community</div>
+                <div class="chip-title">Brotherhood</div>
             </div>
         </div>
-        <div class="feature-chip">
-            <div class="chip-icon">📚</div>
+        <div class="feature-chip chip-growth">
+            <div class="chip-icon-wrapper">
+                <span class="material-icons">school</span>
+            </div>
             <div class="chip-content">
-                <h3>Apprenticeship</h3>
-                <p>Training the next generation</p>
+                <div class="chip-label">Growth</div>
+                <div class="chip-title">Apprenticeship</div>
             </div>
         </div>
-        <div class="feature-chip">
-            <div class="chip-icon">💰</div>
+        <div class="feature-chip chip-benefits">
+            <div class="chip-icon-wrapper">
+                <span class="material-icons">payments</span>
+            </div>
             <div class="chip-content">
-                <h3>Fair Wages</h3>
-                <p>Earning what you deserve</p>
+                <div class="chip-label">Benefits</div>
+                <div class="chip-title">Fair Wages</div>
             </div>
         </div>
     </div>
@@ -219,4 +230,6 @@ get_header();
 
 <?php
 get_footer();
+
+
 
