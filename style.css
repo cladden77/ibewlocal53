@@ -1,0 +1,16 @@
+/*
+Theme Name: IBEW Local 53
+Theme URI: https://ibewlocal53.org
+Author: IBEW Local 53
+Description: Custom WordPress theme for IBEW Local 53 matching approved Figma design pixel-for-pixel.
+Version: 1.0.0
+Requires at least: 6.0
+Tested up to: 6.4
+Requires PHP: 8.0
+License: GNU General Public License v2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
+Text Domain: ibew-local-53
+*/
+
+@import url('assets/css/main.css');
+
