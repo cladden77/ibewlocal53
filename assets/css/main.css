@@ -125,8 +125,8 @@ a:hover {
 }
 
 .site-logo {
-    width: 60px;
-    height: 60px;
+    width: 120px;
+    height: 120px;
 }
 
 .logo-seal {
@@ -430,7 +430,7 @@ a:hover {
     gap: 12px;
     flex: 1;
     position: relative;
-    padding: 0 25px;
+    padding: 0 36px;
 }
 
 .feature-chip:not(:last-child)::after {

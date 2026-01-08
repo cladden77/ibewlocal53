@@ -17,7 +17,7 @@
                 </div>
             <?php else : ?>
                 <div class="site-logo">
-                    <img src="<?php echo get_template_directory_uri(); ?>/assets/images/logo-seal.png" alt="IBEW Local 53" class="logo-seal" />
+                    <img src="<?php echo get_template_directory_uri(); ?>/assets/images/IBEW53.avif" alt="IBEW Local 53" class="logo-seal" />
                 </div>
             <?php endif; ?>
             <div class="site-branding">
