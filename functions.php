@@ -30,6 +30,8 @@ add_action('after_setup_theme', 'ibew_local_53_setup');
 
 // Enqueue styles and scripts
 function ibew_local_53_scripts() {
+    // Enqueue Inter font
+    wp_enqueue_style('inter-font', 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap', array(), null);
     // Enqueue Material Icons
     wp_enqueue_style('material-icons', 'https://fonts.googleapis.com/icon?family=Material+Icons', array(), null);
     wp_enqueue_style('ibew-local-53-style', get_stylesheet_uri(), array(), '1.0.0');
