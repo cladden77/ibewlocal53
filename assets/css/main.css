@@ -249,14 +249,17 @@ a:hover {
 
 .archive-hero,
 .home-hero {
-    padding: var(--spacing-xl) var(--container-padding);
+    padding: 0 var(--container-padding) var(--spacing-xl);
+    margin-top: -20px;
+    position: relative;
+    z-index: 1;
 }
 
 .hero-card {
     max-width: var(--container-max);
     margin: 0 auto;
     background: linear-gradient(rgba(0, 0, 0, 0.7) 0%, rgba(43, 69, 143, 0.8) 100%);
-    border-radius: 32px;
+    border-radius: 0 0 32px 32px;
     padding: 111.88px 24px;
     min-height: 600px;
     text-align: center;
