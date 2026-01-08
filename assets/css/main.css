@@ -97,31 +97,33 @@ a:hover {
 
 .site-header {
     background-color: var(--color-white);
-    box-shadow: var(--shadow-sm);
+    box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.05);
     position: sticky;
     top: 0;
     z-index: 1000;
+    width: 100%;
 }
 
 .header-container {
-    max-width: var(--container-max);
-    margin: 0 auto;
-    padding: var(--spacing-md) var(--container-padding);
+    padding: 24px 48px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: var(--spacing-lg);
+    gap: 0;
+    width: 100%;
 }
 
 .header-left {
     display: flex;
     align-items: center;
-    gap: var(--spacing-md);
+    gap: 0;
+    flex-shrink: 0;
 }
 
 .site-logo {
     width: 120px;
-    height: 120px;
+    height: 124px;
+    flex-shrink: 0;
 }
 
 .logo-seal {
@@ -134,73 +136,111 @@ a:hover {
 .site-branding {
     display: flex;
     flex-direction: column;
+    justify-content: center;
+    padding-left: 15px;
 }
 
 .site-title {
-    font-size: 1.25rem;
+    font-size: 36px;
     font-weight: 700;
     color: var(--color-black);
     margin: 0;
-    line-height: 1.2;
+    line-height: 40px;
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    letter-spacing: -0.9px;
+}
+
+.title-line {
+    display: inline-block;
+}
+
+.title-number {
+    display: inline-block;
 }
 
 .site-subtitle {
-    font-size: 0.75rem;
-    color: var(--color-gray);
-    margin: 0;
-    line-height: 1.2;
-}
-
-.main-navigation {
-    flex: 1;
-    display: flex;
-    justify-content: center;
-}
-
-.nav-menu {
-    display: flex;
-    list-style: none;
-    gap: var(--spacing-lg);
-    margin: 0;
-    padding: 0;
-}
-
-.nav-menu li a {
-    color: var(--color-gray-dark);
+    font-size: 16px;
     font-weight: 500;
-    padding: var(--spacing-xs) var(--spacing-sm);
-    transition: color 0.2s ease;
-}
-
-.nav-menu li a:hover {
-    color: var(--color-primary);
+    color: #4b5563;
+    margin: 0;
+    line-height: 24px;
 }
 
 .header-right {
     display: flex;
     align-items: center;
+    gap: 32px;
+    flex-shrink: 0;
+}
+
+.main-navigation {
+    display: flex;
+    align-items: center;
+}
+
+.nav-menu {
+    display: flex;
+    list-style: none;
+    gap: 32px;
+    margin: 0;
+    padding: 0;
+    align-items: center;
+}
+
+.nav-menu li {
+    margin: 0;
+}
+
+.nav-menu li a {
+    color: #374151;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 24px;
+    padding: 0;
+    transition: color 0.2s ease;
+    text-decoration: none;
+}
+
+.nav-menu li.current-menu-item a,
+.nav-menu li a:hover {
+    color: var(--color-primary);
+}
+
+/* Home link should be red by default */
+.nav-menu li:first-child a {
+    color: var(--color-red);
 }
 
 .member-login-btn {
     display: flex;
     align-items: center;
-    gap: var(--spacing-xs);
-    padding: var(--spacing-xs) var(--spacing-md);
+    gap: 8px;
+    padding: 0;
     background-color: transparent;
     color: var(--color-red);
     font-weight: 600;
-    border-radius: var(--radius-pill);
-    border: 1px solid var(--color-red);
-    transition: all 0.2s ease;
+    border: none;
+    text-decoration: none;
+    transition: opacity 0.2s ease;
 }
 
 .member-login-btn:hover {
-    background-color: var(--color-red);
-    color: var(--color-white);
+    opacity: 0.8;
 }
 
 .login-icon {
-    font-size: 0.875rem;
+    font-size: 16px;
+    line-height: 24px;
+    color: var(--color-red);
+}
+
+.login-text {
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 20px;
+    color: var(--color-red);
 }
 
 /* ============================================
@@ -1904,17 +1944,42 @@ a:hover {
     
     .header-container {
         flex-wrap: wrap;
+        padding: 16px 24px;
+    }
+    
+    .header-left {
+        width: 100%;
+        margin-bottom: var(--spacing-sm);
+    }
+    
+    .site-logo {
+        width: 80px;
+        height: 83px;
+    }
+    
+    .site-title {
+        font-size: 28px;
+        line-height: 32px;
+    }
+    
+    .site-subtitle {
+        font-size: 14px;
+        line-height: 20px;
+    }
+    
+    .header-right {
+        width: 100%;
+        justify-content: space-between;
+        gap: var(--spacing-md);
     }
     
     .main-navigation {
-        order: 3;
-        width: 100%;
-        margin-top: var(--spacing-sm);
+        flex: 1;
     }
     
     .nav-menu {
         flex-wrap: wrap;
-        gap: var(--spacing-sm);
+        gap: var(--spacing-md);
     }
     
     .hero-title {

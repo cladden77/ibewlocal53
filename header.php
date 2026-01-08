@@ -21,25 +21,27 @@
                 </div>
             <?php endif; ?>
             <div class="site-branding">
-                <h1 class="site-title">IBEW LOCAL 53</h1>
-                <p class="site-subtitle">International Brotherhood of Electrical Workers</p>
+                <h1 class="site-title">
+                    <span class="title-line">IBEW LOCAL</span>
+                    <span class="title-number">53</span>
+                </h1>
+                <p class="site-subtitle">International Brotherhood of Electrical Workers - Kansas City</p>
             </div>
         </div>
         
-        <nav class="main-navigation">
-            <?php
-            wp_nav_menu(array(
-                'theme_location' => 'primary',
-                'menu_class' => 'nav-menu',
-                'container' => false,
-            ));
-            ?>
-        </nav>
-        
         <div class="header-right">
+            <nav class="main-navigation">
+                <?php
+                wp_nav_menu(array(
+                    'theme_location' => 'primary',
+                    'menu_class' => 'nav-menu',
+                    'container' => false,
+                ));
+                ?>
+            </nav>
             <a href="#" class="member-login-btn">
-                <span class="login-icon">🔒</span>
-                <span>Member Login</span>
+                <span class="material-icons login-icon">login</span>
+                <span class="login-text">Member Login</span>
             </a>
         </div>
     </div>
