@@ -157,8 +157,7 @@ get_header();
             </div>
             <div class="who-we-are-image">
                 <div class="illustration-card">
-                    <!-- Placeholder for electrician illustration -->
-                    <div class="illustration-placeholder">Electrician Illustration</div>
+                    <img src="<?php echo get_template_directory_uri(); ?>/assets/images/lineman-working.jpg" alt="Lineman Working" class="illustration-image" />
                 </div>
             </div>
         </div>
