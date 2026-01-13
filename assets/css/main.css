@@ -627,7 +627,7 @@ a:hover {
 .news-card-image {
     position: relative;
     overflow: hidden;
-    aspect-ratio: 16 / 9;
+    height: 192px;
 }
 
 .news-card-image img {
