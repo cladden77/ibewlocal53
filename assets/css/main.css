@@ -736,23 +736,34 @@ a:hover {
     margin: 0 0 var(--spacing-lg) 0;
 }
 
+.who-we-are-actions {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-top: var(--spacing-lg);
+}
+
 .members-indicator {
     display: flex;
     align-items: center;
-    gap: var(--spacing-sm);
-    margin-top: var(--spacing-lg);
-    padding: var(--spacing-md);
-    background-color: var(--color-gray-light);
-    border-radius: var(--radius-md);
-    width: fit-content;
+    gap: 8px;
+    padding: 12px 16px;
 }
 
-.indicator-icon {
-    font-size: 1.5rem;
+.members-icon {
+    width: 40px;
+    height: 40px;
+    flex-shrink: 0;
 }
 
 .indicator-text {
-    font-size: 1rem;
+    font-size: 14px;
+    color: var(--color-gray-dark);
+    font-weight: 700;
+}
+
+.indicator-text strong {
+    font-weight: 700;
     color: var(--color-gray-dark);
 }
 

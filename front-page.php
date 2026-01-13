@@ -145,11 +145,13 @@ get_header();
                     Our commitment extends beyond the job site—we support our members, their families, and our community 
                     through training, advocacy, and solidarity.
                 </p>
-                <a href="<?php echo home_url('/about'); ?>" class="btn btn-primary">More About Us</a>
-                <div class="members-indicator">
-                    <div class="indicator-icon">👥</div>
-                    <div class="indicator-text">
-                        <strong>3,200+</strong> Members
+                <div class="who-we-are-actions">
+                    <a href="<?php echo home_url('/about'); ?>" class="btn btn-primary">More About Us</a>
+                    <div class="members-indicator">
+                        <img src="<?php echo get_template_directory_uri(); ?>/assets/images/members-sample.svg" alt="Members" class="members-icon" />
+                        <div class="indicator-text">
+                            <strong>3,200+</strong> Members
+                        </div>
                     </div>
                 </div>
             </div>
