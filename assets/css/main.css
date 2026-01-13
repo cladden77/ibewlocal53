@@ -825,6 +825,28 @@ a:hover {
     gap: var(--spacing-lg);
 }
 
+/* Make events grid horizontal scrollable on front page */
+.upcoming-events-section .events-grid {
+    display: flex;
+    grid-template-columns: none;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+    padding-bottom: var(--spacing-xs);
+}
+
+.upcoming-events-section .events-grid::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+}
+
+.upcoming-events-section .events-grid .event-card {
+    flex: 0 0 calc((100% - var(--spacing-lg) * 2) / 3);
+    min-width: 0;
+    scroll-snap-align: start;
+}
+
 .event-card {
     background-color: transparent;
     border-radius: var(--radius-md);

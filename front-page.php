@@ -182,7 +182,7 @@ get_header();
             
             $events_query = new WP_Query(array(
                 'post_type' => 'event',
-                'posts_per_page' => 3,
+                'posts_per_page' => 12,
                 'meta_key' => 'event_start_datetime',
                 'orderby' => 'meta_value',
                 'order' => 'ASC',
@@ -226,7 +226,6 @@ get_header();
                     <div class="event-card-content">
                         <h3 class="event-title"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h3>
                         <p class="event-excerpt"><?php echo wp_trim_words(get_the_excerpt(), 15); ?></p>
-                        <a href="<?php the_permalink(); ?>" class="event-link">Event Details →</a>
                     </div>
                 </article>
             <?php

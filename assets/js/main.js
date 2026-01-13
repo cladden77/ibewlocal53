@@ -116,11 +116,70 @@
         }
     }
 
+    // Events carousel functionality for front page
+    function initEventsCarousel() {
+        const eventsGrid = document.querySelector('.upcoming-events-section .events-grid');
+        const prevArrow = document.querySelector('.upcoming-events-section .prev-arrow');
+        const nextArrow = document.querySelector('.upcoming-events-section .next-arrow');
+
+        if (!eventsGrid || !prevArrow || !nextArrow) {
+            return;
+        }
+
+        // Calculate scroll amount: one card width + gap
+        // Get computed values
+        const computedStyle = window.getComputedStyle(eventsGrid);
+        const gap = parseInt(computedStyle.gap) || 32; // Default to 32px (2rem) if gap not found
+        const firstCard = eventsGrid.querySelector('.event-card');
+        const cardWidth = firstCard ? firstCard.offsetWidth : 300;
+        const scrollAmount = cardWidth + gap;
+
+        // Previous arrow - scroll left by one card
+        prevArrow.addEventListener('click', function() {
+            eventsGrid.scrollBy({
+                left: -scrollAmount,
+                behavior: 'smooth'
+            });
+        });
+
+        // Next arrow - scroll right by one card
+        nextArrow.addEventListener('click', function() {
+            eventsGrid.scrollBy({
+                left: scrollAmount,
+                behavior: 'smooth'
+            });
+        });
+
+        // Update arrow visibility based on scroll position
+        function updateArrowVisibility() {
+            const isAtStart = eventsGrid.scrollLeft <= 10; // Small threshold for rounding
+            const isAtEnd = eventsGrid.scrollLeft >= eventsGrid.scrollWidth - eventsGrid.clientWidth - 10;
+
+            prevArrow.style.opacity = isAtStart ? '0.5' : '1';
+            prevArrow.style.pointerEvents = isAtStart ? 'none' : 'auto';
+            prevArrow.setAttribute('aria-disabled', isAtStart ? 'true' : 'false');
+
+            nextArrow.style.opacity = isAtEnd ? '0.5' : '1';
+            nextArrow.style.pointerEvents = isAtEnd ? 'none' : 'auto';
+            nextArrow.setAttribute('aria-disabled', isAtEnd ? 'true' : 'false');
+        }
+
+        // Check on scroll
+        eventsGrid.addEventListener('scroll', updateArrowVisibility);
+        
+        // Initial check
+        updateArrowVisibility();
+    }
+
     // Initialize on DOM ready
     if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', initCalendar);
+        document.addEventListener('DOMContentLoaded', function() {
+            initCalendar();
+            initEventsCarousel();
+        });
     } else {
         initCalendar();
+        initEventsCarousel();
     }
 
 })();
