@@ -855,11 +855,11 @@ a:hover {
     top: var(--spacing-md);
     left: var(--spacing-md);
     background-color: rgba(255, 255, 255, 0.95);
-    padding: var(--spacing-sm) var(--spacing-md);
+    padding: calc(var(--spacing-sm) * 0.6875) calc(var(--spacing-md) * 0.6875);
     border-radius: var(--radius-sm);
     text-align: center;
-    min-width: 70px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    min-width: 48.125px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -868,18 +868,18 @@ a:hover {
 
 .date-month {
     display: block;
-    font-size: 0.75rem;
+    font-size: 0.515625rem;
     font-weight: 700;
     text-transform: uppercase;
     color: var(--color-primary);
     letter-spacing: 0.05em;
     line-height: 1.2;
-    margin-bottom: 2px;
+    margin-bottom: 1px;
 }
 
 .date-day {
     display: block;
-    font-size: 1.5rem;
+    font-size: 1.03125rem;
     font-weight: 700;
     color: var(--color-gray-dark);
     line-height: 1;
