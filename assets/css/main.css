@@ -550,6 +550,7 @@ a:hover {
     color: var(--color-gray-dark);
     line-height: 24px;
     margin: 0;
+    width: max-content;
 }
 
 /* ============================================
