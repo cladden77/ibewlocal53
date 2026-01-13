@@ -43,6 +43,37 @@
                 <span class="material-icons login-icon">login</span>
                 <span class="login-text">Member Login</span>
             </a>
+            <button class="mobile-menu-toggle" aria-label="Toggle mobile menu" aria-expanded="false">
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+            </button>
+        </div>
+        
+        <!-- Mobile Menu Overlay -->
+        <div class="mobile-menu-overlay" aria-hidden="true">
+            <div class="mobile-menu">
+                <div class="mobile-menu-header">
+                    <button class="mobile-menu-close" aria-label="Close mobile menu">
+                        <span class="material-icons">close</span>
+                    </button>
+                </div>
+                <nav class="mobile-navigation">
+                    <?php
+                    wp_nav_menu(array(
+                        'theme_location' => 'primary',
+                        'menu_class' => 'mobile-nav-menu',
+                        'container' => false,
+                    ));
+                    ?>
+                </nav>
+                <div class="mobile-menu-footer">
+                    <a href="#" class="mobile-member-login-btn">
+                        <span class="material-icons login-icon">login</span>
+                        <span class="login-text">Member Login</span>
+                    </a>
+                </div>
+            </div>
         </div>
     </div>
 </header>

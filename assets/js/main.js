@@ -171,15 +171,79 @@
         updateArrowVisibility();
     }
 
+    // Mobile menu functionality
+    function initMobileMenu() {
+        const menuToggle = document.querySelector('.mobile-menu-toggle');
+        const menuOverlay = document.querySelector('.mobile-menu-overlay');
+        const menuClose = document.querySelector('.mobile-menu-close');
+        const mobileMenu = document.querySelector('.mobile-menu');
+        const body = document.body;
+
+        if (!menuToggle || !menuOverlay || !menuClose) {
+            return;
+        }
+
+        function openMenu() {
+            menuToggle.setAttribute('aria-expanded', 'true');
+            menuOverlay.classList.add('active');
+            menuOverlay.setAttribute('aria-hidden', 'false');
+            body.style.overflow = 'hidden'; // Prevent body scroll when menu is open
+        }
+
+        function closeMenu() {
+            menuToggle.setAttribute('aria-expanded', 'false');
+            menuOverlay.classList.remove('active');
+            menuOverlay.setAttribute('aria-hidden', 'true');
+            body.style.overflow = ''; // Restore body scroll
+        }
+
+        // Toggle menu on hamburger click
+        menuToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            if (menuOverlay.classList.contains('active')) {
+                closeMenu();
+            } else {
+                openMenu();
+            }
+        });
+
+        // Close menu on close button click
+        menuClose.addEventListener('click', closeMenu);
+
+        // Close menu when clicking overlay (outside menu)
+        menuOverlay.addEventListener('click', function(e) {
+            if (e.target === menuOverlay) {
+                closeMenu();
+            }
+        });
+
+        // Close menu on escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && menuOverlay.classList.contains('active')) {
+                closeMenu();
+            }
+        });
+
+        // Close menu when clicking a menu link
+        const mobileMenuLinks = document.querySelectorAll('.mobile-nav-menu a');
+        mobileMenuLinks.forEach(link => {
+            link.addEventListener('click', function() {
+                closeMenu();
+            });
+        });
+    }
+
     // Initialize on DOM ready
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', function() {
             initCalendar();
             initEventsCarousel();
+            initMobileMenu();
         });
     } else {
         initCalendar();
         initEventsCarousel();
+        initMobileMenu();
     }
 
 })();
