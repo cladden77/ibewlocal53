@@ -668,6 +668,17 @@ a:hover {
     font-size: 0.875rem;
     color: var(--color-gray);
     margin: 0 0 var(--spacing-xs) 0;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.news-date-separator {
+    margin: 0 4px;
+}
+
+.news-category {
+    color: var(--color-gray);
 }
 
 .news-title {

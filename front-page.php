@@ -75,7 +75,7 @@ get_header();
         <div class="section-header">
             <div class="section-header-left">
                 <h2 class="section-title">Latest News</h2>
-                <p class="section-subtitle">Stay informed about union updates and announcements</p>
+                <p class="section-subtitle">Updates from the Local 53 leadership and community.</p>
             </div>
             <div class="section-header-right">
                 <a href="<?php echo home_url('/news'); ?>" class="view-all-link">View All News →</a>
@@ -109,7 +109,13 @@ get_header();
                         </div>
                     <?php endif; ?>
                     <div class="news-card-content">
-                        <p class="news-date"><?php echo get_the_date('F j, Y'); ?></p>
+                        <p class="news-date">
+                            <?php echo get_the_date('M j, Y'); ?>
+                            <?php if ($category_name) : ?>
+                                <span class="news-date-separator">•</span>
+                                <span class="news-category"><?php echo esc_html($category_name); ?></span>
+                            <?php endif; ?>
+                        </p>
                         <h3 class="news-title"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h3>
                         <a href="<?php the_permalink(); ?>" class="news-link">Read Update →</a>
                     </div>
