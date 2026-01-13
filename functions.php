@@ -239,6 +239,11 @@ function ibew_local_53_event_meta_box_callback($post) {
 
 // Save Event Meta
 function ibew_local_53_save_event_meta($post_id) {
+    // Only process for event post type
+    if (get_post_type($post_id) !== 'event') {
+        return;
+    }
+
     if (!isset($_POST['ibew_event_meta_box_nonce'])) {
         return;
     }
@@ -255,12 +260,22 @@ function ibew_local_53_save_event_meta($post_id) {
         return;
     }
 
-    if (isset($_POST['event_start_datetime'])) {
-        update_post_meta($post_id, 'event_start_datetime', sanitize_text_field($_POST['event_start_datetime']));
+    // Validate and save start datetime (required)
+    if (isset($_POST['event_start_datetime']) && !empty($_POST['event_start_datetime'])) {
+        $start_datetime = sanitize_text_field($_POST['event_start_datetime']);
+        // Convert datetime-local format (YYYY-MM-DDTHH:MM) to a format that can be compared
+        update_post_meta($post_id, 'event_start_datetime', $start_datetime);
+    } else {
+        // If start datetime is empty, set an error
+        add_action('admin_notices', function() {
+            echo '<div class="notice notice-error"><p>Event Start Date & Time is required. Please set a date for this event.</p></div>';
+        });
     }
 
-    if (isset($_POST['event_end_datetime'])) {
+    if (isset($_POST['event_end_datetime']) && !empty($_POST['event_end_datetime'])) {
         update_post_meta($post_id, 'event_end_datetime', sanitize_text_field($_POST['event_end_datetime']));
+    } else {
+        delete_post_meta($post_id, 'event_end_datetime');
     }
 
     if (isset($_POST['event_all_day'])) {
@@ -271,14 +286,20 @@ function ibew_local_53_save_event_meta($post_id) {
 
     if (isset($_POST['event_location'])) {
         update_post_meta($post_id, 'event_location', sanitize_text_field($_POST['event_location']));
+    } else {
+        delete_post_meta($post_id, 'event_location');
     }
 
     if (isset($_POST['event_cta_label'])) {
         update_post_meta($post_id, 'event_cta_label', sanitize_text_field($_POST['event_cta_label']));
+    } else {
+        delete_post_meta($post_id, 'event_cta_label');
     }
 
     if (isset($_POST['event_cta_url'])) {
         update_post_meta($post_id, 'event_cta_url', esc_url_raw($_POST['event_cta_url']));
+    } else {
+        delete_post_meta($post_id, 'event_cta_url');
     }
 }
 add_action('save_post', 'ibew_local_53_save_event_meta');
@@ -348,3 +369,25 @@ function ibew_local_53_format_event_time($datetime) {
     return date('g:i A', strtotime($datetime));
 }
 
+// Helper function to convert datetime-local format to timestamp for comparison
+function ibew_local_53_get_event_timestamp($datetime) {
+    if (empty($datetime)) {
+        return 0;
+    }
+    // Handle datetime-local format (YYYY-MM-DDTHH:MM)
+    $datetime = str_replace('T', ' ', $datetime);
+    // Add seconds if not present
+    if (strlen($datetime) === 16) {
+        $datetime .= ':00';
+    }
+    return strtotime($datetime);
+}
+
+// Enqueue admin scripts for event date picker
+function ibew_local_53_event_admin_scripts($hook) {
+    global $post_type;
+    if ($post_type === 'event') {
+        wp_enqueue_script('jquery');
+    }
+}
+add_action('admin_enqueue_scripts', 'ibew_local_53_event_admin_scripts');

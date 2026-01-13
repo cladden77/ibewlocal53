@@ -177,6 +177,9 @@ get_header();
         
         <div class="events-grid">
             <?php
+            // Get current date/time in datetime-local format for comparison
+            $current_datetime = date('Y-m-d\TH:i');
+            
             $events_query = new WP_Query(array(
                 'post_type' => 'event',
                 'posts_per_page' => 3,
@@ -186,8 +189,9 @@ get_header();
                 'meta_query' => array(
                     array(
                         'key' => 'event_start_datetime',
-                        'value' => date('Y-m-d H:i:s'),
+                        'value' => $current_datetime,
                         'compare' => '>=',
+                        'type' => 'CHAR',
                     ),
                 ),
             ));
@@ -195,19 +199,31 @@ get_header();
             if ($events_query->have_posts()) :
                 while ($events_query->have_posts()) : $events_query->the_post();
                     $start_datetime = get_post_meta(get_the_ID(), 'event_start_datetime', true);
-                    $event_date = ibew_local_53_format_event_date($start_datetime, 'M j');
+                    // Convert datetime-local format for date functions
+                    $datetime_for_format = str_replace('T', ' ', $start_datetime);
+                    if (strlen($datetime_for_format) === 16) {
+                        $datetime_for_format .= ':00';
+                    }
+                    $event_month = !empty($start_datetime) ? date('M', strtotime($datetime_for_format)) : '';
+                    $event_day = !empty($start_datetime) ? date('j', strtotime($datetime_for_format)) : '';
                     $event_categories = get_the_terms(get_the_ID(), 'event_category');
                     $category_name = !empty($event_categories) ? $event_categories[0]->name : 'Event';
             ?>
                 <article class="event-card">
-                    <?php if (has_post_thumbnail()) : ?>
-                        <div class="event-card-image">
+                    <div class="event-card-image">
+                        <?php if (has_post_thumbnail()) : ?>
                             <?php the_post_thumbnail('medium_large'); ?>
-                            <span class="event-date-badge"><?php echo esc_html($event_date); ?></span>
-                        </div>
-                    <?php endif; ?>
+                        <?php else : ?>
+                            <img src="<?php echo get_template_directory_uri(); ?>/assets/images/IBEW53.avif" alt="<?php echo esc_attr(get_the_title()); ?>" />
+                        <?php endif; ?>
+                        <?php if (!empty($event_month) && !empty($event_day)) : ?>
+                            <div class="event-date-badge">
+                                <span class="date-month"><?php echo esc_html($event_month); ?></span>
+                                <span class="date-day"><?php echo esc_html($event_day); ?></span>
+                            </div>
+                        <?php endif; ?>
+                    </div>
                     <div class="event-card-content">
-                        <span class="event-category-pill"><?php echo esc_html($category_name); ?></span>
                         <h3 class="event-title"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h3>
                         <p class="event-excerpt"><?php echo wp_trim_words(get_the_excerpt(), 15); ?></p>
                         <a href="<?php the_permalink(); ?>" class="event-link">Event Details →</a>

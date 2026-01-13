@@ -61,12 +61,23 @@ get_header();
         <!-- Right Column -->
         <div class="events-content">
             <?php
+            // Get current date/time in datetime-local format for comparison
+            $current_datetime = date('Y-m-d\TH:i');
+            
             $events_query = new WP_Query(array(
                 'post_type' => 'event',
                 'posts_per_page' => -1,
                 'meta_key' => 'event_start_datetime',
                 'orderby' => 'meta_value',
                 'order' => 'ASC',
+                'meta_query' => array(
+                    array(
+                        'key' => 'event_start_datetime',
+                        'value' => $current_datetime,
+                        'compare' => '>=',
+                        'type' => 'CHAR',
+                    ),
+                ),
             ));
             
             if ($events_query->have_posts()) :
@@ -78,7 +89,12 @@ get_header();
                     if (empty($start_datetime)) {
                         continue;
                     }
-                    $month_key = date('F Y', strtotime($start_datetime));
+                    // Convert datetime-local format to timestamp for date functions
+                    $datetime_for_format = str_replace('T', ' ', $start_datetime);
+                    if (strlen($datetime_for_format) === 16) {
+                        $datetime_for_format .= ':00';
+                    }
+                    $month_key = date('F Y', strtotime($datetime_for_format));
                     if (!isset($events_by_month[$month_key])) {
                         $events_by_month[$month_key] = array();
                     }
@@ -102,8 +118,13 @@ get_header();
                         $cta_label = get_post_meta($event_id, 'event_cta_label', true);
                         $cta_url = get_post_meta($event_id, 'event_cta_url', true);
                         
-                        $date_badge_month = date('M', strtotime($start_datetime));
-                        $date_badge_day = date('j', strtotime($start_datetime));
+                        // Convert datetime-local format for date functions
+                        $datetime_for_format = str_replace('T', ' ', $start_datetime);
+                        if (strlen($datetime_for_format) === 16) {
+                            $datetime_for_format .= ':00';
+                        }
+                        $date_badge_month = date('M', strtotime($datetime_for_format));
+                        $date_badge_day = date('j', strtotime($datetime_for_format));
                         
                         $event_categories = get_the_terms($event_id, 'event_category');
                         $category_name = !empty($event_categories) ? $event_categories[0]->name : 'Event';
