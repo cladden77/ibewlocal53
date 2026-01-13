@@ -135,8 +135,9 @@ get_header();
     <div class="section-container">
         <div class="who-we-are-grid">
             <div class="who-we-are-content">
+                <span class="who-we-are-label">Who We Are</span>
                 <h2 class="section-title-large">
-                    Excellence, Committed to <span class="blue-text">Our Members</span>.
+                Dedicated to Excellence, Committed to <span class="blue-text">Our Members</span>.
                 </h2>
                 <p class="who-we-are-text">
                     For over a century, IBEW Local 53 has been the cornerstone of electrical excellence in Kansas City. 
