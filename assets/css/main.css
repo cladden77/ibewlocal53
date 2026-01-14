@@ -442,7 +442,10 @@ a:hover {
 .hero-card {
     max-width: var(--container-max);
     margin: 0 auto;
-    background: linear-gradient(rgba(0, 0, 0, 0.7) 0%, rgba(43, 69, 143, 0.8) 100%);
+    background-image: linear-gradient(rgba(0, 0, 0, 0.6) 0%, rgba(43, 69, 143, 0.8) 100%), url('../images/power-lines.avif');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
     border-radius: 0 0 32px 32px;
     padding: 111.88px 24px;
     min-height: 600px;
