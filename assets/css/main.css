@@ -2379,7 +2379,7 @@ a:hover {
    ============================================ */
 
 .about-page .section-container {
-    max-width: 1216px;
+    max-width: var(--container-max);
 }
 
 /* Hero */
@@ -2389,12 +2389,12 @@ a:hover {
 }
 
 .about-hero-card {
-    max-width: 1216px;
+    max-width: var(--container-max);
     margin: 0 auto;
     height: 350px;
     padding: 88.5px 24px;
     background-image: linear-gradient(180deg, rgba(43, 69, 143, 0.85) 0%, rgba(0, 0, 0, 0.7) 100%), url('../images/about-hero-bg.png');
-    background-size: 1216px 1216px;
+    background-size: 1400px 1400px;
     background-repeat: repeat;
     background-position: center;
     border-radius: 32px;
@@ -2508,7 +2508,7 @@ a:hover {
 
 .mission-image-card {
     width: 100%;
-    max-width: 808px;
+    max-width: 930px;
     border-radius: 32px;
     overflow: hidden;
     box-shadow: 0px 8px 10px -6px rgba(0, 0, 0, 0.1), 0px 20px 25px -5px rgba(0, 0, 0, 0.1);
@@ -2523,7 +2523,7 @@ a:hover {
 
 .mission-text {
     width: 100%;
-    max-width: 1056px;
+    max-width: 1215px;
     display: flex;
     flex-direction: column;
     gap: 16px;
