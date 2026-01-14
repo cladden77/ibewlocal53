@@ -14,7 +14,7 @@ get_header();
         <section class="about-hero">
             <div class="about-hero-card">
                 <div class="about-hero-content">
-                    <div class="about-hero-pill">Get Your Career On Track</div>
+                    <div class="about-hero-pill">Est. 1910 • Kansas City, MO</div>
                     <h1 class="about-hero-title">About IBEW Local 53</h1>
                     <p class="about-hero-subtext">Building a stronger future for our members, our industry,<br>and our community through unity and excellence.</p>
                 </div>

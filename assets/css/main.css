@@ -2535,7 +2535,7 @@ a:hover {
 
 .mission-image-card {
     width: 100%;
-    max-width: 930px;
+    max-width: 808px;
     border-radius: 32px;
     overflow: hidden;
     box-shadow: 0px 8px 10px -6px rgba(0, 0, 0, 0.1), 0px 20px 25px -5px rgba(0, 0, 0, 0.1);
@@ -2550,7 +2550,7 @@ a:hover {
 
 .mission-text {
     width: 100%;
-    max-width: 1215px;
+    max-width: 1000px;
     display: flex;
     flex-direction: column;
     gap: 16px;
