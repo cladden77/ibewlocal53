@@ -1142,7 +1142,7 @@ a:hover {
    ============================================ */
 
 .cta-banner {
-    padding: var(--spacing-2xl) var(--container-padding);
+    padding: var(--spacing-sm) var(--container-padding);
 }
 
 .cta-container {
