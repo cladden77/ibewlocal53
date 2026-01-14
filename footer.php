@@ -3,57 +3,53 @@
 <footer class="site-footer">
     <div class="footer-container">
         <div class="footer-left">
-            <?php if (has_custom_logo()) : ?>
+            <div class="footer-branding">
                 <div class="footer-logo">
-                    <?php the_custom_logo(); ?>
+                    <img src="<?php echo get_template_directory_uri(); ?>/assets/images/IBEW53.avif" alt="IBEW Local 53" />
                 </div>
-            <?php endif; ?>
-            <h3 class="footer-site-title">IBEW LOCAL 53</h3>
-            <p class="footer-description">Building a stronger future through skilled electrical work and union solidarity.</p>
+                <h3 class="footer-site-title">IBEW LOCAL 53</h3>
+            </div>
+            <p class="footer-description">Representing the electrical workers of Greater Kansas City since 1910. Building better lives for our members and a brighter future for our community.</p>
             <div class="social-icons">
                 <a href="#" class="social-icon" aria-label="Facebook">f</a>
-                <a href="#" class="social-icon" aria-label="Twitter">t</a>
-                <a href="#" class="social-icon" aria-label="Instagram">i</a>
-                <a href="#" class="social-icon" aria-label="LinkedIn">in</a>
+                <a href="#" class="social-icon" aria-label="Twitter">tw</a>
+                <a href="#" class="social-icon" aria-label="Instagram">IG</a>
             </div>
         </div>
         
-        <div class="footer-columns">
-            <div class="footer-column">
-                <h4>Quick Links</h4>
-                <ul>
-                    <li><a href="<?php echo home_url('/'); ?>">Home</a></li>
-                    <li><a href="<?php echo home_url('/about'); ?>">About</a></li>
-                    <li><a href="<?php echo home_url('/news'); ?>">News</a></li>
-                    <li><a href="<?php echo home_url('/events'); ?>">Events</a></li>
-                    <li><a href="<?php echo home_url('/contact'); ?>">Contact</a></li>
-                </ul>
-            </div>
-            
-            <div class="footer-column">
-                <h4>Resources</h4>
-                <ul>
-                    <li><a href="#">Document Library</a></li>
-                    <li><a href="#">Member Benefits</a></li>
-                    <li><a href="#">Apprenticeship</a></li>
-                    <li><a href="#">Safety Resources</a></li>
-                    <li><a href="#">Job Board</a></li>
-                </ul>
-            </div>
+        <div class="footer-column">
+            <h4>Quick Links</h4>
+            <ul>
+                <li><a href="<?php echo home_url('/'); ?>">Home</a></li>
+                <li><a href="<?php echo home_url('/about'); ?>">About</a></li>
+                <li><a href="<?php echo home_url('/news'); ?>">News</a></li>
+                <li><a href="<?php echo home_url('/events'); ?>">Events</a></li>
+                <li><a href="<?php echo home_url('/contact'); ?>">Contact Us</a></li>
+            </ul>
         </div>
         
-        <div class="footer-right">
-            <h4>Contact Info</h4>
+        <div class="footer-column">
+            <h4>Resources</h4>
+            <ul>
+                <li><a href="#">Member Login</a></li>
+                <li><a href="#">Pay Dues</a></li>
+                <li><a href="#">Benefits Portal</a></li>
+                <li><a href="#">Job Board</a></li>
+                <li><a href="#">Training Calendar</a></li>
+            </ul>
+        </div>
+        
+        <div class="footer-column">
+            <h4>Contact</h4>
             <div class="footer-contact">
-                <p><strong>Address:</strong><br>1234 Union Street<br>Kansas City, MO 64101</p>
-                <p><strong>Phone:</strong><br><a href="tel:+18161234567">(816) 123-4567</a></p>
-                <p><strong>Email:</strong><br><a href="mailto:info@ibewlocal53.org">info@ibewlocal53.org</a></p>
+                <p>1808 Agawam Boulevard, Kansas City, MO 64138</p>
+                <p><a href="tel:+18164315434">(816) 431-5434</a></p>
             </div>
         </div>
     </div>
     
     <div class="footer-bottom">
-        <p>&copy; <?php echo date('Y'); ?> IBEW Local 53. All rights reserved.</p>
+        <p>&copy; <?php echo date('Y'); ?> IBEW LOCAL 53. All rights reserved.</p>
     </div>
 </footer>
 

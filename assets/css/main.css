@@ -2043,8 +2043,8 @@ a:hover {
     max-width: var(--container-max);
     margin: 0 auto;
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: var(--spacing-xl);
+    grid-template-columns: 1.5fr 1fr 1fr 1fr;
+    gap: 4rem;
     margin-bottom: var(--spacing-lg);
 }
 
@@ -2054,9 +2054,16 @@ a:hover {
     gap: var(--spacing-md);
 }
 
+.footer-branding {
+    display: flex;
+    align-items: left;
+    flex-direction: column;
+}
+
 .footer-logo {
-    width: 60px;
-    height: 60px;
+    width: 100px;
+    height: 100px;
+    flex-shrink: 0;
 }
 
 .footer-logo img {
@@ -2071,6 +2078,7 @@ a:hover {
     font-weight: 700;
     margin: 0;
     color: var(--color-white);
+    white-space: nowrap;
 }
 
 .footer-description {
@@ -2078,6 +2086,7 @@ a:hover {
     color: rgba(255, 255, 255, 0.8);
     margin: 0;
     line-height: 1.6;
+    max-width: 90%
 }
 
 .social-icons {
@@ -2090,23 +2099,19 @@ a:hover {
     height: 40px;
     border-radius: 50%;
     background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
     color: var(--color-white);
     display: flex;
     align-items: center;
     justify-content: center;
     font-weight: 600;
+    font-size: 0.875rem;
     transition: background-color 0.2s ease;
 }
 
 .social-icon:hover {
     background-color: rgba(255, 255, 255, 0.2);
     color: var(--color-white);
-}
-
-.footer-columns {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: var(--spacing-lg);
 }
 
 .footer-column h4 {
@@ -2136,17 +2141,16 @@ a:hover {
     color: var(--color-white);
 }
 
-.footer-right h4 {
-    font-size: 1rem;
-    font-weight: 600;
-    margin: 0 0 var(--spacing-md) 0;
-    color: var(--color-white);
+.footer-contact {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xs);
 }
 
 .footer-contact p {
     font-size: 0.875rem;
     color: rgba(255, 255, 255, 0.8);
-    margin: 0 0 var(--spacing-sm) 0;
+    margin: 0;
     line-height: 1.6;
 }
 
@@ -2325,10 +2329,18 @@ a:hover {
     
     .footer-container {
         grid-template-columns: 1fr;
+        gap: var(--spacing-xl);
     }
     
-    .footer-columns {
-        grid-template-columns: 1fr;
+    .footer-branding {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--spacing-sm);
+    }
+    
+    .footer-logo {
+        width: 60px;
+        height: 60px;
     }
     
     .cta-container {
