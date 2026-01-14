@@ -10,7 +10,7 @@ get_header();
 
 <?php while (have_posts()) : the_post(); ?>
     <div class="about-page">
-        <!-- About Hero -->
+    <!-- About Hero -->
         <section class="about-hero">
             <div class="about-hero-card">
                 <div class="about-hero-content">
@@ -42,9 +42,9 @@ get_header();
                         <p>The vision of the IBEW has remained steady since established, to promote excellence and to improve the lives of each and every member.</p>
                     </div>
                 </div>
-            </div>
-        </section>
-
+        </div>
+    </section>
+    
         <!-- Values Section -->
         <section class="about-values-section">
             <div class="section-container">
@@ -55,18 +55,20 @@ get_header();
                         <span class="eyebrow-line"></span>
                     </div>
                     <h2 class="about-section-title">Commitment to Excellence</h2>
-                    <div class="commitment-list">
-                        <p>To organize all workers in the entire electrical industry in the United States and Canada, including all those in public utilities and electrical manufacturing into local unions.</p>
-                        <p>To promote reasonable methods of work</p>
-                        <p>To cultivate feelings of friendship among those of our industry</p>
-                        <p>To settle all disputes between employers and employees by arbitration (if possible)</p>
-                        <p>To assist each other in sickness or distress</p>
-                        <p>To secure employment</p>
-                        <p>To reduce the hours of daily labor</p>
-                        <p>To secure adequate pay for our work</p>
-                        <p>To seek a higher standard of living</p>
-                        <p>To seek security for the individual</p>
-                        <p>To properly elevate the moral, intellectual and social conditions of our members, their families and dependents, in the interest of a higher standard of citizenship.</p>
+                    <div class="commitment-list-wrapper">
+                        <ul class="commitment-list">
+                            <li>To organize all workers in the entire electrical industry in the United States and Canada, including all those in public utilities and electrical manufacturing into local unions.</li>
+                            <li>To promote reasonable methods of work</li>
+                            <li>To cultivate feelings of friendship among those of our industry</li>
+                            <li>To settle all disputes between employers and employees by arbitration (if possible)</li>
+                            <li>To assist each other in sickness or distress</li>
+                            <li>To secure employment</li>
+                            <li>To reduce the hours of daily labor</li>
+                            <li>To secure adequate pay for our work</li>
+                            <li>To seek a higher standard of living</li>
+                            <li>To seek security for the individual</li>
+                            <li>To properly elevate the moral, intellectual and social conditions of our members, their families and dependents, in the interest of a higher standard of citizenship.</li>
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -433,9 +435,9 @@ get_header();
                             <div class="contact-item contact-email">
                                 <span class="material-icons contact-icon">email</span>
                                 <a href="mailto:Jlooney@ibewlocal53.org" class="contact-value">Jlooney@ibewlocal53.org</a>
-                            </div>
-                        </div>
-                    </article>
+            </div>
+        </div>
+    </article>
                 </div>
             </div>
         </section>

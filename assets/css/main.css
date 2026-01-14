@@ -2554,17 +2554,40 @@ a:hover {
     gap: 32px;
 }
 
-.commitment-list {
+.commitment-list-wrapper {
     display: flex;
-    flex-direction: column;
-    gap: 12px;
+    justify-content: center;
+    width: 100%;
 }
 
-.commitment-list p {
+.commitment-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    max-width: 768px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.commitment-list li {
     font-size: 18px;
-    line-height: 1.5555555556;
+    line-height: 1.5;
     color: #6B7280;
     margin: 0;
+    padding-left: -2.25em;
+    text-indent: -1em;
+    position: relative;
+}
+
+.commitment-list li::before {
+    content: '•';
+    color: #6B7280;
+    font-weight: bold;
+    display: inline-block;
+    width: 1em;
+    margin-right: 0;
 }
 
 /* Leadership Section */
