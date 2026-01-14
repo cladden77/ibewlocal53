@@ -506,10 +506,6 @@ a:hover {
     text-align: center;
 }
 
-.hero-title span {
-    display: block;
-}
-
 .gold-text {
     color: var(--color-gold);
 }
