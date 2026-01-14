@@ -2664,12 +2664,17 @@ a:hover {
 .contact-item.contact-email {
     border-top: 1px solid #F3F4F6;
     padding-top: 12px;
+    align-items: flex-start;
 }
 
 .contact-icon {
     color: #9CA3AF;
     font-size: 24px;
     flex-shrink: 0;
+}
+
+.contact-item.contact-email .contact-icon {
+    margin-top: 2px;
 }
 
 .contact-details {
@@ -2690,6 +2695,8 @@ a:hover {
     font-weight: 500;
     color: #4B5563;
     text-decoration: none;
+    word-break: break-word;
+    overflow-wrap: break-word;
 }
 
 .officer-committees {
@@ -2838,6 +2845,10 @@ a:hover {
         width: 100%;
         justify-content: center;
     }
+
+    .contact-value {
+        font-size: 12px;
+    }
 }
 
 @media (max-width: 480px) {
@@ -2852,6 +2863,14 @@ a:hover {
 
     .about-cta-card {
         padding: 64px 16px;
+    }
+
+    .contact-value {
+        font-size: 11px;
+    }
+
+    .contact-icon {
+        font-size: 20px;
     }
 }
 
