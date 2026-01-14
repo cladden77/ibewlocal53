@@ -2491,7 +2491,7 @@ a:hover {
 /* Mission Section */
 .about-mission-section {
     padding: 48px 0 64px;
-    background-color: var(--color-white);
+    background-color: #F3F4F6;
 }
 
 .mission-header {
@@ -2570,7 +2570,7 @@ a:hover {
 /* Leadership Section */
 .about-leadership-section {
     padding: 48px 0 64px;
-    background-color: var(--color-white);
+    background-color: #F3F4F6;
 }
 
 .leadership-header {
