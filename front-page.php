@@ -246,7 +246,7 @@ get_header();
             <a href="#" class="btn btn-white">Join Now</a>
         </div>
         <div class="cta-decoration">
-            <div class="cta-icon-circle">⚡</div>
+            <img src="<?php echo get_template_directory_uri(); ?>/assets/images/join-now.png" alt="Join Now" class="cta-image" />
         </div>
     </div>
 </section>
