@@ -35,14 +35,11 @@
             calendarGrid.innerHTML = '';
 
             // Add day headers
-            const dayHeaders = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+            const dayHeaders = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
             dayHeaders.forEach(day => {
                 const header = document.createElement('div');
                 header.className = 'calendar-day-header';
                 header.textContent = day;
-                header.style.fontWeight = '600';
-                header.style.fontSize = '0.75rem';
-                header.style.color = 'var(--color-gray)';
                 calendarGrid.appendChild(header);
             });
 

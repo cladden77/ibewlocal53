@@ -9,11 +9,11 @@ get_header();
 ?>
 
 <!-- Events Archive Hero -->
-<section class="archive-hero">
-    <div class="hero-card gradient-hero">
-        <div class="hero-pill">GET INVOLVED</div>
+<section class="archive-hero events-hero">
+    <div class="events-hero-card">
+        <div class="hero-pill">Get Involved</div>
         <h1 class="hero-title">Events & Calendar</h1>
-        <p class="hero-subtext">Join us for union meetings, social events, training sessions, and community gatherings.</p>
+        <p class="hero-subtext">Stay up to date with Local 53 meetings, training sessions, and community events. Your participation strengthens our brotherhood.</p>
     </div>
 </section>
 
@@ -24,9 +24,9 @@ get_header();
             <!-- Mini Calendar Card -->
             <div class="sidebar-card calendar-card">
                 <div class="calendar-header">
-                    <button class="calendar-nav prev-month" aria-label="Previous month">‹</button>
+                    <button class="calendar-nav prev-month" aria-label="Previous month"><span class="material-icons">chevron_left</span></button>
                     <h3 class="calendar-month-year" id="calendar-month-year">November 2023</h3>
-                    <button class="calendar-nav next-month" aria-label="Next month">›</button>
+                    <button class="calendar-nav next-month" aria-label="Next month"><span class="material-icons">chevron_right</span></button>
                 </div>
                 <div class="calendar-grid" id="calendar-grid">
                     <!-- Calendar will be populated by JavaScript -->
@@ -44,13 +44,13 @@ get_header();
                     ));
                     
                     foreach ($categories as $category) :
-                        $color_class = strtolower(str_replace(' ', '-', $category->name));
+                        $color_class = sanitize_html_class($category->slug);
                     ?>
                         <li>
                             <a href="<?php echo get_term_link($category); ?>" class="category-item">
                                 <span class="category-dot <?php echo esc_attr($color_class); ?>"></span>
-                                <?php echo esc_html($category->name); ?>
-                                <span class="count">(<?php echo $category->count; ?>)</span>
+                                <span class="category-label"><?php echo esc_html($category->name); ?></span>
+                                <span class="category-count"><?php echo $category->count; ?></span>
                             </a>
                         </li>
                     <?php endforeach; ?>
@@ -103,9 +103,11 @@ get_header();
                 
                 // Display events grouped by month
                 foreach ($events_by_month as $month => $event_ids) :
+                    $month_time = strtotime('1 ' . $month);
+                    $month_slug = $month_time ? strtolower(date('F', $month_time)) : 'default';
             ?>
                 <div class="events-month-section">
-                    <h2 class="month-heading"><?php echo esc_html($month); ?></h2>
+                    <h2 class="month-heading month-heading--<?php echo esc_attr($month_slug); ?>"><?php echo esc_html($month); ?></h2>
                     
                     <?php foreach ($event_ids as $event_id) :
                         $post = get_post($event_id);
@@ -124,10 +126,12 @@ get_header();
                             $datetime_for_format .= ':00';
                         }
                         $date_badge_month = date('M', strtotime($datetime_for_format));
-                        $date_badge_day = date('j', strtotime($datetime_for_format));
+                        $date_badge_day = date('d', strtotime($datetime_for_format));
+                        $date_badge_weekday = date('D', strtotime($datetime_for_format));
                         
                         $event_categories = get_the_terms($event_id, 'event_category');
                         $category_name = !empty($event_categories) ? $event_categories[0]->name : 'Event';
+                        $category_class = !empty($event_categories) ? sanitize_html_class($event_categories[0]->slug) : 'event';
                         
                         $time_display = '';
                         if ($all_day) {
@@ -143,27 +147,33 @@ get_header();
                         }
                     ?>
                         <article class="event-list-item">
-                            <div class="event-date-badge">
+                            <div class="event-date-badge <?php echo esc_attr($category_class); ?>">
                                 <span class="date-month"><?php echo esc_html($date_badge_month); ?></span>
                                 <span class="date-day"><?php echo esc_html($date_badge_day); ?></span>
+                                <span class="date-weekday"><?php echo esc_html($date_badge_weekday); ?></span>
                             </div>
-                            <div class="event-list-content">
-                                <span class="event-category-pill"><?php echo esc_html($category_name); ?></span>
-                                <h3 class="event-list-title"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h3>
-                                <p class="event-list-description"><?php echo wp_trim_words(get_the_excerpt(), 25); ?></p>
-                                <div class="event-list-meta">
-                                    <?php if ($location) : ?>
-                                        <span class="event-location">📍 <?php echo esc_html($location); ?></span>
-                                    <?php endif; ?>
+                            <div class="event-list-body">
+                                <div class="event-list-top">
+                                    <span class="event-category-pill <?php echo esc_attr($category_class); ?>">
+                                        <span class="category-dot <?php echo esc_attr($category_class); ?>"></span>
+                                        <?php echo esc_html($category_name); ?>
+                                    </span>
                                     <?php if ($time_display) : ?>
-                                        <span class="event-time">🕐 <?php echo esc_html($time_display); ?></span>
+                                        <span class="event-time"><span class="material-icons">schedule</span><?php echo esc_html($time_display); ?></span>
                                     <?php endif; ?>
                                 </div>
-                                <?php if ($cta_label && $cta_url) : ?>
-                                    <a href="<?php echo esc_url($cta_url); ?>" class="event-cta-link"><?php echo esc_html($cta_label); ?> →</a>
-                                <?php else : ?>
-                                    <a href="<?php the_permalink(); ?>" class="event-cta-link">Event Details →</a>
-                                <?php endif; ?>
+                                <h3 class="event-list-title"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h3>
+                                <p class="event-list-description"><?php echo wp_trim_words(get_the_excerpt(), 25); ?></p>
+                                <div class="event-list-footer">
+                                    <?php if ($location) : ?>
+                                        <span class="event-location"><span class="material-icons">location_on</span><?php echo esc_html($location); ?></span>
+                                    <?php endif; ?>
+                                    <?php if ($cta_label && $cta_url) : ?>
+                                        <a href="<?php echo esc_url($cta_url); ?>" class="event-cta-link"><?php echo esc_html($cta_label); ?> <span class="material-icons">arrow_forward</span></a>
+                                    <?php else : ?>
+                                        <a href="<?php the_permalink(); ?>" class="event-cta-link">Event Details <span class="material-icons">arrow_forward</span></a>
+                                    <?php endif; ?>
+                                </div>
                             </div>
                         </article>
                     <?php endforeach; ?>
