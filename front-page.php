@@ -115,7 +115,7 @@ get_header();
                             <?php endif; ?>
                         </p>
                         <h3 class="news-title"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h3>
-                        <a href="<?php the_permalink(); ?>" class="news-link">Read Update →</a>
+                        <a href="<?php the_permalink(); ?>" class="news-link">Read Update <span class="material-icons">play_circle</span></a>
                     </div>
                 </article>
             <?php
@@ -124,6 +124,9 @@ get_header();
                 wp_reset_postdata();
             endif;
             ?>
+        </div>
+        <div class="news-view-all-mobile">
+            <a href="<?php echo home_url('/news'); ?>" class="view-all-link">View All News <span class="material-icons">arrow_forward</span></a>
         </div>
     </div>
 </section>
