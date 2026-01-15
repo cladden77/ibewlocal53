@@ -2647,7 +2647,11 @@ a:hover {
     }
     
     .archive-hero {
-        padding: 48px var(--container-padding);
+        padding: 48px 0;
+    }
+    
+    .archive-hero-container {
+        padding: 0 var(--container-padding);
     }
     
     .archive-hero .hero-title {
@@ -2702,10 +2706,20 @@ a:hover {
     .archive-layout {
         grid-template-columns: 1fr;
         gap: 24px;
-        padding: 32px var(--container-padding);
+        padding: 32px 0;
+    }
+    
+    .archive-sidebar,
+    .archive-content {
+        padding: 0 var(--container-padding);
     }
     
     .archive-sidebar {
+        order: 1;
+        width: 100%;
+    }
+    
+    .archive-content {
         order: 2;
     }
     
