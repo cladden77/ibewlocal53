@@ -2855,6 +2855,11 @@ a:hover {
     font-weight: 700;
 }
 
+.btn-cta-secondary:hover {
+    background-color: #FFFFFF;
+    color: #2B458F;
+}
+
 /* Responsive Styles for About Page */
 @media (max-width: 1024px) {
     .officers-grid {
