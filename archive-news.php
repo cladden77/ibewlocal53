@@ -13,12 +13,10 @@ $search_query = get_search_query();
 
 <!-- News Archive Hero -->
 <section class="archive-hero">
-    <div class="hero-card gradient-hero">
-        <div class="hero-pill">NEWS & UPDATES</div>
-        <h1 class="hero-title">
-            Latest from <span class="gold-text">Local 53</span>
-        </h1>
-        <p class="hero-subtext">Stay informed about union news, contract updates, and member announcements.</p>
+    <div class="archive-hero-container">
+        <div class="hero-pill">News & Updates</div>
+        <h1 class="hero-title">Latest from Local 53</h1>
+        <p class="hero-subtext">Staying informed is key to our solidarity. Find the latest announcements, contract updates, and community stories here.</p>
     </div>
 </section>
 
@@ -30,8 +28,11 @@ $search_query = get_search_query();
             <div class="sidebar-card">
                 <h3 class="sidebar-card-title">Search News</h3>
                 <form method="get" action="<?php echo home_url('/news'); ?>" class="search-form">
-                    <input type="search" name="s" value="<?php echo esc_attr($search_query); ?>" placeholder="Search news..." class="search-input" />
-                    <button type="submit" class="search-submit">Search</button>
+                    <div class="search-icon-wrapper">
+                        <span class="material-icons">search</span>
+                    </div>
+                    <input type="search" name="s" value="<?php echo esc_attr($search_query); ?>" placeholder="Keywords..." class="search-input" />
+                    <button type="submit" class="search-submit" aria-label="Search">Search</button>
                 </form>
             </div>
             
@@ -40,8 +41,9 @@ $search_query = get_search_query();
                 <h3 class="sidebar-card-title">Categories</h3>
                 <ul class="category-list">
                     <li>
-                        <a href="<?php echo home_url('/news'); ?>" class="<?php echo empty($current_category) ? 'active' : ''; ?>">
-                            All News <span class="count">(<?php echo wp_count_posts('news')->publish; ?>)</span>
+                        <a href="<?php echo home_url('/news'); ?>" class="category-link <?php echo empty($current_category) ? 'active' : ''; ?>">
+                            <span class="category-name">All News</span>
+                            <span class="category-count"><?php echo wp_count_posts('news')->publish; ?></span>
                         </a>
                     </li>
                     <?php
@@ -55,9 +57,9 @@ $search_query = get_search_query();
                         $category_url = add_query_arg('news_category', $category->slug, home_url('/news'));
                     ?>
                         <li>
-                            <a href="<?php echo esc_url($category_url); ?>" class="<?php echo $is_active ? 'active' : ''; ?>">
-                                <?php echo esc_html($category->name); ?>
-                                <span class="count">(<?php echo $category->count; ?>)</span>
+                            <a href="<?php echo esc_url($category_url); ?>" class="category-link <?php echo $is_active ? 'active' : ''; ?>">
+                                <span class="category-name"><?php echo esc_html($category->name); ?></span>
+                                <span class="category-count"><?php echo $category->count; ?></span>
                             </a>
                         </li>
                     <?php endforeach; ?>
@@ -67,8 +69,8 @@ $search_query = get_search_query();
             <!-- Resources Promo Card -->
             <div class="sidebar-card promo-card">
                 <h3 class="sidebar-card-title">Resources</h3>
-                <p class="promo-text">Access our document library and member resources.</p>
-                <a href="#" class="btn btn-primary btn-small">Visit Document Library →</a>
+                <p class="promo-text">Access the latest agreements, bylaws, and forms.</p>
+                <a href="#" class="promo-link">Visit Document Library <span class="material-icons">arrow_forward</span></a>
             </div>
         </aside>
         
@@ -91,21 +93,27 @@ $search_query = get_search_query();
                 $featured_category = !empty($featured_categories) ? $featured_categories[0]->name : '';
             ?>
                 <div class="featured-story-section">
-                    <div class="section-label">Featured Story</div>
+                    <div class="section-label">
+                        <span class="material-icons">star</span>
+                        <span>Featured Story</span>
+                    </div>
                     <article class="featured-story-card">
                         <?php if (has_post_thumbnail()) : ?>
                             <div class="featured-story-image">
                                 <?php the_post_thumbnail('large'); ?>
+                                <?php if ($featured_category) : ?>
+                                    <span class="featured-badge badge-red"><?php echo esc_html(strtoupper($featured_category)); ?></span>
+                                <?php endif; ?>
                             </div>
                         <?php endif; ?>
                         <div class="featured-story-content">
-                            <?php if ($featured_category) : ?>
-                                <span class="featured-badge badge-red"><?php echo esc_html(strtoupper($featured_category)); ?></span>
-                            <?php endif; ?>
-                            <p class="featured-date"><?php echo get_the_date('F j, Y'); ?></p>
+                            <div class="featured-date-wrapper">
+                                <span class="material-icons">arrow_forward</span>
+                                <span class="featured-date"><?php echo get_the_date('F j, Y'); ?></span>
+                            </div>
                             <h2 class="featured-title"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h2>
                             <p class="featured-excerpt"><?php echo wp_trim_words(get_the_excerpt(), 30); ?></p>
-                            <a href="<?php the_permalink(); ?>" class="featured-link">Read Full Story →</a>
+                            <a href="<?php the_permalink(); ?>" class="featured-link">Read Full Story <span class="material-icons">arrow_forward</span></a>
                         </div>
                     </article>
                 </div>
@@ -152,21 +160,41 @@ $search_query = get_search_query();
                     while ($news_query->have_posts()) : $news_query->the_post();
                         $categories = get_the_terms(get_the_ID(), 'news_category');
                         $category_name = !empty($categories) ? $categories[0]->name : '';
+                        // Determine link text based on category
+                        $link_text = 'Read Story';
+                        if ($category_name) {
+                            $category_lower = strtolower($category_name);
+                            if (strpos($category_lower, 'training') !== false || strpos($category_lower, 'apprenticeship') !== false) {
+                                $link_text = 'Apply Now';
+                            } elseif (strpos($category_lower, 'event') !== false || strpos($category_lower, 'meeting') !== false) {
+                                $link_text = 'Get Details';
+                            } elseif (strpos($category_lower, 'safety') !== false) {
+                                $link_text = 'Read Guidelines';
+                            } elseif (strpos($category_lower, 'political') !== false) {
+                                $link_text = 'View List';
+                            } elseif (strpos($category_lower, 'community') !== false || strpos($category_lower, 'volunteer') !== false) {
+                                $link_text = 'Volunteer';
+                            }
+                        }
                 ?>
                     <article class="news-archive-card">
-                        <?php if (has_post_thumbnail()) : ?>
-                            <div class="news-archive-image">
+                        <div class="news-archive-image">
+                            <?php if (has_post_thumbnail()) : ?>
                                 <?php the_post_thumbnail('medium'); ?>
-                                <?php if ($category_name) : ?>
-                                    <span class="news-badge"><?php echo esc_html($category_name); ?></span>
-                                <?php endif; ?>
-                            </div>
-                        <?php endif; ?>
+                            <?php else : ?>
+                                <div class="news-archive-placeholder"></div>
+                            <?php endif; ?>
+                            <?php if ($category_name) : ?>
+                                <span class="news-badge"><?php echo esc_html(strtoupper($category_name)); ?></span>
+                            <?php endif; ?>
+                        </div>
                         <div class="news-archive-content">
-                            <p class="news-date"><?php echo get_the_date('F j, Y'); ?></p>
-                            <h3 class="news-title"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h3>
-                            <p class="news-excerpt"><?php echo wp_trim_words(get_the_excerpt(), 20); ?></p>
-                            <a href="<?php the_permalink(); ?>" class="news-link">Read Story →</a>
+                            <div>
+                                <p class="news-date"><?php echo get_the_date('M j, Y'); ?></p>
+                                <h3 class="news-title"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h3>
+                                <p class="news-excerpt"><?php echo wp_trim_words(get_the_excerpt(), 20); ?></p>
+                            </div>
+                            <a href="<?php the_permalink(); ?>" class="news-link"><?php echo esc_html($link_text); ?> <span class="material-icons">arrow_forward</span></a>
                         </div>
                     </article>
                 <?php

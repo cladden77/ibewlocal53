@@ -1,5 +1,7 @@
 <?php
 /**
+ * Template Name: About
+ * 
  * About Page Template
  *
  * @package IBEW_Local_53
