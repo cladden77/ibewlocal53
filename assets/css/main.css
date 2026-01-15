@@ -3045,8 +3045,7 @@ a:hover {
     line-height: 1.5;
     color: #6B7280;
     margin: 0;
-    padding-left: -2.25em;
-    text-indent: -1em;
+    padding-left: 1.5em;
     position: relative;
 }
 
@@ -3056,7 +3055,9 @@ a:hover {
     font-weight: bold;
     display: inline-block;
     width: 1em;
-    margin-right: 0;
+    margin-right: 0.5em;
+    position: absolute;
+    left: 0;
 }
 
 /* Leadership Section */
