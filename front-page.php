@@ -103,8 +103,6 @@ get_header();
                             <?php the_post_thumbnail('medium_large'); ?>
                             <?php if ($is_first) : ?>
                                 <span class="news-badge badge-new">NEW</span>
-                            <?php elseif ($category_name) : ?>
-                                <span class="news-badge"><?php echo esc_html($category_name); ?></span>
                             <?php endif; ?>
                         </div>
                     <?php endif; ?>
