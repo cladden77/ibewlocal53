@@ -2016,10 +2016,6 @@ a:hover {
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.event-list-item:hover {
-    transform: translateX(4px);
-    box-shadow: var(--shadow-md);
-}
 
 .event-date-badge {
     width: 96px;
@@ -2099,6 +2095,7 @@ a:hover {
 .event-list-title {
     font-size: 1.25rem;
     font-weight: 700;
+    line-height: 1.4;
     margin: 0 0 8px 0;
 }
 
