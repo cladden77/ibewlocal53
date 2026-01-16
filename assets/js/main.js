@@ -12,14 +12,51 @@
         const monthYearEl = document.getElementById('calendar-month-year');
         const prevBtn = document.querySelector('.prev-month');
         const nextBtn = document.querySelector('.next-month');
+        const calendarCard = document.querySelector('.calendar-card');
 
         if (!calendarGrid || !monthYearEl) {
             return;
         }
 
+        // Get event dates from data attribute
+        let eventDates = [];
+        let eventCategories = {};
+        if (calendarCard) {
+            if (calendarCard.dataset.eventDates) {
+                try {
+                    eventDates = JSON.parse(calendarCard.dataset.eventDates);
+                } catch (e) {
+                    console.error('Error parsing event dates:', e);
+                }
+            }
+            if (calendarCard.dataset.eventCategories) {
+                try {
+                    eventCategories = JSON.parse(calendarCard.dataset.eventCategories);
+                } catch (e) {
+                    console.error('Error parsing event categories:', e);
+                }
+            }
+        }
+
         let currentDate = new Date();
         let currentMonth = currentDate.getMonth();
         let currentYear = currentDate.getFullYear();
+
+        // Helper function to format date as YYYY-MM-DD
+        function formatDate(year, month, day) {
+            const monthStr = String(month + 1).padStart(2, '0');
+            const dayStr = String(day).padStart(2, '0');
+            return `${year}-${monthStr}-${dayStr}`;
+        }
+
+        // Helper function to check if a date has an event and get its category
+        function getEventCategory(year, month, day) {
+            const dateStr = formatDate(year, month, day);
+            if (eventDates.includes(dateStr)) {
+                return eventCategories[dateStr] || 'event';
+            }
+            return null;
+        }
 
         function renderCalendar(month, year) {
             const firstDay = new Date(year, month, 1).getDay();
@@ -45,22 +82,42 @@
 
             // Add previous month days
             for (let i = firstDay - 1; i >= 0; i--) {
+                const dayContainer = document.createElement('div');
+                dayContainer.className = 'calendar-day-wrapper';
                 const day = document.createElement('div');
                 day.className = 'calendar-day other-month';
                 day.textContent = daysInPrevMonth - i;
-                calendarGrid.appendChild(day);
+                dayContainer.appendChild(day);
+                calendarGrid.appendChild(dayContainer);
             }
 
             // Add current month days
             const today = new Date();
             for (let i = 1; i <= daysInMonth; i++) {
+                const dayContainer = document.createElement('div');
+                dayContainer.className = 'calendar-day-wrapper';
+                
                 const day = document.createElement('div');
                 day.className = 'calendar-day';
                 day.textContent = i;
 
-                // Highlight today
-                if (i === today.getDate() && month === today.getMonth() && year === today.getFullYear()) {
+                // Highlight today with background color
+                const isTodayDay = (i === today.getDate() && month === today.getMonth() && year === today.getFullYear());
+                if (isTodayDay) {
                     day.classList.add('selected');
+                }
+
+                // Add event indicator circle (only if not today)
+                const eventCategory = getEventCategory(year, month, i);
+                if (eventCategory && !isTodayDay) {
+                    day.classList.add('has-event');
+                    day.classList.add(eventCategory); // Add category class to day for text color styling
+                    const indicator = document.createElement('span');
+                    indicator.className = 'calendar-event-indicator ' + eventCategory;
+                    dayContainer.appendChild(day);
+                    dayContainer.appendChild(indicator);
+                } else {
+                    dayContainer.appendChild(day);
                 }
 
                 // Add click handler (optional - for filtering events by date)
@@ -71,17 +128,20 @@
                     this.classList.add('selected');
                 });
 
-                calendarGrid.appendChild(day);
+                calendarGrid.appendChild(dayContainer);
             }
 
             // Add next month days to fill grid
             const totalCells = calendarGrid.children.length;
             const remainingCells = 42 - totalCells; // 6 rows * 7 days
             for (let i = 1; i <= remainingCells; i++) {
+                const dayContainer = document.createElement('div');
+                dayContainer.className = 'calendar-day-wrapper';
                 const day = document.createElement('div');
                 day.className = 'calendar-day other-month';
                 day.textContent = i;
-                calendarGrid.appendChild(day);
+                dayContainer.appendChild(day);
+                calendarGrid.appendChild(dayContainer);
             }
         }
 

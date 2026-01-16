@@ -67,7 +67,42 @@ function ibew_get_event_category_class($category) {
         <!-- Left Column -->
         <aside class="events-sidebar">
             <!-- Mini Calendar Card -->
-            <div class="sidebar-card calendar-card">
+            <?php
+            // Get all event dates for calendar highlighting with category information
+            $all_events_query = new WP_Query(array(
+                'post_type' => 'event',
+                'posts_per_page' => -1,
+                'meta_key' => 'event_start_datetime',
+                'orderby' => 'meta_value',
+                'order' => 'ASC',
+            ));
+            
+            $event_dates = array(); // Array of dates
+            $event_dates_with_categories = array(); // Associative array: date => category_class
+            if ($all_events_query->have_posts()) {
+                while ($all_events_query->have_posts()) {
+                    $all_events_query->the_post();
+                    $start_datetime = get_post_meta(get_the_ID(), 'event_start_datetime', true);
+                    if (!empty($start_datetime)) {
+                        // Convert datetime-local format to YYYY-MM-DD
+                        $date_only = substr($start_datetime, 0, 10);
+                        if (!in_array($date_only, $event_dates)) {
+                            $event_dates[] = $date_only;
+                            
+                            // Get category for this event
+                            $event_categories = get_the_terms(get_the_ID(), 'event_category');
+                            $category_class = 'event'; // default
+                            if (!empty($event_categories)) {
+                                $category_class = ibew_get_event_category_class($event_categories[0]);
+                            }
+                            $event_dates_with_categories[$date_only] = $category_class;
+                        }
+                    }
+                }
+                wp_reset_postdata();
+            }
+            ?>
+            <div class="sidebar-card calendar-card" data-event-dates="<?php echo esc_attr(json_encode($event_dates)); ?>" data-event-categories="<?php echo esc_attr(json_encode($event_dates_with_categories)); ?>">
                 <div class="calendar-header">
                     <button class="calendar-nav prev-month" aria-label="Previous month"><span class="material-icons">chevron_left</span></button>
                     <h3 class="calendar-month-year" id="calendar-month-year">November 2023</h3>

@@ -1894,6 +1894,14 @@ a:hover {
     justify-content: center;
 }
 
+.calendar-day-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+}
+
 .calendar-day {
     height: 32px;
     display: flex;
@@ -1904,9 +1912,10 @@ a:hover {
     cursor: pointer;
     transition: all 0.2s ease;
     color: #1f2937;
+    width: 100%;
 }
 
-.calendar-day:hover {
+.calendar-day:hover:not(.selected) {
     background-color: var(--color-gray-light);
 }
 
@@ -1917,8 +1926,111 @@ a:hover {
     font-weight: 700;
 }
 
+.calendar-day.has-event {
+    /* No background color - event indicator shown as circle below */
+}
+
+/* Category text colors for event days (not when selected) */
+.calendar-day.has-event.union-meetings:not(.selected),
+.calendar-day.has-event.union-meeting:not(.selected) {
+    color: var(--color-primary);
+}
+
+.calendar-day.has-event.social-events:not(.selected),
+.calendar-day.has-event.social-event:not(.selected) {
+    color: var(--color-red);
+}
+
+.calendar-day.has-event.training-safety:not(.selected),
+.calendar-day.has-event.training:not(.selected),
+.calendar-day.has-event.safety:not(.selected) {
+    color: var(--color-gold);
+}
+
+.calendar-day.has-event.holiday:not(.selected) {
+    color: #6b7280;
+}
+
+.calendar-day.has-event.category-5:not(.selected) {
+    color: #16a34a;
+}
+
+.calendar-day.has-event.category-6:not(.selected) {
+    color: #7c3aed;
+}
+
+.calendar-day.has-event.category-7:not(.selected) {
+    color: #f97316;
+}
+
+.calendar-day.has-event.category-8:not(.selected) {
+    color: #14b8a6;
+}
+
+.calendar-day.has-event.category-9:not(.selected) {
+    color: #ec4899;
+}
+
+.calendar-day.has-event.category-10:not(.selected) {
+    color: #6366f1;
+}
+
 .calendar-day.other-month {
     color: #d1d5db;
+}
+
+/* Event indicator circle */
+.calendar-event-indicator {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    display: block;
+    margin-top: -2px;
+}
+
+/* Category colors for event indicators */
+.calendar-event-indicator.union-meetings,
+.calendar-event-indicator.union-meeting {
+    background-color: var(--color-primary);
+}
+
+.calendar-event-indicator.social-events,
+.calendar-event-indicator.social-event {
+    background-color: var(--color-red);
+}
+
+.calendar-event-indicator.training-safety,
+.calendar-event-indicator.training,
+.calendar-event-indicator.safety {
+    background-color: var(--color-gold);
+}
+
+.calendar-event-indicator.holiday {
+    background-color: #6b7280;
+}
+
+.calendar-event-indicator.category-5 {
+    background-color: #16a34a;
+}
+
+.calendar-event-indicator.category-6 {
+    background-color: #7c3aed;
+}
+
+.calendar-event-indicator.category-7 {
+    background-color: #f97316;
+}
+
+.calendar-event-indicator.category-8 {
+    background-color: #14b8a6;
+}
+
+.calendar-event-indicator.category-9 {
+    background-color: #ec4899;
+}
+
+.calendar-event-indicator.category-10 {
+    background-color: #6366f1;
 }
 
 .events-sidebar .category-item {
