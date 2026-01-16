@@ -65,6 +65,7 @@
             const monthSections = document.querySelectorAll('.events-month-section');
             const noEventsMessage = document.getElementById('no-events-scheduled');
             const resetLink = document.getElementById('events-filter-reset');
+            const pagination = document.querySelector('.pagination');
             const todayStr = formatDate(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate());
             let visibleCount = 0;
 
@@ -82,6 +83,10 @@
                 // Hide reset link
                 if (resetLink) {
                     resetLink.style.display = 'none';
+                }
+                // Show pagination in default view
+                if (pagination) {
+                    pagination.style.display = '';
                 }
             } else {
                 // Filter events by date
@@ -121,6 +126,15 @@
                         resetLink.style.display = 'block';
                     } else {
                         resetLink.style.display = 'none';
+                    }
+                }
+
+                // Hide pagination when filtering by date (unless more than 4 events on that date)
+                if (pagination) {
+                    if (visibleCount > 4) {
+                        pagination.style.display = '';
+                    } else {
+                        pagination.style.display = 'none';
                     }
                 }
             }
