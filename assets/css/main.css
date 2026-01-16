@@ -2133,6 +2133,25 @@ a:hover {
     min-width: 0;
 }
 
+.events-filter-reset {
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.reset-filter-link {
+    color: var(--color-primary);
+    text-decoration: none;
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: color 0.2s ease;
+}
+
+.reset-filter-link:hover {
+    color: var(--color-primary-dark);
+    text-decoration: underline;
+}
+
 .no-events-scheduled {
     text-align: center;
     padding: var(--spacing-2xl);

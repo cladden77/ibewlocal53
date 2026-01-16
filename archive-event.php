@@ -142,6 +142,10 @@ function ibew_get_event_category_class($category) {
         
         <!-- Right Column -->
         <div class="events-content">
+            <!-- Reset Filter Link (hidden by default) -->
+            <div class="events-filter-reset" id="events-filter-reset" style="display: none;">
+                <a href="#" id="reset-filter-link" class="reset-filter-link">Reset</a>
+            </div>
             <?php
             // Get current date/time in datetime-local format for comparison
             $current_datetime = date('Y-m-d\TH:i');

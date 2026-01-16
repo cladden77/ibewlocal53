@@ -64,6 +64,8 @@
             const eventItems = document.querySelectorAll('.event-list-item');
             const monthSections = document.querySelectorAll('.events-month-section');
             const noEventsMessage = document.getElementById('no-events-scheduled');
+            const resetLink = document.getElementById('events-filter-reset');
+            const todayStr = formatDate(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate());
             let visibleCount = 0;
 
             if (filterDate === null) {
@@ -76,6 +78,10 @@
                 });
                 if (noEventsMessage) {
                     noEventsMessage.style.display = 'none';
+                }
+                // Hide reset link
+                if (resetLink) {
+                    resetLink.style.display = 'none';
                 }
             } else {
                 // Filter events by date
@@ -106,6 +112,15 @@
                         noEventsMessage.style.display = 'block';
                     } else {
                         noEventsMessage.style.display = 'none';
+                    }
+                }
+
+                // Show reset link only if selected date is not today
+                if (resetLink) {
+                    if (filterDate !== todayStr) {
+                        resetLink.style.display = 'block';
+                    } else {
+                        resetLink.style.display = 'none';
                     }
                 }
             }
@@ -242,6 +257,20 @@
                 selectedFilterDate = null;
                 filterEventsByDate(null);
                 renderCalendar(currentMonth, currentYear);
+            });
+        }
+
+        // Reset filter link
+        const resetLink = document.getElementById('reset-filter-link');
+        if (resetLink) {
+            resetLink.addEventListener('click', function(e) {
+                e.preventDefault();
+                // Clear selected date
+                selectedFilterDate = null;
+                // Remove selected from all days
+                document.querySelectorAll('.calendar-day').forEach(d => d.classList.remove('selected'));
+                // Show all events
+                filterEventsByDate(null);
             });
         }
     }
