@@ -1958,20 +1958,52 @@ a:hover {
     padding: 2px 8px;
 }
 
-.category-dot.union-meetings {
+/* Union Meetings - support both plural and singular */
+.category-dot.union-meetings,
+.category-dot.union-meeting {
     background-color: var(--color-primary);
 }
 
-.category-dot.social-events {
+/* Social Events - support both plural and singular */
+.category-dot.social-events,
+.category-dot.social-event {
     background-color: var(--color-red);
 }
 
-.category-dot.training-safety {
+/* Training & Safety - support various forms */
+.category-dot.training-safety,
+.category-dot.training,
+.category-dot.safety {
     background-color: var(--color-gold);
 }
 
 .category-dot.holiday {
     background-color: #6b7280;
+}
+
+/* Additional categories (5th and beyond) - distinct colors */
+.category-dot.category-5 {
+    background-color: #16a34a; /* Green */
+}
+
+.category-dot.category-6 {
+    background-color: #7c3aed; /* Purple */
+}
+
+.category-dot.category-7 {
+    background-color: #f97316; /* Orange */
+}
+
+.category-dot.category-8 {
+    background-color: #14b8a6; /* Teal */
+}
+
+.category-dot.category-9 {
+    background-color: #ec4899; /* Pink */
+}
+
+.category-dot.category-10 {
+    background-color: #6366f1; /* Indigo */
 }
 
 .events-content {
@@ -2012,14 +2044,15 @@ a:hover {
     box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.05);
     display: flex;
     gap: 24px;
+    align-items: flex-start;
     margin-bottom: 24px;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-
-.event-date-badge {
+.event-list-item .event-date-badge {
+    position: static;
     width: 96px;
     height: 96px;
+    min-width: 96px;
     border-radius: 16px;
     border: 1px solid #e5e7eb;
     background-color: #f3f4f6;
@@ -2027,54 +2060,105 @@ a:hover {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 4px;
+    gap: 0;
     color: #4b5563;
     text-align: center;
+    flex-shrink: 0;
+    padding: 0;
+    box-shadow: none;
 }
 
-.event-date-badge .date-month {
+.event-list-item .event-date-badge .date-month {
     font-size: 12px;
     font-weight: 700;
     letter-spacing: 0.6px;
     text-transform: uppercase;
-    line-height: 1.3333333333em;
+    line-height: 16px;
+    margin-bottom: 4px;
+    color: inherit;
 }
 
-.event-date-badge .date-day {
+.event-list-item .event-date-badge .date-day {
     font-size: 30px;
     font-weight: 800;
-    line-height: 1;
+    line-height: 30px;
+    color: inherit;
 }
 
-.event-date-badge .date-weekday {
+.event-list-item .event-date-badge .date-weekday {
     font-size: 12px;
     font-weight: 500;
     opacity: 0.7;
-    line-height: 1.3333333333em;
+    line-height: 16px;
+    margin-top: 4px;
 }
 
-.event-date-badge.union-meetings {
+/* Union Meetings - support both plural and singular */
+.event-list-item .event-date-badge.union-meetings,
+.event-list-item .event-date-badge.union-meeting {
     background-color: rgba(43, 69, 143, 0.1);
     border-color: rgba(43, 69, 143, 0.2);
     color: #2b458f;
 }
 
-.event-date-badge.social-events {
+/* Social Events - support both plural and singular */
+.event-list-item .event-date-badge.social-events,
+.event-list-item .event-date-badge.social-event {
     background-color: rgba(200, 46, 57, 0.1);
     border-color: rgba(200, 46, 57, 0.2);
     color: #c82e39;
 }
 
-.event-date-badge.training-safety {
+/* Training & Safety - support various forms */
+.event-list-item .event-date-badge.training-safety,
+.event-list-item .event-date-badge.training,
+.event-list-item .event-date-badge.safety {
     background-color: rgba(208, 170, 89, 0.1);
     border-color: rgba(208, 170, 89, 0.2);
     color: #a16207;
 }
 
-.event-date-badge.holiday {
+.event-list-item .event-date-badge.holiday {
     background-color: #f3f4f6;
     border-color: #e5e7eb;
     color: #4b5563;
+}
+
+/* Additional categories (5th and beyond) - distinct colors for date badges */
+.event-list-item .event-date-badge.category-5 {
+    background-color: rgba(22, 163, 74, 0.1); /* Green */
+    border-color: rgba(22, 163, 74, 0.2);
+    color: #15803d;
+}
+
+.event-list-item .event-date-badge.category-6 {
+    background-color: rgba(124, 58, 237, 0.1); /* Purple */
+    border-color: rgba(124, 58, 237, 0.2);
+    color: #6d28d9;
+}
+
+.event-list-item .event-date-badge.category-7 {
+    background-color: rgba(249, 115, 22, 0.1); /* Orange */
+    border-color: rgba(249, 115, 22, 0.2);
+    color: #ea580c;
+}
+
+.event-list-item .event-date-badge.category-8 {
+    background-color: rgba(20, 184, 166, 0.1); /* Teal */
+    border-color: rgba(20, 184, 166, 0.2);
+    color: #0d9488;
+}
+
+.event-list-item .event-date-badge.category-9 {
+    background-color: rgba(236, 72, 153, 0.1); /* Pink */
+    border-color: rgba(236, 72, 153, 0.2);
+    color: #db2777;
+}
+
+.event-list-item .event-date-badge.category-10 {
+    background-color: rgba(99, 102, 241, 0.1); /* Indigo */
+    border-color: rgba(99, 102, 241, 0.2);
+    color: #4f46e5;
 }
 
 .event-list-body {
@@ -2082,6 +2166,7 @@ a:hover {
     min-width: 0;
     display: flex;
     flex-direction: column;
+    gap: 0;
 }
 
 .event-list-top {
@@ -2089,18 +2174,20 @@ a:hover {
     align-items: center;
     justify-content: space-between;
     gap: 16px;
-    margin-bottom: 12px;
+    margin-bottom: 10px;
 }
 
 .event-list-title {
-    font-size: 1.25rem;
+    font-size: 20px;
     font-weight: 700;
-    line-height: 1.4;
     margin: 0 0 8px 0;
+    line-height: 28px;
 }
 
 .event-list-title a {
-    color: var(--color-gray-dark);
+    color: #111827;
+    text-decoration: none;
+    transition: color 0.2s ease;
 }
 
 .event-list-title a:hover {
@@ -2108,10 +2195,11 @@ a:hover {
 }
 
 .event-list-description {
-    font-size: 0.875rem;
+    font-size: 14px;
     color: #4b5563;
-    margin: 0 0 16px 0;
-    line-height: 1.625em;
+    margin: 0;
+    line-height: 22.75px;
+    flex-grow: 1;
 }
 
 .event-location,
@@ -2119,17 +2207,18 @@ a:hover {
     display: flex;
     align-items: center;
     gap: 6px;
-    font-size: 0.875rem;
+    font-size: 14px;
+    font-weight: 500;
     color: #6b7280;
 }
 
-.event-time .material-icons,
 .event-location .material-icons {
     font-size: 14px;
     color: #d0aa59;
 }
 
 .event-time .material-icons {
+    font-size: 14px;
     color: #6b7280;
 }
 
@@ -2152,33 +2241,44 @@ a:hover {
     border-radius: 9999px;
 }
 
-.event-category-pill.union-meetings {
+/* Union Meetings - support both plural and singular */
+.event-category-pill.union-meetings,
+.event-category-pill.union-meeting {
     background-color: #eff6ff;
     border-color: #dbeafe;
     color: #1d4ed8;
 }
 
-.event-category-pill.union-meetings .category-dot {
+.event-category-pill.union-meetings .category-dot,
+.event-category-pill.union-meeting .category-dot {
     background-color: #2563eb;
 }
 
-.event-category-pill.social-events {
+/* Social Events - support both plural and singular */
+.event-category-pill.social-events,
+.event-category-pill.social-event {
     background-color: #fef2f2;
     border-color: #fee2e2;
     color: #b91c1c;
 }
 
-.event-category-pill.social-events .category-dot {
+.event-category-pill.social-events .category-dot,
+.event-category-pill.social-event .category-dot {
     background-color: #dc2626;
 }
 
-.event-category-pill.training-safety {
+/* Training & Safety - support various forms */
+.event-category-pill.training-safety,
+.event-category-pill.training,
+.event-category-pill.safety {
     background-color: #fefce8;
     border-color: #fef9c3;
     color: #a16207;
 }
 
-.event-category-pill.training-safety .category-dot {
+.event-category-pill.training-safety .category-dot,
+.event-category-pill.training .category-dot,
+.event-category-pill.safety .category-dot {
     background-color: #ca8a04;
 }
 
@@ -2192,6 +2292,67 @@ a:hover {
     background-color: #6b7280;
 }
 
+/* Additional categories (5th and beyond) - distinct colors for category pills */
+.event-category-pill.category-5 {
+    background-color: #dcfce7;
+    border-color: #bbf7d0;
+    color: #166534;
+}
+
+.event-category-pill.category-5 .category-dot {
+    background-color: #16a34a;
+}
+
+.event-category-pill.category-6 {
+    background-color: #f3e8ff;
+    border-color: #e9d5ff;
+    color: #6b21a8;
+}
+
+.event-category-pill.category-6 .category-dot {
+    background-color: #7c3aed;
+}
+
+.event-category-pill.category-7 {
+    background-color: #ffedd5;
+    border-color: #fed7aa;
+    color: #c2410c;
+}
+
+.event-category-pill.category-7 .category-dot {
+    background-color: #f97316;
+}
+
+.event-category-pill.category-8 {
+    background-color: #ccfbf1;
+    border-color: #99f6e4;
+    color: #0f766e;
+}
+
+.event-category-pill.category-8 .category-dot {
+    background-color: #14b8a6;
+}
+
+.event-category-pill.category-9 {
+    background-color: #fce7f3;
+    border-color: #fbcfe8;
+    color: #be185d;
+}
+
+.event-category-pill.category-9 .category-dot {
+    background-color: #ec4899;
+}
+
+.event-category-pill.category-10 {
+    background-color: #e0e7ff;
+    border-color: #c7d2fe;
+    color: #4338ca;
+}
+
+.event-category-pill.category-10 .category-dot {
+    background-color: #6366f1;
+}
+
 .event-list-footer {
     display: flex;
     align-items: center;
@@ -2199,15 +2360,19 @@ a:hover {
     gap: 16px;
     border-top: 1px solid #f3f4f6;
     padding-top: 17px;
+    margin-top: auto;
 }
 
 .event-cta-link {
-    color: var(--color-primary);
+    color: #2b458f;
     font-weight: 600;
-    font-size: 0.875rem;
+    font-size: 14px;
     display: inline-flex;
     align-items: center;
     gap: 4px;
+    text-decoration: none;
+    transition: color 0.2s ease;
+    margin-left: auto;
 }
 
 .event-cta-link:hover {
@@ -3034,26 +3199,40 @@ a:hover {
     }
 
     .event-list-item {
-        flex-direction: column;
+        flex-direction: row;
+        flex-wrap: wrap;
     }
 
-    .event-date-badge {
-        width: 100%;
-        height: auto;
-        flex-direction: row;
-        justify-content: space-between;
-        padding: 12px 16px;
-        text-align: left;
+    .event-list-item .event-date-badge {
+        width: 72px;
+        height: 72px;
+        min-width: 72px;
+    }
+
+    .event-list-item .event-date-badge .date-day {
+        font-size: 24px;
+        line-height: 24px;
+    }
+
+    .event-list-item .event-date-badge .date-month,
+    .event-list-item .event-date-badge .date-weekday {
+        font-size: 10px;
     }
 
     .event-list-top {
         flex-direction: column;
         align-items: flex-start;
+        gap: 8px;
     }
 
     .event-list-footer {
         flex-direction: column;
         align-items: flex-start;
+        gap: 12px;
+    }
+
+    .event-cta-link {
+        margin-left: 0;
     }
     
     .archive-sidebar,
