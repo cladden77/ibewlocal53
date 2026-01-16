@@ -2550,6 +2550,9 @@ a:hover {
     align-items: center;
     justify-content: center;
     gap: 8px;
+    padding: 8px 12px;
+    background-color: #e5e7eb;
+    border-radius: 12px;
 }
 
 .pagination-numbers {
@@ -2574,6 +2577,7 @@ a:hover {
     padding: 0 12px;
     border-radius: 9999px;
     text-align: center;
+    background-color: var(--color-gray-light);
     color: var(--color-gray-dark);
     text-decoration: none;
     transition: all 0.2s ease;
@@ -2582,14 +2586,14 @@ a:hover {
 }
 
 .page-number:hover {
-    background-color: var(--color-gray-light);
+    background-color: var(--color-gray);
+    color: var(--color-white);
 }
 
 .page-number.current {
-    background-color: var(--color-red);
+    background-color: var(--color-primary);
     color: var(--color-white);
     font-weight: 600;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .pagination-prev,
@@ -2600,18 +2604,17 @@ a:hover {
     min-width: 40px;
     height: 40px;
     padding: 0 16px;
-    border: 1px solid rgba(0, 0, 0, 0.1);
     border-radius: 9999px;
-    background-color: var(--color-white);
+    background-color: var(--color-gray-light);
+    color: var(--color-gray-dark);
+    text-decoration: none;
     transition: all 0.2s ease;
+    font-size: 0.875rem;
+    font-weight: 500;
 }
 
-.pagination-prev a,
-.pagination-next a {
-    color: var(--color-gray-dark);
-    font-weight: 500;
-    font-size: 0.875rem;
-    text-decoration: none;
+.pagination-prev span,
+.pagination-next span {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -2619,15 +2622,15 @@ a:hover {
     height: 100%;
 }
 
-.pagination-prev:hover,
-.pagination-next:hover {
-    background-color: var(--color-gray-light);
-    border-color: var(--color-gray);
+.pagination-prev:hover:not(.pagination-disabled),
+.pagination-next:hover:not(.pagination-disabled) {
+    background-color: var(--color-gray);
+    color: var(--color-white);
 }
 
-.pagination-next {
-    background-color: var(--color-white);
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+.pagination-disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
 }
 
 /* ============================================

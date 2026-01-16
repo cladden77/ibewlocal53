@@ -62,7 +62,7 @@ function ibew_get_event_category_class($category) {
     </div>
 </section>
 
-<div class="archive-container">
+<div class="archive-container" id="events-content">
     <div class="archive-layout events-layout">
         <!-- Left Column -->
         <aside class="events-sidebar">
@@ -147,30 +147,15 @@ function ibew_get_event_category_class($category) {
                 <a href="#" id="reset-filter-link" class="reset-filter-link">Reset</a>
             </div>
             <?php
-            // Get current date/time in datetime-local format for comparison
-            $current_datetime = date('Y-m-d\TH:i');
+            // Use the main query (modified by pre_get_posts in functions.php)
+            global $wp_query;
+            $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
             
-            $events_query = new WP_Query(array(
-                'post_type' => 'event',
-                'posts_per_page' => -1,
-                'meta_key' => 'event_start_datetime',
-                'orderby' => 'meta_value',
-                'order' => 'ASC',
-                'meta_query' => array(
-                    array(
-                        'key' => 'event_start_datetime',
-                        'value' => $current_datetime,
-                        'compare' => '>=',
-                        'type' => 'CHAR',
-                    ),
-                ),
-            ));
-            
-            if ($events_query->have_posts()) :
+            if (have_posts()) :
                 $events_by_month = array();
                 
                 // Group events by month
-                while ($events_query->have_posts()) : $events_query->the_post();
+                while (have_posts()) : the_post();
                     $start_datetime = get_post_meta(get_the_ID(), 'event_start_datetime', true);
                     if (empty($start_datetime)) {
                         continue;
@@ -279,20 +264,55 @@ function ibew_get_event_category_class($category) {
             </div>
             
             <!-- Pagination -->
-            <?php if ($events_query->max_num_pages > 1) : ?>
+            <?php if ($wp_query->max_num_pages > 1) : ?>
                 <div class="pagination">
                     <div class="pagination-nav">
                         <?php
-                        echo paginate_links(array(
-                            'total' => $events_query->max_num_pages,
-                            'prev_next' => true,
-                            'prev_text' => 'Previous',
-                            'next_text' => 'Next',
-                            'type' => 'list',
-                            'before_page_number' => '<span class="page-number">',
-                            'after_page_number' => '</span>',
-                        ));
+                        $current_page = max(1, $paged);
+                        $total_pages = $wp_query->max_num_pages;
+                        
+                        // Previous button
+                        if ($current_page > 1) :
+                            $prev_url = get_pagenum_link($current_page - 1) . '#events-content';
                         ?>
+                            <a href="<?php echo esc_url($prev_url); ?>" class="pagination-prev" aria-label="Previous page">
+                                <span>&lt;</span>
+                            </a>
+                        <?php else : ?>
+                            <span class="pagination-prev pagination-disabled" aria-label="Previous page">
+                                <span>&lt;</span>
+                            </span>
+                        <?php endif; ?>
+                        
+                        <!-- Page numbers -->
+                        <ul class="pagination-numbers">
+                            <?php
+                            for ($i = 1; $i <= $total_pages; $i++) :
+                                $page_url = get_pagenum_link($i) . '#events-content';
+                                $is_current = ($i == $current_page);
+                            ?>
+                                <li>
+                                    <?php if ($is_current) : ?>
+                                        <span class="page-number current"><?php echo esc_html($i); ?></span>
+                                    <?php else : ?>
+                                        <a href="<?php echo esc_url($page_url); ?>" class="page-number"><?php echo esc_html($i); ?></a>
+                                    <?php endif; ?>
+                                </li>
+                            <?php endfor; ?>
+                        </ul>
+                        
+                        <!-- Next button -->
+                        <?php if ($current_page < $total_pages) :
+                            $next_url = get_pagenum_link($current_page + 1) . '#events-content';
+                        ?>
+                            <a href="<?php echo esc_url($next_url); ?>" class="pagination-next" aria-label="Next page">
+                                <span>&gt;</span>
+                            </a>
+                        <?php else : ?>
+                            <span class="pagination-next pagination-disabled" aria-label="Next page">
+                                <span>&gt;</span>
+                            </span>
+                        <?php endif; ?>
                     </div>
                 </div>
             <?php endif; ?>
