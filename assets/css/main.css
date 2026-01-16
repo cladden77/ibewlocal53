@@ -3201,7 +3201,7 @@ a:hover {
     .events-layout {
         grid-template-columns: 1fr;
         gap: 24px;
-        padding: 32px var(--container-padding) 56px;
+        padding: 28px var(--container-padding) 56px;
     }
 
     .events-sidebar,
@@ -3209,20 +3209,34 @@ a:hover {
         width: 100%;
     }
 
+    .events-sidebar {
+        gap: 16px;
+    }
+
+    .events-sidebar .calendar-card {
+        padding: 20px;
+    }
+
     .event-list-item {
-        flex-direction: row;
-        flex-wrap: wrap;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 16px;
+        padding: 20px;
     }
 
     .event-list-item .event-date-badge {
-        width: 72px;
-        height: 72px;
-        min-width: 72px;
+        width: 100%;
+        height: auto;
+        min-width: 0;
+        border-radius: 24px;
+        padding: 16px 20px;
+        align-items: center;
+        justify-content: center;
     }
 
     .event-list-item .event-date-badge .date-day {
-        font-size: 24px;
-        line-height: 24px;
+        font-size: 22px;
+        line-height: 22px;
     }
 
     .event-list-item .event-date-badge .date-month,
@@ -3236,10 +3250,17 @@ a:hover {
         gap: 8px;
     }
 
+    .event-category-pill {
+        width: 100%;
+        justify-content: flex-start;
+        padding: 8px 12px;
+    }
+
     .event-list-footer {
         flex-direction: column;
         align-items: flex-start;
         gap: 12px;
+        width: 100%;
     }
 
     .event-cta-link {
@@ -3477,6 +3498,64 @@ a:hover {
     
     .archive-hero .hero-subtext {
         font-size: 15px;
+    }
+
+    .events-hero {
+        padding: 24px 0 0;
+    }
+
+    .events-hero-card {
+        padding: 20px 16px;
+        border-radius: 24px;
+    }
+
+    .events-layout {
+        padding: 24px var(--container-padding) 48px;
+    }
+
+    .events-sidebar .calendar-card {
+        padding: 16px;
+    }
+
+    .calendar-day,
+    .calendar-day-header {
+        height: 28px;
+    }
+
+    .calendar-day {
+        font-size: 0.8125rem;
+    }
+
+    .event-list-item {
+        padding: 18px;
+    }
+
+    .event-list-item .event-date-badge {
+        width: 100%;
+        height: auto;
+        min-width: 0;
+        border-radius: 22px;
+        padding: 14px 16px;
+    }
+
+    .event-list-item .event-date-badge .date-month {
+        font-size: 12px;
+        letter-spacing: 0.08em;
+    }
+
+    .event-list-item .event-date-badge .date-day {
+        font-size: 28px;
+        line-height: 28px;
+    }
+
+    .event-list-item .event-date-badge .date-weekday {
+        font-size: 12px;
+    }
+
+    .event-category-pill {
+        width: 100%;
+        justify-content: flex-start;
+        padding: 8px 12px;
     }
     
     .section-title {
