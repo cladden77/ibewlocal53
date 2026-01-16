@@ -93,7 +93,9 @@ function ibew_get_event_category_class($category) {
                     ?>
                         <li>
                             <a href="<?php echo get_term_link($category); ?>" class="category-item">
-                                <span class="category-dot <?php echo esc_attr($color_class); ?>"></span>
+                                <span class="category-dot <?php echo esc_attr($color_class); ?>">
+                                    <img src="<?php echo get_template_directory_uri(); ?>/assets/images/checkmark-icon.svg" alt="" class="checkmark-icon" />
+                                </span>
                                 <span class="category-label"><?php echo esc_html($category->name); ?></span>
                                 <span class="category-count"><?php echo $category->count; ?></span>
                             </a>
