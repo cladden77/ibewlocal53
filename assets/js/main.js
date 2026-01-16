@@ -41,6 +41,7 @@
         let currentDate = new Date();
         let currentMonth = currentDate.getMonth();
         let currentYear = currentDate.getFullYear();
+        let selectedFilterDate = null; // Track currently selected date for filtering
 
         // Helper function to format date as YYYY-MM-DD
         function formatDate(year, month, day) {
@@ -56,6 +57,58 @@
                 return eventCategories[dateStr] || 'event';
             }
             return null;
+        }
+
+        // Function to filter events by selected date
+        function filterEventsByDate(filterDate) {
+            const eventItems = document.querySelectorAll('.event-list-item');
+            const monthSections = document.querySelectorAll('.events-month-section');
+            const noEventsMessage = document.getElementById('no-events-scheduled');
+            let visibleCount = 0;
+
+            if (filterDate === null) {
+                // Show all events
+                eventItems.forEach(item => {
+                    item.style.display = '';
+                });
+                monthSections.forEach(section => {
+                    section.style.display = '';
+                });
+                if (noEventsMessage) {
+                    noEventsMessage.style.display = 'none';
+                }
+            } else {
+                // Filter events by date
+                eventItems.forEach(item => {
+                    const eventDate = item.getAttribute('data-event-date');
+                    if (eventDate === filterDate) {
+                        item.style.display = '';
+                        visibleCount++;
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+
+                // Show/hide month sections based on visible events
+                monthSections.forEach(section => {
+                    const sectionEvents = section.querySelectorAll('.event-list-item');
+                    const visibleInSection = Array.from(sectionEvents).some(item => item.style.display !== 'none');
+                    if (visibleInSection) {
+                        section.style.display = '';
+                    } else {
+                        section.style.display = 'none';
+                    }
+                });
+
+                // Show "No Events Scheduled" if no events match
+                if (noEventsMessage) {
+                    if (visibleCount === 0) {
+                        noEventsMessage.style.display = 'block';
+                    } else {
+                        noEventsMessage.style.display = 'none';
+                    }
+                }
+            }
         }
 
         function renderCalendar(month, year) {
@@ -120,12 +173,26 @@
                     dayContainer.appendChild(day);
                 }
 
-                // Add click handler (optional - for filtering events by date)
+                // Add click handler for filtering events by date
                 day.addEventListener('click', function() {
-                    // Remove selected from all days
-                    document.querySelectorAll('.calendar-day').forEach(d => d.classList.remove('selected'));
-                    // Add selected to clicked day
-                    this.classList.add('selected');
+                    const clickedDate = formatDate(year, month, i);
+                    
+                    // If clicking the same date, clear the filter
+                    if (selectedFilterDate === clickedDate) {
+                        selectedFilterDate = null;
+                        // Remove selected from all days
+                        document.querySelectorAll('.calendar-day').forEach(d => d.classList.remove('selected'));
+                        // Show all events
+                        filterEventsByDate(null);
+                    } else {
+                        selectedFilterDate = clickedDate;
+                        // Remove selected from all days
+                        document.querySelectorAll('.calendar-day').forEach(d => d.classList.remove('selected'));
+                        // Add selected to clicked day
+                        this.classList.add('selected');
+                        // Filter events by selected date
+                        filterEventsByDate(clickedDate);
+                    }
                 });
 
                 calendarGrid.appendChild(dayContainer);
@@ -156,6 +223,9 @@
                     currentMonth = 11;
                     currentYear--;
                 }
+                // Clear filter when navigating
+                selectedFilterDate = null;
+                filterEventsByDate(null);
                 renderCalendar(currentMonth, currentYear);
             });
         }
@@ -168,6 +238,9 @@
                     currentMonth = 0;
                     currentYear++;
                 }
+                // Clear filter when navigating
+                selectedFilterDate = null;
+                filterEventsByDate(null);
                 renderCalendar(currentMonth, currentYear);
             });
         }

@@ -210,6 +210,7 @@ function ibew_get_event_category_class($category) {
                         $date_badge_month = date('M', strtotime($datetime_for_format));
                         $date_badge_day = date('d', strtotime($datetime_for_format));
                         $date_badge_weekday = date('D', strtotime($datetime_for_format));
+                        $event_date_only = substr($start_datetime, 0, 10); // YYYY-MM-DD format
                         
                         $event_categories = get_the_terms($event_id, 'event_category');
                         $category_name = !empty($event_categories) ? $event_categories[0]->name : 'Event';
@@ -228,7 +229,7 @@ function ibew_get_event_category_class($category) {
                             }
                         }
                     ?>
-                        <article class="event-list-item">
+                        <article class="event-list-item" data-event-date="<?php echo esc_attr($event_date_only); ?>">
                             <div class="event-date-badge <?php echo esc_attr($category_class); ?>">
                                 <span class="date-month"><?php echo esc_html($date_badge_month); ?></span>
                                 <span class="date-day"><?php echo esc_html($date_badge_day); ?></span>
@@ -267,6 +268,11 @@ function ibew_get_event_category_class($category) {
             ?>
                 <p class="no-posts">No upcoming events found.</p>
             <?php endif; ?>
+            
+            <!-- No Events Scheduled Message (hidden by default) -->
+            <div class="no-events-scheduled" id="no-events-scheduled" style="display: none;">
+                <p>No Events Scheduled</p>
+            </div>
             
             <!-- Pagination -->
             <?php if ($events_query->max_num_pages > 1) : ?>
