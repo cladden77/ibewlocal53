@@ -269,6 +269,19 @@
                 selectedFilterDate = null;
                 // Remove selected from all days
                 document.querySelectorAll('.calendar-day').forEach(d => d.classList.remove('selected'));
+                
+                // Re-select today's date if it's in the current month view
+                const today = new Date();
+                if (currentMonth === today.getMonth() && currentYear === today.getFullYear()) {
+                    const todayDay = today.getDate();
+                    const calendarDays = document.querySelectorAll('.calendar-day:not(.other-month)');
+                    calendarDays.forEach(day => {
+                        if (parseInt(day.textContent) === todayDay) {
+                            day.classList.add('selected');
+                        }
+                    });
+                }
+                
                 // Show all events
                 filterEventsByDate(null);
             });
