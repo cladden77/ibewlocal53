@@ -2886,6 +2886,42 @@ a:hover {
     color: var(--color-gray-dark);
 }
 
+.single-content ul,
+.single-content ol {
+    margin: var(--spacing-md) 0;
+    padding-left: 1.5em;
+    line-height: 1.8;
+}
+
+.single-content ul {
+    list-style-type: disc;
+}
+
+.single-content ol {
+    list-style-type: decimal;
+}
+
+.single-content li {
+    margin-bottom: var(--spacing-xs);
+    color: var(--color-gray-dark);
+}
+
+.single-content ul ul,
+.single-content ol ol,
+.single-content ul ol,
+.single-content ol ul {
+    margin-top: var(--spacing-xs);
+    margin-bottom: var(--spacing-xs);
+}
+
+.single-content ul ul {
+    list-style-type: circle;
+}
+
+.single-content ul ul ul {
+    list-style-type: square;
+}
+
 .single-footer {
     text-align: center;
 }
@@ -3918,13 +3954,13 @@ a:hover {
     gap: 16px;
 }
 
-.commitment-list-wrapper {
+.about-page .commitment-list-wrapper {
     display: flex;
     justify-content: center;
     width: 100%;
 }
 
-.commitment-list {
+.about-page .commitment-list {
     list-style: none;
     padding: 0;
     margin: 0;
@@ -3935,7 +3971,7 @@ a:hover {
     gap: 6px;
 }
 
-.commitment-list li {
+.about-page .commitment-list li {
     font-size: 18px;
     line-height: 1.5;
     color: #6B7280;
@@ -3944,7 +3980,7 @@ a:hover {
     position: relative;
 }
 
-.commitment-list li::before {
+.about-page .commitment-list li::before {
     content: '•';
     color: #6B7280;
     font-weight: bold;
