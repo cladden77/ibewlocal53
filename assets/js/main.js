@@ -471,17 +471,75 @@
         });
     }
 
+    // Smooth scroll for pagination links
+    function initPaginationScroll() {
+        // Handle pagination link clicks
+        document.querySelectorAll('.pagination-nav a').forEach(function(link) {
+            link.addEventListener('click', function(e) {
+                // Get the hash from the href
+                const href = this.getAttribute('href');
+                const hashIndex = href.indexOf('#');
+                
+                if (hashIndex !== -1) {
+                    const targetId = href.substring(hashIndex + 1);
+                    const targetElement = document.getElementById(targetId);
+                    
+                    if (targetElement) {
+                        // Store scroll target in sessionStorage
+                        sessionStorage.setItem('scrollToElement', targetId);
+                    }
+                }
+            });
+        });
+        
+        // Check if we need to scroll on page load
+        const scrollTarget = sessionStorage.getItem('scrollToElement');
+        if (scrollTarget) {
+            sessionStorage.removeItem('scrollToElement');
+            const targetElement = document.getElementById(scrollTarget);
+            if (targetElement) {
+                // Small delay to ensure page is fully loaded
+                setTimeout(function() {
+                    const headerHeight = document.querySelector('.site-header') ? document.querySelector('.site-header').offsetHeight : 0;
+                    const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - headerHeight - 20;
+                    window.scrollTo({
+                        top: targetPosition,
+                        behavior: 'smooth'
+                    });
+                }, 100);
+            }
+        }
+        
+        // Also handle direct hash navigation on page load
+        if (window.location.hash) {
+            const targetId = window.location.hash.substring(1);
+            const targetElement = document.getElementById(targetId);
+            if (targetElement) {
+                setTimeout(function() {
+                    const headerHeight = document.querySelector('.site-header') ? document.querySelector('.site-header').offsetHeight : 0;
+                    const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - headerHeight - 20;
+                    window.scrollTo({
+                        top: targetPosition,
+                        behavior: 'smooth'
+                    });
+                }, 100);
+            }
+        }
+    }
+
     // Initialize on DOM ready
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', function() {
             initCalendar();
             initEventsCarousel();
             initMobileMenu();
+            initPaginationScroll();
         });
     } else {
         initCalendar();
         initEventsCarousel();
         initMobileMenu();
+        initPaginationScroll();
     }
 
 })();

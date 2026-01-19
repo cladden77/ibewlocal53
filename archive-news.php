@@ -75,23 +75,28 @@ $search_query = get_search_query();
         </aside>
         
         <!-- Right Content -->
-        <div class="archive-content">
-            <!-- Featured Story -->
+        <div class="archive-content" id="news-content">
             <?php
-            $featured_query = new WP_Query(array(
-                'post_type' => 'news',
-                'posts_per_page' => 1,
-                'orderby' => 'date',
-                'order' => 'DESC',
-            ));
-            
+            // Get current page for featured story logic
+            $current_news_page = isset($_GET['pg']) ? max(1, intval($_GET['pg'])) : 1;
             $featured_post_id = 0;
-            if ($featured_query->have_posts()) :
-                $featured_query->the_post();
-                $featured_post_id = get_the_ID();
-                $featured_categories = get_the_terms($featured_post_id, 'news_category');
-                $featured_category = !empty($featured_categories) ? $featured_categories[0]->name : '';
+            
+            // Only show featured story on page 1
+            if ($current_news_page === 1) :
+                $featured_query = new WP_Query(array(
+                    'post_type' => 'news',
+                    'posts_per_page' => 1,
+                    'orderby' => 'date',
+                    'order' => 'DESC',
+                ));
+                
+                if ($featured_query->have_posts()) :
+                    $featured_query->the_post();
+                    $featured_post_id = get_the_ID();
+                    $featured_categories = get_the_terms($featured_post_id, 'news_category');
+                    $featured_category = !empty($featured_categories) ? $featured_categories[0]->name : '';
             ?>
+                <!-- Featured Story -->
                 <div class="featured-story-section">
                     <div class="section-label">
                         <img src="<?php echo get_template_directory_uri(); ?>/assets/images/featured-checkmark.svg" alt="Featured" class="featured-checkmark-icon">
@@ -118,18 +123,19 @@ $search_query = get_search_query();
                     </article>
                 </div>
             <?php
-                wp_reset_postdata();
+                    wp_reset_postdata();
+                endif;
             endif;
             ?>
             
             <!-- News Grid -->
             <div class="news-archive-grid">
                 <?php
-                $paged = get_query_var('paged') ? get_query_var('paged') : 1;
+                $paged = isset($_GET['pg']) ? max(1, intval($_GET['pg'])) : 1;
                 
                 $args = array(
                     'post_type' => 'news',
-                    'posts_per_page' => 9,
+                    'posts_per_page' => 6,
                     'paged' => $paged,
                     'orderby' => 'date',
                     'order' => 'DESC',
@@ -149,8 +155,8 @@ $search_query = get_search_query();
                     $args['s'] = $search_query;
                 }
                 
-                // Exclude featured post
-                if ($featured_post_id > 0) {
+                // Exclude featured post on page 1
+                if ($featured_post_id > 0 && $paged === 1) {
                     $args['post__not_in'] = array($featured_post_id);
                 }
                 
@@ -206,36 +212,71 @@ $search_query = get_search_query();
             </div>
             
             <!-- Pagination -->
-            <?php if ($news_query->max_num_pages > 1) : ?>
-                <div class="pagination">
+            <?php
+            $total_pages = max(1, $news_query->max_num_pages);
+            $current_page = max(1, $paged);
+            
+            // Build base URL for pagination
+            $base_url = home_url('/news/');
+            $url_params = array();
+            if (!empty($current_category)) {
+                $url_params['news_category'] = $current_category;
+            }
+            if (!empty($search_query)) {
+                $url_params['s'] = $search_query;
+            }
+            ?>
+            <div class="pagination">
+                <div class="pagination-nav">
                     <?php
-                    $prev_link = get_previous_posts_link('Previous');
-                    $next_link = get_next_posts_link('Next', $news_query->max_num_pages);
+                    // Previous button
+                    if ($current_page > 1) :
+                        $prev_params = array_merge($url_params, array('pg' => $current_page - 1));
+                        if ($current_page - 1 === 1) {
+                            unset($prev_params['pg']); // Don't include pg=1
+                        }
+                        $prev_url = add_query_arg($prev_params, $base_url) . '#news-content';
                     ?>
-                    <div class="pagination-nav">
-                        <?php if ($prev_link) : ?>
-                            <div class="pagination-prev"><?php echo $prev_link; ?></div>
+                        <a href="<?php echo esc_url($prev_url); ?>" class="pagination-arrow" aria-label="Previous page">
+                            <span class="material-icons">chevron_left</span>
+                        </a>
+                    <?php else : ?>
+                        <span class="pagination-arrow pagination-disabled" aria-label="Previous page">
+                            <span class="material-icons">chevron_left</span>
+                        </span>
+                    <?php endif; ?>
+                    
+                    <!-- Page numbers -->
+                    <?php for ($i = 1; $i <= $total_pages; $i++) :
+                        $page_params = array_merge($url_params, array('pg' => $i));
+                        if ($i === 1) {
+                            unset($page_params['pg']); // Don't include pg=1
+                        }
+                        $page_url = add_query_arg($page_params, $base_url) . '#news-content';
+                        $is_current = ($i == $current_page);
+                    ?>
+                        <?php if ($is_current) : ?>
+                            <span class="page-number current"><?php echo esc_html($i); ?></span>
+                        <?php else : ?>
+                            <a href="<?php echo esc_url($page_url); ?>" class="page-number"><?php echo esc_html($i); ?></a>
                         <?php endif; ?>
-                        
-                        <div class="pagination-numbers">
-                            <?php
-                            echo paginate_links(array(
-                                'total' => $news_query->max_num_pages,
-                                'current' => $paged,
-                                'prev_next' => false,
-                                'type' => 'list',
-                                'before_page_number' => '<span class="page-number">',
-                                'after_page_number' => '</span>',
-                            ));
-                            ?>
-                        </div>
-                        
-                        <?php if ($next_link) : ?>
-                            <div class="pagination-next"><?php echo $next_link; ?></div>
-                        <?php endif; ?>
-                    </div>
+                    <?php endfor; ?>
+                    
+                    <!-- Next button -->
+                    <?php if ($current_page < $total_pages) :
+                        $next_params = array_merge($url_params, array('pg' => $current_page + 1));
+                        $next_url = add_query_arg($next_params, $base_url) . '#news-content';
+                    ?>
+                        <a href="<?php echo esc_url($next_url); ?>" class="pagination-arrow" aria-label="Next page">
+                            <span class="material-icons">chevron_right</span>
+                        </a>
+                    <?php else : ?>
+                        <span class="pagination-arrow pagination-disabled" aria-label="Next page">
+                            <span class="material-icons">chevron_right</span>
+                        </span>
+                    <?php endif; ?>
                 </div>
-            <?php endif; ?>
+            </div>
             
             <?php wp_reset_postdata(); ?>
         </div>

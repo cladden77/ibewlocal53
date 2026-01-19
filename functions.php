@@ -411,5 +411,32 @@ function ibew_local_53_modify_event_archive_query($query) {
             ),
         ));
     }
+    
+    // Modify the main query for news archives
+    if (!is_admin() && $query->is_main_query() && is_post_type_archive('news')) {
+        $query->set('posts_per_page', 6);
+        $query->set('orderby', 'date');
+        $query->set('order', 'DESC');
+        
+        // Handle category filter
+        if (isset($_GET['news_category']) && !empty($_GET['news_category'])) {
+            $query->set('tax_query', array(
+                array(
+                    'taxonomy' => 'news_category',
+                    'field' => 'slug',
+                    'terms' => sanitize_text_field($_GET['news_category']),
+                ),
+            ));
+        }
+    }
 }
 add_action('pre_get_posts', 'ibew_local_53_modify_event_archive_query');
+
+// Pass AJAX URL to frontend
+function ibew_local_53_enqueue_pagination_scripts() {
+    wp_localize_script('ibew-local-53-main', 'ibewAjax', array(
+        'ajaxurl' => admin_url('admin-ajax.php'),
+        'nonce' => wp_create_nonce('ibew_pagination_nonce')
+    ));
+}
+add_action('wp_enqueue_scripts', 'ibew_local_53_enqueue_pagination_scripts');

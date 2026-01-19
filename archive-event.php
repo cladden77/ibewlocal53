@@ -264,58 +264,52 @@ function ibew_get_event_category_class($category) {
             </div>
             
             <!-- Pagination -->
-            <?php if ($wp_query->max_num_pages > 1) : ?>
-                <div class="pagination">
-                    <div class="pagination-nav">
-                        <?php
-                        $current_page = max(1, $paged);
-                        $total_pages = $wp_query->max_num_pages;
-                        
-                        // Previous button
-                        if ($current_page > 1) :
-                            $prev_url = get_pagenum_link($current_page - 1) . '#events-content';
-                        ?>
-                            <a href="<?php echo esc_url($prev_url); ?>" class="pagination-prev" aria-label="Previous page">
-                                <span>&lt;</span>
-                            </a>
+            <?php
+            $current_page = max(1, $paged);
+            $total_pages = max(1, $wp_query->max_num_pages);
+            ?>
+            <div class="pagination">
+                <div class="pagination-nav">
+                    <?php
+                    // Previous button
+                    if ($current_page > 1) :
+                        $prev_url = get_pagenum_link($current_page - 1) . '#events-content';
+                    ?>
+                        <a href="<?php echo esc_url($prev_url); ?>" class="pagination-arrow" aria-label="Previous page">
+                            <span class="material-icons">chevron_left</span>
+                        </a>
+                    <?php else : ?>
+                        <span class="pagination-arrow pagination-disabled" aria-label="Previous page">
+                            <span class="material-icons">chevron_left</span>
+                        </span>
+                    <?php endif; ?>
+                    
+                    <!-- Page numbers -->
+                    <?php for ($i = 1; $i <= $total_pages; $i++) :
+                        $page_url = get_pagenum_link($i) . '#events-content';
+                        $is_current = ($i == $current_page);
+                    ?>
+                        <?php if ($is_current) : ?>
+                            <span class="page-number current"><?php echo esc_html($i); ?></span>
                         <?php else : ?>
-                            <span class="pagination-prev pagination-disabled" aria-label="Previous page">
-                                <span>&lt;</span>
-                            </span>
+                            <a href="<?php echo esc_url($page_url); ?>" class="page-number"><?php echo esc_html($i); ?></a>
                         <?php endif; ?>
-                        
-                        <!-- Page numbers -->
-                        <ul class="pagination-numbers">
-                            <?php
-                            for ($i = 1; $i <= $total_pages; $i++) :
-                                $page_url = get_pagenum_link($i) . '#events-content';
-                                $is_current = ($i == $current_page);
-                            ?>
-                                <li>
-                                    <?php if ($is_current) : ?>
-                                        <span class="page-number current"><?php echo esc_html($i); ?></span>
-                                    <?php else : ?>
-                                        <a href="<?php echo esc_url($page_url); ?>" class="page-number"><?php echo esc_html($i); ?></a>
-                                    <?php endif; ?>
-                                </li>
-                            <?php endfor; ?>
-                        </ul>
-                        
-                        <!-- Next button -->
-                        <?php if ($current_page < $total_pages) :
-                            $next_url = get_pagenum_link($current_page + 1) . '#events-content';
-                        ?>
-                            <a href="<?php echo esc_url($next_url); ?>" class="pagination-next" aria-label="Next page">
-                                <span>&gt;</span>
-                            </a>
-                        <?php else : ?>
-                            <span class="pagination-next pagination-disabled" aria-label="Next page">
-                                <span>&gt;</span>
-                            </span>
-                        <?php endif; ?>
-                    </div>
+                    <?php endfor; ?>
+                    
+                    <!-- Next button -->
+                    <?php if ($current_page < $total_pages) :
+                        $next_url = get_pagenum_link($current_page + 1) . '#events-content';
+                    ?>
+                        <a href="<?php echo esc_url($next_url); ?>" class="pagination-arrow" aria-label="Next page">
+                            <span class="material-icons">chevron_right</span>
+                        </a>
+                    <?php else : ?>
+                        <span class="pagination-arrow pagination-disabled" aria-label="Next page">
+                            <span class="material-icons">chevron_right</span>
+                        </span>
+                    <?php endif; ?>
                 </div>
-            <?php endif; ?>
+            </div>
         </div>
     </div>
 </div>
