@@ -42,6 +42,7 @@
         let currentMonth = currentDate.getMonth();
         let currentYear = currentDate.getFullYear();
         let selectedFilterDate = null; // Track currently selected date for filtering
+        let selectedFilterCategory = null; // Track currently selected category for filtering
 
         // Helper function to format date as YYYY-MM-DD
         function formatDate(year, month, day) {
@@ -59,8 +60,8 @@
             return null;
         }
 
-        // Function to filter events by selected date
-        function filterEventsByDate(filterDate) {
+        // Function to apply filters (date and/or category)
+        function applyFilters() {
             const eventItems = document.querySelectorAll('.event-list-item');
             const monthSections = document.querySelectorAll('.events-month-section');
             const noEventsMessage = document.getElementById('no-events-scheduled');
@@ -69,7 +70,11 @@
             const todayStr = formatDate(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate());
             let visibleCount = 0;
 
-            if (filterDate === null) {
+            const hasDateFilter = selectedFilterDate !== null;
+            const hasCategoryFilter = selectedFilterCategory !== null;
+            const hasAnyFilter = hasDateFilter || hasCategoryFilter;
+
+            if (!hasAnyFilter) {
                 // Show all events
                 eventItems.forEach(item => {
                     item.style.display = '';
@@ -89,10 +94,15 @@
                     pagination.style.display = '';
                 }
             } else {
-                // Filter events by date
+                // Filter events by date and/or category
                 eventItems.forEach(item => {
                     const eventDate = item.getAttribute('data-event-date');
-                    if (eventDate === filterDate) {
+                    const eventCategory = item.getAttribute('data-event-category');
+                    
+                    let matchesDate = !hasDateFilter || eventDate === selectedFilterDate;
+                    let matchesCategory = !hasCategoryFilter || eventCategory === selectedFilterCategory;
+                    
+                    if (matchesDate && matchesCategory) {
                         item.style.display = '';
                         visibleCount++;
                     } else {
@@ -120,16 +130,13 @@
                     }
                 }
 
-                // Show reset link only if selected date is not today
+                // Show reset link when filtering (unless date filter is just today)
                 if (resetLink) {
-                    if (filterDate !== todayStr) {
-                        resetLink.style.display = 'block';
-                    } else {
-                        resetLink.style.display = 'none';
-                    }
+                    const showReset = hasCategoryFilter || (hasDateFilter && selectedFilterDate !== todayStr);
+                    resetLink.style.display = showReset ? 'block' : 'none';
                 }
 
-                // Hide pagination when filtering by date (unless more than 4 events on that date)
+                // Hide pagination when filtering (unless more than 4 visible events)
                 if (pagination) {
                     if (visibleCount > 4) {
                         pagination.style.display = '';
@@ -138,6 +145,18 @@
                     }
                 }
             }
+        }
+
+        // Function to filter events by selected date
+        function filterEventsByDate(filterDate) {
+            selectedFilterDate = filterDate;
+            applyFilters();
+        }
+
+        // Function to filter events by selected category
+        function filterEventsByCategory(filterCategory) {
+            selectedFilterCategory = filterCategory;
+            applyFilters();
         }
 
         function renderCalendar(month, year) {
@@ -281,8 +300,12 @@
                 e.preventDefault();
                 // Clear selected date
                 selectedFilterDate = null;
+                // Clear selected category
+                selectedFilterCategory = null;
                 // Remove selected from all days
                 document.querySelectorAll('.calendar-day').forEach(d => d.classList.remove('selected'));
+                // Remove active from all category items
+                document.querySelectorAll('.category-item').forEach(c => c.classList.remove('active'));
                 
                 // Re-select today's date if it's in the current month view
                 const today = new Date();
@@ -296,8 +319,37 @@
                     });
                 }
                 
-                // Show all events
-                filterEventsByDate(null);
+                // Clear all filters
+                applyFilters();
+            });
+        }
+
+        // Category filter
+        const categoryList = document.getElementById('event-category-filter');
+        if (categoryList) {
+            const categoryItems = categoryList.querySelectorAll('.category-item');
+            categoryItems.forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const clickedCategory = this.getAttribute('data-category');
+                    
+                    // If clicking the same category, clear the filter
+                    if (selectedFilterCategory === clickedCategory) {
+                        selectedFilterCategory = null;
+                        // Remove active from all category items
+                        categoryItems.forEach(c => c.classList.remove('active'));
+                        // Clear category filter
+                        filterEventsByCategory(null);
+                    } else {
+                        selectedFilterCategory = clickedCategory;
+                        // Remove active from all category items
+                        categoryItems.forEach(c => c.classList.remove('active'));
+                        // Add active to clicked category
+                        this.classList.add('active');
+                        // Filter events by selected category
+                        filterEventsByCategory(clickedCategory);
+                    }
+                });
             });
         }
     }

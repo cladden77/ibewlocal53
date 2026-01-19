@@ -1567,14 +1567,12 @@ a:hover {
     top: 16px;
     left: 16px;
     padding: 6px 12px;
-    background-color: rgba(0, 0, 0, 0.6);
-    backdrop-filter: blur(4px);
+    background-color: var(--color-red);
     color: var(--color-white);
     font-size: 0.75rem;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.5px;
-    border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 8px;
 }
 
@@ -2048,6 +2046,14 @@ a:hover {
     background-color: rgba(43, 69, 143, 0.05);
 }
 
+.events-sidebar .category-item.active {
+    background-color: rgba(43, 69, 143, 0.1);
+}
+
+.events-sidebar .category-item.active .category-dot .checkmark-icon {
+    opacity: 1;
+}
+
 .events-sidebar .category-dot {
     width: 18px;
     height: 18px;
@@ -2064,6 +2070,8 @@ a:hover {
     height: 10px;
     display: block;
     filter: brightness(0) invert(1); /* Makes the icon white */
+    opacity: 0;
+    transition: opacity 0.2s ease;
 }
 
 .events-sidebar .category-label {

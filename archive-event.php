@@ -116,7 +116,7 @@ function ibew_get_event_category_class($category) {
             <!-- Event Categories Card -->
             <div class="sidebar-card">
                 <h3 class="sidebar-card-title">Event Categories</h3>
-                <ul class="category-list">
+                <ul class="category-list" id="event-category-filter">
                     <?php
                     $categories = get_terms(array(
                         'taxonomy' => 'event_category',
@@ -127,7 +127,7 @@ function ibew_get_event_category_class($category) {
                         $color_class = ibew_get_event_category_class($category);
                     ?>
                         <li>
-                            <a href="<?php echo get_term_link($category); ?>" class="category-item">
+                            <a href="#" class="category-item" data-category="<?php echo esc_attr($color_class); ?>">
                                 <span class="category-dot <?php echo esc_attr($color_class); ?>">
                                     <img src="<?php echo get_template_directory_uri(); ?>/assets/images/checkmark-icon.svg" alt="" class="checkmark-icon" />
                                 </span>
@@ -218,7 +218,7 @@ function ibew_get_event_category_class($category) {
                             }
                         }
                     ?>
-                        <article class="event-list-item" data-event-date="<?php echo esc_attr($event_date_only); ?>">
+                        <article class="event-list-item" data-event-date="<?php echo esc_attr($event_date_only); ?>" data-event-category="<?php echo esc_attr($category_class); ?>">
                             <div class="event-date-badge <?php echo esc_attr($category_class); ?>">
                                 <span class="date-month"><?php echo esc_html($date_badge_month); ?></span>
                                 <span class="date-day"><?php echo esc_html($date_badge_day); ?></span>
