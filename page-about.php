@@ -394,30 +394,6 @@ get_header();
                     </article>
 
                     <article class="officer-card">
-                        <div class="officer-photo" style="background-image: url('<?php echo get_template_directory_uri(); ?>/assets/images/officers/savanna-zeller.png');">
-                            <div class="officer-photo-overlay">
-                                <div>
-                                    <h3 class="officer-name">Savanna Zeller</h3>
-                                    <p class="officer-title">Executive Assistant</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="officer-contact">
-                            <div class="contact-item">
-                                <span class="material-icons contact-icon">phone</span>
-                                <div class="contact-details">
-                                    <span class="contact-label">Work</span>
-                                    <span class="contact-value">(816) 421-5464 (Ext 213)</span>
-                                </div>
-                            </div>
-                            <div class="contact-item contact-email">
-                                <span class="material-icons contact-icon">email</span>
-                                <a href="mailto:Szeller@ibewlocal53.org" class="contact-value">Szeller@ibewlocal53.org</a>
-                            </div>
-                        </div>
-                    </article>
-
-                    <article class="officer-card">
                         <div class="officer-photo" style="background-image: url('<?php echo get_template_directory_uri(); ?>/assets/images/officers/jessica-looney.png');">
                             <div class="officer-photo-overlay">
                                 <div>
@@ -440,6 +416,30 @@ get_header();
             </div>
         </div>
     </article>
+
+    <article class="officer-card">
+                        <div class="officer-photo" style="background-image: url('<?php echo get_template_directory_uri(); ?>/assets/images/officers/savanna-zeller.png');">
+                            <div class="officer-photo-overlay">
+                                <div>
+                                    <h3 class="officer-name">Savanna Zeller</h3>
+                                    <p class="officer-title">Executive Assistant</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="officer-contact">
+                            <div class="contact-item">
+                                <span class="material-icons contact-icon">phone</span>
+                                <div class="contact-details">
+                                    <span class="contact-label">Work</span>
+                                    <span class="contact-value">(816) 421-5464 (Ext 213)</span>
+                                </div>
+                            </div>
+                            <div class="contact-item contact-email">
+                                <span class="material-icons contact-icon">email</span>
+                                <a href="mailto:Szeller@ibewlocal53.org" class="contact-value">Szeller@ibewlocal53.org</a>
+                            </div>
+                        </div>
+                    </article>
                 </div>
             </div>
         </section>
