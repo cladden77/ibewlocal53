@@ -403,8 +403,17 @@ function ibew_local_53_modify_event_archive_query($query) {
     }
     
     // Modify the main query for news archives
+    // Note: The archive-news.php template uses a custom query with offset for pagination
+    // Page 1: Featured story + 6 articles, Page 2+: 9 articles
     if (!is_admin() && $query->is_main_query() && is_post_type_archive('news')) {
-        $query->set('posts_per_page', 6);
+        $paged = isset($_GET['pg']) ? max(1, intval($_GET['pg'])) : 1;
+        
+        if ($paged === 1) {
+            $query->set('posts_per_page', 6);
+        } else {
+            $query->set('posts_per_page', 9);
+        }
+        
         $query->set('orderby', 'date');
         $query->set('order', 'DESC');
         

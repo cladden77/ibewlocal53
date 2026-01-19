@@ -133,10 +133,21 @@ $search_query = get_search_query();
                 <?php
                 $paged = isset($_GET['pg']) ? max(1, intval($_GET['pg'])) : 1;
                 
+                // Page 1: 6 articles (featured shown separately)
+                // Page 2+: 9 articles per page
+                if ($paged === 1) {
+                    $posts_per_page = 6;
+                    $offset = 0;
+                } else {
+                    $posts_per_page = 9;
+                    // Offset: 1 (featured) + 6 (page 1 grid) + (page - 2) * 9
+                    $offset = 7 + ($paged - 2) * 9;
+                }
+                
                 $args = array(
                     'post_type' => 'news',
-                    'posts_per_page' => 6,
-                    'paged' => $paged,
+                    'posts_per_page' => $posts_per_page,
+                    'offset' => $offset,
                     'orderby' => 'date',
                     'order' => 'DESC',
                 );
@@ -161,6 +172,32 @@ $search_query = get_search_query();
                 }
                 
                 $news_query = new WP_Query($args);
+                
+                // Calculate total pages manually
+                // Total posts - 1 (featured) = remaining posts
+                // Page 1 shows 6, subsequent pages show 9
+                $count_args = array(
+                    'post_type' => 'news',
+                    'posts_per_page' => -1,
+                    'fields' => 'ids',
+                );
+                if (!empty($current_category)) {
+                    $count_args['tax_query'] = $args['tax_query'];
+                }
+                if (!empty($search_query)) {
+                    $count_args['s'] = $search_query;
+                }
+                $total_posts_query = new WP_Query($count_args);
+                $total_posts = $total_posts_query->found_posts;
+                wp_reset_postdata();
+                
+                // Calculate total pages: 1 featured + 6 on page 1 = 7, then 9 per page after
+                if ($total_posts <= 7) {
+                    $calculated_total_pages = 1;
+                } else {
+                    $remaining_after_page1 = $total_posts - 7;
+                    $calculated_total_pages = 1 + ceil($remaining_after_page1 / 9);
+                }
                 
                 if ($news_query->have_posts()) :
                     while ($news_query->have_posts()) : $news_query->the_post();
@@ -213,7 +250,7 @@ $search_query = get_search_query();
             
             <!-- Pagination -->
             <?php
-            $total_pages = max(1, $news_query->max_num_pages);
+            $total_pages = max(1, $calculated_total_pages);
             $current_page = max(1, $paged);
             
             // Build base URL for pagination
