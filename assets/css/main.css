@@ -1536,6 +1536,12 @@ a:hover {
     color: var(--color-gold);
 }
 
+.section-label .featured-checkmark-icon {
+    width: 18px;
+    height: auto;
+    display: inline-block;
+}
+
 .featured-story-card {
     background-color: var(--color-white);
     border-radius: 32px;
@@ -1595,6 +1601,12 @@ a:hover {
 .featured-date-wrapper .material-icons {
     font-size: 18px;
     color: var(--color-gray);
+}
+
+.featured-date-wrapper .calendar-icon {
+    width: 18px;
+    height: auto;
+    display: inline-block;
 }
 
 .featured-date {

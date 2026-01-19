@@ -94,7 +94,7 @@ $search_query = get_search_query();
             ?>
                 <div class="featured-story-section">
                     <div class="section-label">
-                        <span class="material-icons">star</span>
+                        <img src="<?php echo get_template_directory_uri(); ?>/assets/images/featured-checkmark.svg" alt="Featured" class="featured-checkmark-icon">
                         <span>Featured Story</span>
                     </div>
                     <article class="featured-story-card">
@@ -108,7 +108,7 @@ $search_query = get_search_query();
                         <?php endif; ?>
                         <div class="featured-story-content">
                             <div class="featured-date-wrapper">
-                                <span class="material-icons">arrow_forward</span>
+                                <img src="<?php echo get_template_directory_uri(); ?>/assets/images/calendar-icon.svg" alt="Calendar" class="calendar-icon">
                                 <span class="featured-date"><?php echo get_the_date('F j, Y'); ?></span>
                             </div>
                             <h2 class="featured-title"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h2>
