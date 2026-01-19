@@ -392,24 +392,14 @@ function ibew_local_53_event_admin_scripts($hook) {
 }
 add_action('admin_enqueue_scripts', 'ibew_local_53_event_admin_scripts');
 
-// Modify the main query for event archives to support pagination and filter by future events
+// Modify the main query for event archives to support pagination
 function ibew_local_53_modify_event_archive_query($query) {
     // Only modify the main query on the frontend for event archives
     if (!is_admin() && $query->is_main_query() && is_post_type_archive('event')) {
-        $current_datetime = date('Y-m-d\TH:i');
-        
         $query->set('posts_per_page', 4);
         $query->set('meta_key', 'event_start_datetime');
         $query->set('orderby', 'meta_value');
         $query->set('order', 'ASC');
-        $query->set('meta_query', array(
-            array(
-                'key' => 'event_start_datetime',
-                'value' => $current_datetime,
-                'compare' => '>=',
-                'type' => 'CHAR',
-            ),
-        ));
     }
     
     // Modify the main query for news archives
