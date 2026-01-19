@@ -77,7 +77,7 @@ get_header();
             <?php endif; ?>
             
             <div class="single-footer">
-                <a href="<?php echo home_url('/events'); ?>" class="btn btn-secondary">← Back to Events</a>
+                <a href="<?php echo home_url('/events'); ?>" class="btn btn-tertiary">← Back to Events</a>
             </div>
         </div>
     </article>

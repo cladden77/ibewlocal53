@@ -34,7 +34,7 @@ get_header();
             </div>
             
             <div class="single-footer">
-                <a href="<?php echo home_url('/news'); ?>" class="btn btn-secondary">← Back to News</a>
+                <a href="<?php echo home_url('/news'); ?>" class="btn btn-tertiary">← Back to News</a>
             </div>
         </div>
     </article>
