@@ -41,7 +41,7 @@
                 ));
                 ?>
             </nav>
-            <a href="/login" class="member-login-btn">
+            <a href="/member-login" class="member-login-btn">
                 <span class="material-icons login-icon">login</span>
                 <span class="login-text">Member Login</span>
             </a>
@@ -70,7 +70,7 @@
                     ?>
                 </nav>
                 <div class="mobile-menu-footer">
-                    <a href="#" class="mobile-member-login-btn">
+                    <a href="/member-login" class="mobile-member-login-btn">
                         <span class="material-icons login-icon">login</span>
                         <span class="login-text">Member Login</span>
                     </a>
