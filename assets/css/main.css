@@ -3303,8 +3303,8 @@ a:hover {
    SINGLE POSTS
    ============================================ */
 
-.single-news,
-.single-event {
+article.single-news,
+article.single-event {
     padding: var(--spacing-xl) var(--container-padding);
 }
 
