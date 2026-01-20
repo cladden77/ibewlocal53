@@ -3616,6 +3616,26 @@ a:hover {
     }
 }
 
+/* Tablet breakpoint */
+@media (max-width: 1024px) {
+    .contact-container {
+        padding: 40px 24px 64px;
+    }
+    
+    .contact-layout {
+        gap: 40px;
+    }
+    
+    .info-card {
+        width: 100%;
+        max-width: 100%;
+    }
+    
+    .form-card {
+        max-width: 100%;
+    }
+}
+
 @media (max-width: 768px) {
     :root {
         --container-padding: 1rem;
@@ -4035,20 +4055,40 @@ a:hover {
         opacity: 0.2;
     }
     
+    /* Contact Page Responsive */
+    .contact-container {
+        padding: 32px 24px 48px;
+    }
+    
     .contact-layout {
         flex-direction: column;
+        gap: 32px;
     }
     
     .info-card {
         width: 100%;
+        padding: 24px;
     }
     
     .form-card {
         max-width: 100%;
     }
     
+    .form-header {
+        padding: 20px 24px;
+    }
+    
+    .form-content {
+        padding: 24px;
+    }
+    
     .form-row {
         grid-template-columns: 1fr;
+    }
+    
+    /* Form fields responsive - stack on tablet and mobile */
+    .form-content .frm_fields_container {
+        gap: 24px;
     }
     
     .form-content .frm_half,
@@ -4056,9 +4096,11 @@ a:hover {
     .form-content .frm_first_half,
     .form-content .frm_last_half,
     .form-content .frm_form_field[class*="frm_first"],
-    .form-content .frm_form_field[class*="frm_last"] {
+    .form-content .frm_form_field[class*="frm_last"],
+    .form-content .frm_form_field.frm6 {
         width: 100% !important;
         max-width: 100% !important;
+        flex: 0 0 100% !important;
         display: block !important;
         float: none !important;
     }
@@ -4066,7 +4108,7 @@ a:hover {
     .form-content .frm_half.frm_first,
     .form-content .frm_form_field.frm_first {
         margin-right: 0 !important;
-        margin-bottom: 24px !important;
+        margin-bottom: 0 !important;
     }
     
     .footer-container {
@@ -4093,17 +4135,101 @@ a:hover {
     .cta-decoration {
         display: none;
     }
-    
-    /* Form fields responsive - stack on mobile */
-    .form-content .frm_form_field.frm_half,
-    .form-content .frm_form_field.frm6 {
-        width: 100% !important;
-        max-width: 100% !important;
-        flex: 0 0 100% !important;
-    }
 }
 
 @media (max-width: 480px) {
+    /* Contact Page Mobile */
+    .contact-container {
+        padding: 24px 16px 40px;
+    }
+    
+    .contact-layout {
+        gap: 24px;
+    }
+    
+    .info-card {
+        padding: 20px;
+    }
+    
+    .contact-card-title {
+        font-size: 20px;
+        line-height: 28px;
+        margin-bottom: 20px;
+    }
+    
+    .contact-info-list {
+        gap: 20px;
+    }
+    
+    .info-item {
+        gap: 12px;
+    }
+    
+    .info-icon-box {
+        width: 40px;
+        height: 48px;
+    }
+    
+    .info-icon-box .material-icons {
+        font-size: 18px;
+    }
+    
+    .form-header {
+        padding: 16px 20px;
+    }
+    
+    .form-header .contact-card-title {
+        font-size: 20px;
+        line-height: 28px;
+    }
+    
+    .form-helper-text {
+        font-size: 14px;
+        line-height: 20px;
+    }
+    
+    .form-content {
+        padding: 20px;
+    }
+    
+    .form-content .frm_form_fields,
+    .form-content .frm_fields_container {
+        gap: 20px;
+    }
+    
+    .form-content .frm_primary_label {
+        font-size: 13px;
+        margin-bottom: 6px;
+    }
+    
+    .form-content .frm_form_field input[type="text"],
+    .form-content .frm_form_field input[type="email"],
+    .form-content .frm_form_field input[type="tel"],
+    .form-content .frm_form_field select,
+    .form-content .frm_form_field textarea {
+        padding: 10px 12px;
+        font-size: 15px;
+    }
+    
+    .form-content .frm_form_field input[type="email"],
+    .form-content .frm_form_field input[type="tel"] {
+        padding-left: 38px;
+    }
+    
+    /* Adjust icon position for mobile */
+    .form-content .frm_form_field:has(input[type="email"])::after,
+    .form-content .frm_form_field:has(input[type="tel"])::after {
+        left: 10px;
+        top: calc(19px + 6px + 10px);
+        font-size: 13px;
+    }
+    
+    .form-content .frm_submit button,
+    .form-content .frm_submit input[type="submit"] {
+        width: 100%;
+        padding: 12px 24px;
+    }
+    
     .home-hero .hero-title {
         font-size: 1.5rem;
     }
