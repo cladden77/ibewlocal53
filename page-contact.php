@@ -6,8 +6,6 @@
  */
 
 get_header();
-
-$contact_status = isset($_GET['contact']) ? $_GET['contact'] : '';
 ?>
 
 <!-- Contact Hero -->
@@ -17,7 +15,7 @@ $contact_status = isset($_GET['contact']) ? $_GET['contact'] : '';
         <h1 class="hero-title">
             Contact <span class="gold-text">IBEW Local 53</span>
         </h1>
-        <p class="hero-subtext">We're here to help. Reach out with questions, comments, or to learn more about joining our union.</p>
+        <p class="hero-subtext">Have questions about membership, benefits, or upcoming events?<br>We're here to help. Reach out to our team today.</p>
     </div>
 </section>
 
@@ -27,47 +25,72 @@ $contact_status = isset($_GET['contact']) ? $_GET['contact'] : '';
         <div class="contact-card info-card">
             <h2 class="contact-card-title">General Information</h2>
             
-            <div class="info-item">
-                <div class="info-icon">📍</div>
-                <div class="info-content">
-                    <h3>Visit us</h3>
-                    <p>1234 Union Street<br>Kansas City, MO 64101</p>
+            <div class="contact-info-list">
+                <!-- Visit Us -->
+                <div class="info-item">
+                    <div class="info-icon-box info-icon-blue">
+                        <span class="material-icons">location_on</span>
+                    </div>
+                    <div class="info-content">
+                        <span class="info-label">Visit Us</span>
+                        <p class="info-value">1100 Admiral Blvd<br>Kansas City, MO 64106</p>
+                    </div>
                 </div>
-            </div>
-            
-            <div class="info-item">
-                <div class="info-icon">📞</div>
-                <div class="info-content">
-                    <h3>Call us</h3>
-                    <p><a href="tel:+18161234567">(816) 123-4567</a></p>
+                
+                <!-- Call Us -->
+                <div class="info-item">
+                    <div class="info-icon-box info-icon-red">
+                        <span class="material-icons">phone</span>
+                    </div>
+                    <div class="info-content">
+                        <span class="info-label">Call Us</span>
+                        <p class="info-value"><a href="tel:+18164215464">(816)-421-5464</a></p>
+                    </div>
                 </div>
-            </div>
-            
-            <div class="info-item">
-                <div class="info-icon">✉️</div>
-                <div class="info-content">
-                    <h3>Email us</h3>
-                    <p><a href="mailto:info@ibewlocal53.org">info@ibewlocal53.org</a></p>
+                
+                <!-- Email Us -->
+                <div class="info-item">
+                    <div class="info-icon-box info-icon-gold">
+                        <span class="material-icons">email</span>
+                    </div>
+                    <div class="info-content">
+                        <span class="info-label">Email Us</span>
+                        <p class="info-value"><a href="mailto:localrep@ibewlocal53.org">localrep@ibewlocal53.org</a></p>
+                    </div>
                 </div>
-            </div>
-            
-            <div class="info-item">
-                <div class="info-icon">📠</div>
-                <div class="info-content">
-                    <h3>Fax</h3>
-                    <p>(816) 123-4568</p>
+                
+                <!-- Fax -->
+                <div class="info-item">
+                    <div class="info-icon-box info-icon-gray">
+                        <span class="material-icons">fax</span>
+                    </div>
+                    <div class="info-content">
+                        <span class="info-label">Fax</span>
+                        <p class="info-value">(816)-842-1447</p>
+                    </div>
                 </div>
-            </div>
-            
-            <div class="info-item">
-                <div class="info-icon">🕐</div>
-                <div class="info-content">
-                    <h3>Hours</h3>
-                    <p>
-                        <strong>Monday - Thursday:</strong> 8:00 AM - 5:00 PM<br>
-                        <strong>Friday:</strong> 8:00 AM - 4:00 PM<br>
-                        <strong>Lunch:</strong> 12:00 PM - 1:00 PM (Closed)
-                    </p>
+                
+                <!-- Hours -->
+                <div class="info-item info-item-hours">
+                    <div class="info-icon-box info-icon-gray">
+                        <svg class="hours-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 2C6.5 2 2 6.5 2 12C2 17.5 6.5 22 12 22C17.5 22 22 17.5 22 12C22 6.5 17.5 2 12 2ZM12 20C7.59 20 4 16.41 4 12C4 7.59 7.59 4 12 4C16.41 4 20 7.59 20 12C20 16.41 16.41 20 12 20ZM12.5 7H11V13L16.2 16.2L17 14.9L12.5 12.2V7Z" fill="currentColor"/>
+                        </svg>
+                    </div>
+                    <div class="info-content info-hours-content">
+                        <div class="hours-group">
+                            <span class="info-label">Mon - Thurs</span>
+                            <p class="info-value">8:00am - 4:30pm</p>
+                        </div>
+                        <div class="hours-group">
+                            <span class="info-label">Friday</span>
+                            <p class="info-value">8:00am - 4:00pm</p>
+                        </div>
+                        <div class="hours-group">
+                            <span class="info-label">Lunch Close</span>
+                            <p class="info-value">12:00pm - 1:00pm</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -76,80 +99,23 @@ $contact_status = isset($_GET['contact']) ? $_GET['contact'] : '';
         <div class="contact-card form-card">
             <div class="form-header">
                 <h2 class="contact-card-title">Send us a Message</h2>
-                <p class="form-helper-text">Fill out the form below and we'll get back to you as soon as possible.</p>
+                <p class="form-helper-text">Fill out the form below and we will get back to you shortly.</p>
             </div>
             
-            <?php if ($contact_status === 'success') : ?>
-                <div class="form-message success">
-                    <p>Thank you! Your message has been sent successfully.</p>
-                </div>
-            <?php elseif ($contact_status === 'error') : ?>
-                <div class="form-message error">
-                    <p>There was an error sending your message. Please try again.</p>
-                </div>
-            <?php endif; ?>
-            
-            <form method="post" action="<?php echo admin_url('admin-post.php'); ?>" class="contact-form">
-                <?php wp_nonce_field('ibew_contact_form', 'ibew_contact_nonce'); ?>
-                <input type="hidden" name="action" value="ibew_contact_form" />
-                <input type="hidden" name="form_time" value="<?php echo time(); ?>" />
-                
-                <!-- Honeypot -->
-                <input type="text" name="website" value="" style="display:none;" tabindex="-1" autocomplete="off" />
-                
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="first_name">First Name <span class="required">*</span></label>
-                        <input type="text" id="first_name" name="first_name" required />
-                    </div>
-                    <div class="form-group">
-                        <label for="last_name">Last Name <span class="required">*</span></label>
-                        <input type="text" id="last_name" name="last_name" required />
-                    </div>
-                </div>
-                
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="email">Email <span class="required">*</span></label>
-                        <input type="email" id="email" name="email" required />
-                    </div>
-                    <div class="form-group">
-                        <label for="phone">Phone</label>
-                        <input type="tel" id="phone" name="phone" />
-                    </div>
-                </div>
-                
-                <div class="form-group">
-                    <label for="topic">Topic/Department</label>
-                    <select id="topic" name="topic">
-                        <option value="">Select a topic...</option>
-                        <option value="General Inquiry">General Inquiry</option>
-                        <option value="Membership">Membership</option>
-                        <option value="Apprenticeship">Apprenticeship</option>
-                        <option value="Contract Information">Contract Information</option>
-                        <option value="Safety">Safety</option>
-                        <option value="Other">Other</option>
-                    </select>
-                </div>
-                
-                <div class="form-group">
-                    <label for="message">Message <span class="required">*</span></label>
-                    <textarea id="message" name="message" rows="6" required></textarea>
-                </div>
-                
-                <div class="form-group checkbox-group">
-                    <label class="checkbox-label">
-                        <input type="checkbox" name="not_robot" required />
-                        <span>I am not a robot</span>
-                    </label>
-                </div>
-                
-                <button type="submit" class="btn btn-primary btn-submit">Send Message →</button>
-            </form>
+            <div class="form-content">
+                <?php
+                // Display the page content from the WordPress editor
+                // Add your Formidable Forms block or shortcode when editing this page
+                if (have_posts()) :
+                    while (have_posts()) : the_post();
+                        the_content();
+                    endwhile;
+                endif;
+                ?>
+            </div>
         </div>
     </div>
 </div>
 
 <?php
 get_footer();
-

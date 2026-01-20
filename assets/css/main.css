@@ -2639,91 +2639,493 @@ a:hover {
    ============================================ */
 
 .contact-container {
-    padding: var(--spacing-xl) var(--container-padding);
+    padding: 48px 32px 80px;
+    max-width: 1280px;
+    margin: 0 auto;
 }
 
 .contact-layout {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: var(--spacing-xl);
+    display: flex;
+    gap: 48px;
+    align-items: flex-start;
+    justify-content: center;
 }
 
 .contact-card {
     background-color: var(--color-white);
-    border-radius: var(--radius-md);
-    padding: var(--spacing-xl);
-    box-shadow: var(--shadow-soft);
+    border-radius: 24px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    border: 1px solid var(--color-gray-light);
 }
 
 .info-card {
+    width: 478px;
+    flex-shrink: 0;
+    padding: 33px;
     display: flex;
     flex-direction: column;
-    gap: var(--spacing-lg);
 }
 
 .contact-card-title {
-    font-size: 1.5rem;
+    font-size: 24px;
     font-weight: 700;
-    margin: 0 0 var(--spacing-md) 0;
+    margin: 0 0 24px 0;
     color: var(--color-gray-dark);
+    line-height: 32px;
+}
+
+.contact-info-list {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
 }
 
 .info-item {
     display: flex;
-    gap: var(--spacing-md);
+    gap: 16px;
+    align-items: flex-start;
 }
 
-.info-icon {
-    font-size: 1.5rem;
+.info-icon-box {
+    width: 44px;
+    height: 54px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     flex-shrink: 0;
-    width: 40px;
-    text-align: center;
 }
 
-.info-content h3 {
-    font-size: 1rem;
-    font-weight: 600;
-    margin: 0 0 var(--spacing-xs) 0;
-    color: var(--color-gray-dark);
+.info-icon-box .material-icons {
+    font-size: 20px;
+    line-height: 28px;
 }
 
-.info-content p {
-    margin: 0;
-    color: var(--color-gray-dark);
-    line-height: 1.6;
+.info-icon-box .hours-icon {
+    width: 18px;
+    height: 18px;
 }
 
-.info-content a {
+.info-icon-blue {
+    background-color: rgba(43, 69, 143, 0.1);
     color: var(--color-primary);
 }
 
-.info-content a:hover {
-    color: var(--color-primary-dark);
+.info-icon-red {
+    background-color: rgba(200, 46, 57, 0.1);
+    color: var(--color-red);
 }
 
-.form-card {
+.info-icon-gold {
+    background-color: rgba(208, 170, 89, 0.1);
+    color: var(--color-gold);
+}
+
+.info-icon-gray {
+    background-color: var(--color-gray-light);
+    color: #4b5563;
+}
+
+.info-content {
     display: flex;
     flex-direction: column;
+    gap: 4px;
+}
+
+.info-label {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--color-gray);
+    text-transform: uppercase;
+    line-height: 20px;
+}
+
+.info-value {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--color-gray-dark);
+    line-height: 26px;
+    margin: 0;
+}
+
+.info-value a {
+    color: var(--color-gray-dark);
+    transition: color 0.2s ease;
+}
+
+.info-value a:hover {
+    color: var(--color-primary);
+}
+
+/* Hours Section */
+.info-item-hours .info-icon-box {
+    height: auto;
+    padding: 12px;
+    align-self: flex-start;
+}
+
+.info-hours-content {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.hours-group {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+/* Form Card */
+.form-card {
+    flex: 1;
+    max-width: 689px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+    padding: 1px;
 }
 
 .form-header {
-    background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
-    margin: calc(var(--spacing-xl) * -1) calc(var(--spacing-xl) * -1) var(--spacing-lg);
-    padding: var(--spacing-lg) var(--spacing-xl);
-    border-radius: var(--radius-md) var(--radius-md) 0 0;
+    background-color: var(--color-primary);
+    padding: 24px 32px;
 }
 
 .form-header .contact-card-title {
     color: var(--color-white);
-    margin-bottom: var(--spacing-xs);
+    margin-bottom: 4px;
 }
 
 .form-helper-text {
-    color: rgba(255, 255, 255, 0.9);
+    color: #dbeafe;
     margin: 0;
-    font-size: 0.875rem;
+    font-size: 16px;
+    line-height: 24px;
+    font-weight: 400;
 }
 
+.form-content {
+    padding: 32px;
+}
+
+/* Formidable Forms Styling */
+.form-content .frm_forms {
+    width: 100%;
+}
+
+.form-content .frm_form_fields {
+    display: block;
+}
+
+.form-content .frm_fields_container {
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: 24px;
+    row-gap: 24px;
+}
+
+.form-content .frm_form_field {
+    margin-bottom: 0 !important;
+    position: relative;
+    width: 100%;
+}
+
+.form-content .frm_primary_label {
+    font-family: var(--font-primary);
+    font-size: 14px;
+    font-weight: 500;
+    color: #374151;
+    line-height: 20px;
+    margin-bottom: 8px;
+    display: block;
+}
+
+/* Base input styling - matches Figma exactly */
+.form-content .frm_form_field input[type="text"],
+.form-content .frm_form_field input[type="email"],
+.form-content .frm_form_field input[type="tel"],
+.form-content .frm_form_field select,
+.form-content .frm_form_field textarea {
+    width: 100%;
+    padding: 11px 13px;
+    background-color: #f9fafb;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    font-family: var(--font-primary);
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #111827;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+}
+
+.form-content .frm_form_field input:focus,
+.form-content .frm_form_field select:focus,
+.form-content .frm_form_field textarea:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(43, 69, 143, 0.1);
+}
+
+/* Placeholder text styling */
+.form-content .frm_form_field input::placeholder,
+.form-content .frm_form_field textarea::placeholder {
+    color: #6b7280;
+    font-weight: 400;
+}
+
+/* Email and Phone fields with icons - wrapper for icon positioning */
+.form-content .frm_form_field:has(input[type="email"]) .frm_primary_label + div,
+.form-content .frm_form_field:has(input[type="tel"]) .frm_primary_label + div,
+.form-content .frm_form_field:has(input[type="email"]),
+.form-content .frm_form_field:has(input[type="tel"]) {
+    position: relative;
+}
+
+/* Email and Phone fields with icons - need left padding for icon */
+.form-content .frm_form_field input[type="email"],
+.form-content .frm_form_field input[type="tel"] {
+    padding-left: 41px;
+}
+
+/* Email icon - positioned inside input field */
+.form-content .frm_form_field:has(input[type="email"])::after {
+    content: 'email';
+    font-family: 'Material Icons';
+    font-size: 14px;
+    color: #9ca3af;
+    position: absolute;
+    left: 12px;
+    top: calc(20px + 8px + 28px);
+    transform: translateY(-50%);
+    pointer-events: none;
+    line-height: 1.43;
+    z-index: 2;
+}
+
+/* Phone icon - positioned inside input field */
+.form-content .frm_form_field:has(input[type="tel"])::after {
+    content: 'phone';
+    font-family: 'Material Icons';
+    font-size: 14px;
+    color: #9ca3af;
+    position: absolute;
+    left: 12px;
+    top: calc(20px + 8px + 28px);
+    transform: translateY(-50%);
+    pointer-events: none;
+    line-height: 1.43;
+    z-index: 2;
+}
+
+/* Select dropdown styling */
+.form-content .frm_form_field select {
+    background-image: url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M7.2 9.6L12 14.4L16.8 9.6H7.2Z' stroke='%236B7280' stroke-width='1.8'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 9px center;
+    background-size: 24px 24px;
+    padding-right: 40px;
+    color: #111827;
+}
+
+.form-content .frm_form_field select option {
+    color: #111827;
+    background-color: #ffffff;
+}
+
+/* Textarea styling - matches Figma exactly */
+.form-content .frm_form_field textarea {
+    padding: 8px 12px 104px;
+    min-height: 140px;
+    resize: vertical;
+    line-height: 24px;
+}
+
+/* Submit button styling - matches Figma exactly */
+.form-content .frm_submit {
+    margin-top: 16px !important;
+    padding-top: 16px;
+}
+
+.form-content .frm_submit button,
+.form-content .frm_submit input[type="submit"] {
+    background-color: #c82e39;
+    color: #ffffff;
+    font-family: var(--font-primary);
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 24px;
+    padding: 12px 32px;
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px -4px rgba(0, 0, 0, 0.1), 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+/* Add send icon after button text */
+.form-content .frm_submit button::after,
+.form-content .frm_submit input[type="submit"]::after {
+    content: 'send';
+    font-family: 'Material Icons';
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.43;
+    color: #ffffff;
+}
+
+.form-content .frm_submit button:hover,
+.form-content .frm_submit input[type="submit"]:hover {
+    background-color: #b02a34;
+    transform: translateY(-1px);
+}
+
+/* Error and success messages */
+.form-content .frm_error_style {
+    background-color: #fee2e2;
+    color: #991b1b;
+    border: 1px solid #fca5a5;
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin-bottom: 16px;
+}
+
+.form-content .frm_message {
+    background-color: #d1fae5;
+    color: #065f46;
+    border: 1px solid #6ee7b7;
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 16px;
+}
+
+/* Checkbox styling - matches Figma exactly */
+.form-content .frm_form_field.frm_checkbox_field,
+.form-content .frm_form_field.frm_checkbox_field .frm_checkbox_meta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.form-content .frm_form_field.frm_checkbox_field label,
+.form-content .frm_form_field.horizontal_radio label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 20px;
+    color: #4b5563;
+    cursor: pointer;
+    margin: 0;
+}
+
+.form-content .frm_form_field.frm_checkbox_field input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    min-width: 16px;
+    background-color: #ffffff;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    margin: 0;
+    flex-shrink: 0;
+}
+
+.form-content .frm_form_field.frm_checkbox_field input[type="checkbox"]:checked {
+    background-color: var(--color-primary);
+    border-color: var(--color-primary);
+    background-image: url("data:image/svg+xml,%3Csvg width='12' height='12' viewBox='0 0 12 12' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M10 3L4.5 8.5L2 6' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 12px 12px;
+}
+
+/* Two column fields for Formidable - 50/50 layout matching Figma */
+/* First Name and Last Name - 50/50 */
+.form-content .frm_form_field.frm_half {
+    width: calc(50% - 12px) !important;
+    max-width: calc(50% - 12px) !important;
+    flex: 0 0 calc(50% - 12px) !important;
+}
+
+/* Email and Phone - 50/50 */
+.form-content .frm_form_field.frm6 {
+    width: calc(50% - 12px) !important;
+    max-width: calc(50% - 12px) !important;
+    flex: 0 0 calc(50% - 12px) !important;
+}
+
+/* Full width fields (Message, etc.) */
+.form-content .frm_form_field.frm_full {
+    width: 100% !important;
+    max-width: 100% !important;
+    flex: 0 0 100% !important;
+}
+
+/* Form placeholder when no form is configured */
+.form-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 48px 24px;
+    text-align: center;
+    min-height: 300px;
+    background-color: #f9fafb;
+    border: 2px dashed #d1d5db;
+    border-radius: 12px;
+}
+
+.form-placeholder-message {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--color-gray-dark);
+    margin: 0 0 12px 0;
+}
+
+.form-placeholder-message .material-icons {
+    font-size: 24px;
+    color: var(--color-primary);
+}
+
+.form-placeholder-instruction {
+    font-size: 14px;
+    color: var(--color-gray);
+    margin: 0 0 16px 0;
+    max-width: 400px;
+}
+
+.form-placeholder-shortcode {
+    font-size: 13px;
+    color: var(--color-gray);
+    margin: 0;
+}
+
+.form-placeholder-shortcode code {
+    background-color: #e5e7eb;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-family: 'Monaco', 'Consolas', monospace;
+    font-size: 12px;
+}
+
+/* Legacy form styles (for backwards compatibility) */
 .contact-form {
     display: flex;
     flex-direction: column;
@@ -2733,19 +3135,20 @@ a:hover {
 .form-row {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: var(--spacing-md);
+    gap: 24px;
 }
 
 .form-group {
     display: flex;
     flex-direction: column;
-    gap: var(--spacing-xs);
+    gap: 8px;
 }
 
 .form-group label {
-    font-weight: 600;
-    color: var(--color-gray-dark);
-    font-size: 0.875rem;
+    font-weight: 500;
+    color: #374151;
+    font-size: 14px;
+    line-height: 20px;
 }
 
 .required {
@@ -2755,10 +3158,12 @@ a:hover {
 .form-group input,
 .form-group select,
 .form-group textarea {
-    padding: var(--spacing-sm);
-    border: 1px solid var(--color-gray);
-    border-radius: var(--radius-sm);
-    font-size: 1rem;
+    padding: 11px 13px;
+    background-color: #f9fafb;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    font-size: 16px;
     font-family: inherit;
     transition: border-color 0.2s ease;
 }
@@ -2768,11 +3173,12 @@ a:hover {
 .form-group textarea:focus {
     outline: none;
     border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(43, 69, 143, 0.1);
 }
 
 .form-group textarea {
     resize: vertical;
-    min-height: 120px;
+    min-height: 140px;
 }
 
 .checkbox-group {
@@ -2785,16 +3191,29 @@ a:hover {
     align-items: center;
     gap: var(--spacing-xs);
     cursor: pointer;
+    font-size: 14px;
+    color: #4b5563;
 }
 
 .checkbox-label input[type="checkbox"] {
-    width: auto;
+    width: 16px;
+    height: 16px;
     margin: 0;
 }
 
 .btn-submit {
     align-self: flex-start;
-    margin-top: var(--spacing-sm);
+    margin-top: 16px;
+    background-color: var(--color-red);
+    color: var(--color-white);
+    font-weight: 700;
+    padding: 12px 32px;
+    border-radius: 8px;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+}
+
+.btn-submit:hover {
+    background-color: #b02a34;
 }
 
 .form-message {
@@ -3617,11 +4036,37 @@ a:hover {
     }
     
     .contact-layout {
-        grid-template-columns: 1fr;
+        flex-direction: column;
+    }
+    
+    .info-card {
+        width: 100%;
+    }
+    
+    .form-card {
+        max-width: 100%;
     }
     
     .form-row {
         grid-template-columns: 1fr;
+    }
+    
+    .form-content .frm_half,
+    .form-content .frm_form_field.frm_half,
+    .form-content .frm_first_half,
+    .form-content .frm_last_half,
+    .form-content .frm_form_field[class*="frm_first"],
+    .form-content .frm_form_field[class*="frm_last"] {
+        width: 100% !important;
+        max-width: 100% !important;
+        display: block !important;
+        float: none !important;
+    }
+    
+    .form-content .frm_half.frm_first,
+    .form-content .frm_form_field.frm_first {
+        margin-right: 0 !important;
+        margin-bottom: 24px !important;
     }
     
     .footer-container {
@@ -3647,6 +4092,14 @@ a:hover {
     
     .cta-decoration {
         display: none;
+    }
+    
+    /* Form fields responsive - stack on mobile */
+    .form-content .frm_form_field.frm_half,
+    .form-content .frm_form_field.frm6 {
+        width: 100% !important;
+        max-width: 100% !important;
+        flex: 0 0 100% !important;
     }
 }
 
