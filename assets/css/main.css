@@ -1706,12 +1706,13 @@ a:hover {
     display: inline-flex;
     align-items: center;
     gap: 4px;
-    color: var(--color-red);
+    color: var(--color-primary);
     font-weight: 600;
     font-size: 1rem;
     align-self: flex-start;
     text-decoration: none;
     transition: color 0.2s ease;
+    margin-top: 16px;
 }
 
 .featured-link:hover {
@@ -1869,7 +1870,7 @@ a:hover {
     text-decoration: none;
     transition: color 0.2s ease;
     align-self: flex-start;
-    margin-top: 0;
+    margin-top: 8px;
 }
 
 .news-link:hover {
@@ -1877,10 +1878,16 @@ a:hover {
 }
 
 .news-link .material-icons {
-    font-size: 11.67px;
-    width: 11.67px;
-    height: 11.67px;
+    width: 20px;
+    height: 20px;
     margin-left: 4px;
+    display: inline-block;
+    font-size: 0;
+    line-height: 0;
+    background-image: url('../images/news-arrow.svg');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
 }
 
 /* ============================================
