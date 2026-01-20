@@ -3317,6 +3317,12 @@ a:hover {
     margin-bottom: var(--spacing-lg);
 }
 
+.single-header .news-badge {
+    position: static;
+    display: inline-block;
+    margin-bottom: var(--spacing-sm);
+}
+
 .single-title {
     font-size: 2.5rem;
     font-weight: 700;
