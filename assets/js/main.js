@@ -1,10 +1,53 @@
 /**
  * IBEW Local 53 Main JavaScript
- * Minimal JS for calendar functionality
+ * Includes calendar functionality and scroll reveal animations
  */
 
 (function() {
     'use strict';
+
+    // Scroll Reveal Animation using Intersection Observer
+    function initScrollReveal() {
+        // Check if user prefers reduced motion
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        
+        if (prefersReducedMotion) {
+            // If reduced motion is preferred, show all elements immediately
+            document.querySelectorAll('.reveal, .reveal-fade-up, .reveal-fade-down, .reveal-fade-left, .reveal-fade-right, .reveal-scale, .reveal-stagger').forEach(function(el) {
+                el.classList.add('revealed');
+            });
+            return;
+        }
+
+        // Options for the Intersection Observer
+        const observerOptions = {
+            root: null, // Use viewport as root
+            rootMargin: '0px 0px -80px 0px', // Trigger slightly before element enters viewport
+            threshold: 0.1 // Trigger when 10% of element is visible
+        };
+
+        // Callback function when intersection changes
+        const observerCallback = function(entries, observer) {
+            entries.forEach(function(entry) {
+                if (entry.isIntersecting) {
+                    // Add revealed class when element comes into view
+                    entry.target.classList.add('revealed');
+                    // Stop observing once revealed (one-time animation)
+                    observer.unobserve(entry.target);
+                }
+            });
+        };
+
+        // Create the observer
+        const observer = new IntersectionObserver(observerCallback, observerOptions);
+
+        // Select all elements with reveal classes and observe them
+        const revealElements = document.querySelectorAll('.reveal, .reveal-fade-up, .reveal-fade-down, .reveal-fade-left, .reveal-fade-right, .reveal-scale, .reveal-stagger');
+        
+        revealElements.forEach(function(el) {
+            observer.observe(el);
+        });
+    }
 
     // Calendar functionality for Events archive
     function initCalendar() {
@@ -520,12 +563,14 @@
     // Initialize on DOM ready
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', function() {
+            initScrollReveal();
             initCalendar();
             initEventsCarousel();
             initMobileMenu();
             initPaginationScroll();
         });
     } else {
+        initScrollReveal();
         initCalendar();
         initEventsCarousel();
         initMobileMenu();

@@ -26,7 +26,7 @@ get_header();
         <!-- Mission Section -->
         <section class="about-mission-section">
             <div class="section-container">
-                <div class="mission-header">
+                <div class="mission-header reveal-fade-up">
                     <div class="section-eyebrow">
                         <span class="eyebrow-line"></span>
                         <span class="eyebrow-text">Our Mission</span>
@@ -36,10 +36,10 @@ get_header();
                 </div>
 
                 <div class="mission-content">
-                    <div class="mission-image-card">
+                    <div class="mission-image-card reveal-fade-right">
                         <img src="<?php echo get_template_directory_uri(); ?>/assets/images/ibew-history.png" alt="IBEW Local 53 historical photo" class="mission-image" />
                     </div>
-                    <div class="mission-text">
+                    <div class="mission-text reveal-fade-left reveal-delay-2">
                         <p>Charted November 3rd, 1917, the beginning of Brotherhood was created.</p>
                         <p>The vision of the IBEW has remained steady since established, to promote excellence and to improve the lives of each and every member.</p>
                     </div>
@@ -50,7 +50,7 @@ get_header();
         <!-- Values Section -->
         <section class="about-values-section">
             <div class="section-container">
-                <div class="values-card">
+                <div class="values-card reveal-scale">
                     <div class="section-eyebrow">
                         <span class="eyebrow-line"></span>
                         <span class="eyebrow-text">Our Promise</span>
@@ -79,7 +79,7 @@ get_header();
         <!-- Leadership Section -->
         <section class="about-leadership-section">
             <div class="section-container">
-                <div class="leadership-header">
+                <div class="leadership-header reveal-fade-up">
                     <div class="section-eyebrow section-eyebrow--left">
                         <span class="eyebrow-line"></span>
                         <span class="eyebrow-text">Leadership</span>
@@ -89,7 +89,7 @@ get_header();
                     <p class="leadership-intro">Dedicated individuals elected to serve the membership and guide the future of Local 53.</p>
                 </div>
 
-                <div class="officers-grid">
+                <div class="officers-grid reveal-fade-up reveal-delay-1">
                     <article class="officer-card">
                         <div class="officer-photo" style="background-image: url('<?php echo get_template_directory_uri(); ?>/assets/images/officers/benjamin-bush.png');">
                             <div class="officer-photo-overlay">
@@ -447,7 +447,7 @@ get_header();
         <!-- CTA Section -->
         <section class="about-cta-section">
             <div class="section-container">
-                <div class="about-cta-card">
+                <div class="about-cta-card reveal-scale">
                     <div class="about-cta-content">
                         <div class="about-cta-pill">Join the Movement</div>
                         <h2 class="cta-title">Ready to Strengthen Your Future?</h2>

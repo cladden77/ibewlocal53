@@ -15,7 +15,7 @@ get_header();
         <div class="hero-content">
             <div class="hero-pill">Est. 1910 • Kansas City, MO</div>
             <h1 class="hero-title">
-                POWERING THE FUTURE<br>
+                POWERING THE FUTURE
                 <span>WITH <span class="gold-text">SKILLED LABOR</span></span>
             </h1>
             <p class="hero-subtext">IBEW Local 53 is dedicated to providing the highest quality electrical workers<br>for our communities while securing fair wages, benefits, and safety for our<br>members.</p>
@@ -72,7 +72,7 @@ get_header();
 <!-- Latest News Section -->
 <section class="latest-news-section">
     <div class="section-container">
-        <div class="section-header">
+        <div class="section-header reveal-fade-up">
             <div class="section-header-left">
                 <h2 class="section-title">Latest News</h2>
                 <p class="section-subtitle">Updates from the Local 53 leadership and community.</p>
@@ -82,7 +82,7 @@ get_header();
             </div>
         </div>
         
-        <div class="news-grid">
+        <div class="news-grid reveal-stagger">
             <?php
             $news_query = new WP_Query(array(
                 'post_type' => 'news',
@@ -135,7 +135,7 @@ get_header();
 <section class="who-we-are-section">
     <div class="section-container">
         <div class="who-we-are-grid">
-            <div class="who-we-are-content">
+            <div class="who-we-are-content reveal-fade-right">
                 <span class="who-we-are-label">Who We Are</span>
                 <h2 class="section-title-large">
                 Dedicated to Excellence, Committed to <span class="blue-text">Our Members</span>.
@@ -156,7 +156,7 @@ get_header();
                     </div>
                 </div>
             </div>
-            <div class="who-we-are-image">
+            <div class="who-we-are-image reveal-fade-left reveal-delay-2">
                 <div class="illustration-card">
                     <img src="<?php echo get_template_directory_uri(); ?>/assets/images/lineman-working.jpg" alt="Lineman Working" class="illustration-image" />
                 </div>
@@ -168,7 +168,7 @@ get_header();
 <!-- Upcoming Events Section -->
 <section class="upcoming-events-section">
     <div class="section-container">
-        <div class="section-header">
+        <div class="section-header reveal-fade-up">
             <h2 class="section-title">Upcoming Events</h2>
             <div class="event-nav-controls">
                 <button class="nav-arrow prev-arrow" aria-label="Previous events">‹</button>
@@ -176,7 +176,7 @@ get_header();
             </div>
         </div>
         
-        <div class="events-grid">
+        <div class="events-grid reveal-fade-up reveal-delay-1">
             <?php
             // Get current date/time in datetime-local format for comparison
             $current_datetime = date('Y-m-d\TH:i');
@@ -239,7 +239,7 @@ get_header();
 </section>
 
 <!-- Bottom CTA Banner -->
-<section class="cta-banner">
+<section class="cta-banner reveal-scale">
     <div class="cta-container">
         <div class="cta-content">
             <h2 class="cta-title">Looking to join a Union?</h2>

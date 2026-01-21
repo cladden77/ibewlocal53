@@ -23,7 +23,7 @@ $search_query = get_search_query();
 <div class="archive-container">
     <div class="archive-layout">
         <!-- Left Sidebar -->
-        <aside class="archive-sidebar">
+        <aside class="archive-sidebar reveal-fade-right">
             <!-- Search Card -->
             <div class="sidebar-card">
                 <h3 class="sidebar-card-title">Search News</h3>
@@ -75,7 +75,7 @@ $search_query = get_search_query();
         </aside>
         
         <!-- Right Content -->
-        <div class="archive-content" id="news-content">
+        <div class="archive-content reveal-fade-left reveal-delay-1" id="news-content">
             <?php
             // Get current page for featured story logic
             $current_news_page = isset($_GET['pg']) ? max(1, intval($_GET['pg'])) : 1;

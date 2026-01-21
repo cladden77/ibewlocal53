@@ -3830,7 +3830,7 @@ article.single-event {
     
     .home-hero .hero-title {
         font-size: 36px;
-        line-height: 45px;
+        line-height: 40px;
     }
     
     .archive-hero {
@@ -4381,9 +4381,6 @@ article.single-event {
         padding: 12px 24px;
     }
     
-    .home-hero .hero-title {
-        font-size: 1.5rem;
-    }
     
     .archive-hero {
         padding: 32px var(--container-padding);
@@ -5036,9 +5033,9 @@ article.single-event {
 }
 
 @media (max-width: 480px) {
-    .home-hero .hero-title {
+    /* .home-hero .hero-title {
         font-size: 36px;
-    }
+    } */
 
     .about-hero-title {
         font-size: 28px;
@@ -5063,6 +5060,161 @@ article.single-event {
 
     .contact-icon {
         font-size: 20px;
+    }
+}
+
+/* ============================================
+   SCROLL REVEAL ANIMATIONS
+   ============================================ */
+
+/* Base state for animated elements - hidden before reveal */
+.reveal {
+    opacity: 0;
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+/* Fade up animation */
+.reveal-fade-up {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+/* Fade down animation */
+.reveal-fade-down {
+    opacity: 0;
+    transform: translateY(-40px);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+/* Fade left animation */
+.reveal-fade-left {
+    opacity: 0;
+    transform: translateX(60px);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+/* Fade right animation */
+.reveal-fade-right {
+    opacity: 0;
+    transform: translateX(-60px);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+/* Scale up animation */
+.reveal-scale {
+    opacity: 0;
+    transform: scale(0.9);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+/* Revealed state - applied when element comes into view */
+.reveal.revealed,
+.reveal-fade-up.revealed,
+.reveal-fade-down.revealed,
+.reveal-fade-left.revealed,
+.reveal-fade-right.revealed,
+.reveal-scale.revealed {
+    opacity: 1;
+    transform: translate(0, 0) scale(1);
+}
+
+/* Staggered animations for child elements */
+.reveal-stagger > * {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.reveal-stagger.revealed > *:nth-child(1) { transition-delay: 0s; }
+.reveal-stagger.revealed > *:nth-child(2) { transition-delay: 0.1s; }
+.reveal-stagger.revealed > *:nth-child(3) { transition-delay: 0.2s; }
+.reveal-stagger.revealed > *:nth-child(4) { transition-delay: 0.3s; }
+.reveal-stagger.revealed > *:nth-child(5) { transition-delay: 0.4s; }
+.reveal-stagger.revealed > *:nth-child(6) { transition-delay: 0.5s; }
+
+.reveal-stagger.revealed > * {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Delay modifiers */
+.reveal-delay-1 { transition-delay: 0.1s !important; }
+.reveal-delay-2 { transition-delay: 0.2s !important; }
+.reveal-delay-3 { transition-delay: 0.3s !important; }
+.reveal-delay-4 { transition-delay: 0.4s !important; }
+.reveal-delay-5 { transition-delay: 0.5s !important; }
+
+/* Hero-specific animations (on page load) */
+.hero-content {
+    animation: heroFadeIn 1s ease-out forwards;
+}
+
+@keyframes heroFadeIn {
+    0% {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Feature chips stagger animation on load */
+.feature-chips .chips-container {
+    animation: chipsReveal 0.8s ease-out 0.3s forwards;
+    opacity: 0;
+}
+
+@keyframes chipsReveal {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.feature-chips .feature-chip {
+    opacity: 0;
+    animation: chipFadeIn 0.5s ease-out forwards;
+}
+
+.feature-chips .feature-chip:nth-child(1) { animation-delay: 0.5s; }
+.feature-chips .feature-chip:nth-child(2) { animation-delay: 0.65s; }
+.feature-chips .feature-chip:nth-child(3) { animation-delay: 0.8s; }
+.feature-chips .feature-chip:nth-child(4) { animation-delay: 0.95s; }
+
+@keyframes chipFadeIn {
+    0% {
+        opacity: 0;
+        transform: translateY(15px) scale(0.95);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* Respect reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+    .reveal,
+    .reveal-fade-up,
+    .reveal-fade-down,
+    .reveal-fade-left,
+    .reveal-fade-right,
+    .reveal-scale,
+    .reveal-stagger > *,
+    .hero-content,
+    .feature-chips .chips-container,
+    .feature-chips .feature-chip {
+        opacity: 1;
+        transform: none;
+        animation: none;
+        transition: none;
     }
 }
 

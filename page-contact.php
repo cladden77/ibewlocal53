@@ -23,7 +23,7 @@ get_header();
     <div class="contact-container">
         <div class="contact-layout">
             <!-- Left Card: General Information -->
-            <div class="contact-card info-card">
+            <div class="contact-card info-card reveal-fade-right">
                 <h2 class="contact-card-title">General Information</h2>
                 
                 <div class="contact-info-list">
@@ -97,7 +97,7 @@ get_header();
             </div>
             
             <!-- Right Card: Contact Form -->
-            <div class="contact-card form-card">
+            <div class="contact-card form-card reveal-fade-left reveal-delay-2">
                 <div class="form-header">
                     <h2 class="contact-card-title">Send us a Message</h2>
                     <p class="form-helper-text">Fill out the form below and we will get back to you shortly.</p>

@@ -65,7 +65,7 @@ function ibew_get_event_category_class($category) {
 <div class="archive-container" id="events-content">
     <div class="archive-layout events-layout">
         <!-- Left Column -->
-        <aside class="events-sidebar">
+        <aside class="events-sidebar reveal-fade-right">
             <!-- Mini Calendar Card -->
             <?php
             // Get all event dates for calendar highlighting with category information
@@ -153,7 +153,7 @@ function ibew_get_event_category_class($category) {
         </aside>
         
         <!-- Right Column -->
-        <div class="events-content">
+        <div class="events-content reveal-fade-left reveal-delay-1">
             <?php 
             // Check if category filter is active from URL
             $has_category_filter = isset($_GET['event_category']) && !empty($_GET['event_category']);
