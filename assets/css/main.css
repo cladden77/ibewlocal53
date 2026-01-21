@@ -5036,6 +5036,10 @@ article.single-event {
 }
 
 @media (max-width: 480px) {
+    .home-hero .hero-title {
+        font-size: 34px;
+    }
+
     .about-hero-title {
         font-size: 28px;
     }
