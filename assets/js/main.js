@@ -294,63 +294,53 @@
         }
 
         // Reset filter link
+        // The reset link now has a proper href for server-side category reset
+        // If there's a date filter active (client-side only), we handle it here
+        // Otherwise, let the natural link navigation happen for category reset
         const resetLink = document.getElementById('reset-filter-link');
         if (resetLink) {
             resetLink.addEventListener('click', function(e) {
-                e.preventDefault();
-                // Clear selected date
-                selectedFilterDate = null;
-                // Clear selected category
-                selectedFilterCategory = null;
-                // Remove selected from all days
-                document.querySelectorAll('.calendar-day').forEach(d => d.classList.remove('selected'));
-                // Remove active from all category items
-                document.querySelectorAll('.category-item').forEach(c => c.classList.remove('active'));
+                // Check if there's a category filter in the URL
+                const urlParams = new URLSearchParams(window.location.search);
+                const hasCategoryFilter = urlParams.has('event_category');
                 
-                // Re-select today's date if it's in the current month view
-                const today = new Date();
-                if (currentMonth === today.getMonth() && currentYear === today.getFullYear()) {
-                    const todayDay = today.getDate();
-                    const calendarDays = document.querySelectorAll('.calendar-day:not(.other-month)');
-                    calendarDays.forEach(day => {
-                        if (parseInt(day.textContent) === todayDay) {
-                            day.classList.add('selected');
-                        }
-                    });
+                // If we only have a date filter (no category filter), prevent navigation and just reset date
+                if (selectedFilterDate && !hasCategoryFilter) {
+                    e.preventDefault();
+                    // Clear selected date
+                    selectedFilterDate = null;
+                    // Remove selected from all days
+                    document.querySelectorAll('.calendar-day').forEach(d => d.classList.remove('selected'));
+                    
+                    // Re-select today's date if it's in the current month view
+                    const today = new Date();
+                    if (currentMonth === today.getMonth() && currentYear === today.getFullYear()) {
+                        const todayDay = today.getDate();
+                        const calendarDays = document.querySelectorAll('.calendar-day:not(.other-month)');
+                        calendarDays.forEach(day => {
+                            if (parseInt(day.textContent) === todayDay) {
+                                day.classList.add('selected');
+                            }
+                        });
+                    }
+                    
+                    // Clear all filters
+                    selectedFilterCategory = null;
+                    applyFilters();
                 }
-                
-                // Clear all filters
-                applyFilters();
+                // If there's a category filter, let the link navigate naturally to clear it
             });
         }
 
-        // Category filter
+        // Category filter - now uses server-side filtering via URL
+        // The category links have proper href attributes, so they work as regular links
+        // We just need to track if there's an active category filter for date filtering purposes
         const categoryList = document.getElementById('event-category-filter');
         if (categoryList) {
-            const categoryItems = categoryList.querySelectorAll('.category-item');
-            categoryItems.forEach(item => {
-                item.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const clickedCategory = this.getAttribute('data-category');
-                    
-                    // If clicking the same category, clear the filter
-                    if (selectedFilterCategory === clickedCategory) {
-                        selectedFilterCategory = null;
-                        // Remove active from all category items
-                        categoryItems.forEach(c => c.classList.remove('active'));
-                        // Clear category filter
-                        filterEventsByCategory(null);
-                    } else {
-                        selectedFilterCategory = clickedCategory;
-                        // Remove active from all category items
-                        categoryItems.forEach(c => c.classList.remove('active'));
-                        // Add active to clicked category
-                        this.classList.add('active');
-                        // Filter events by selected category
-                        filterEventsByCategory(clickedCategory);
-                    }
-                });
-            });
+            const activeCategory = categoryList.querySelector('.category-item.active');
+            if (activeCategory) {
+                selectedFilterCategory = activeCategory.getAttribute('data-category');
+            }
         }
     }
 

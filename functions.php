@@ -400,6 +400,17 @@ function ibew_local_53_modify_event_archive_query($query) {
         $query->set('meta_key', 'event_start_datetime');
         $query->set('orderby', 'meta_value');
         $query->set('order', 'ASC');
+        
+        // Handle category filter
+        if (isset($_GET['event_category']) && !empty($_GET['event_category'])) {
+            $query->set('tax_query', array(
+                array(
+                    'taxonomy' => 'event_category',
+                    'field' => 'slug',
+                    'terms' => sanitize_text_field($_GET['event_category']),
+                ),
+            ));
+        }
     }
     
     // Modify the main query for news archives

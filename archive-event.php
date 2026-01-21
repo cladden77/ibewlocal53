@@ -123,11 +123,23 @@ function ibew_get_event_category_class($category) {
                         'hide_empty' => true,
                     ));
                     
+                    // Get current category filter from URL
+                    $current_category_slug = isset($_GET['event_category']) ? sanitize_text_field($_GET['event_category']) : '';
+                    $archive_url = get_post_type_archive_link('event');
+                    
                     foreach ($categories as $category) :
                         $color_class = ibew_get_event_category_class($category);
+                        $is_active = ($current_category_slug === $category->slug);
+                        
+                        // Build category URL - if already active, link back to unfiltered archive
+                        if ($is_active) {
+                            $category_url = $archive_url;
+                        } else {
+                            $category_url = add_query_arg('event_category', $category->slug, $archive_url);
+                        }
                     ?>
                         <li>
-                            <a href="#" class="category-item" data-category="<?php echo esc_attr($color_class); ?>">
+                            <a href="<?php echo esc_url($category_url); ?>" class="category-item<?php echo $is_active ? ' active' : ''; ?>" data-category="<?php echo esc_attr($color_class); ?>" data-category-slug="<?php echo esc_attr($category->slug); ?>">
                                 <span class="category-dot <?php echo esc_attr($color_class); ?>">
                                     <img src="<?php echo get_template_directory_uri(); ?>/assets/images/checkmark-icon.svg" alt="" class="checkmark-icon" />
                                 </span>
@@ -142,9 +154,13 @@ function ibew_get_event_category_class($category) {
         
         <!-- Right Column -->
         <div class="events-content">
-            <!-- Reset Filter Link (hidden by default) -->
-            <div class="events-filter-reset" id="events-filter-reset" style="display: none;">
-                <a href="#" id="reset-filter-link" class="reset-filter-link">Reset</a>
+            <?php 
+            // Check if category filter is active from URL
+            $has_category_filter = isset($_GET['event_category']) && !empty($_GET['event_category']);
+            ?>
+            <!-- Reset Filter Link (shown when category filter is active) -->
+            <div class="events-filter-reset" id="events-filter-reset" style="<?php echo $has_category_filter ? 'display: block;' : 'display: none;'; ?>">
+                <a href="<?php echo esc_url($archive_url); ?>" id="reset-filter-link" class="reset-filter-link">Reset</a>
             </div>
             <?php
             // Use the main query (modified by pre_get_posts in functions.php)
@@ -273,7 +289,11 @@ function ibew_get_event_category_class($category) {
                     <?php
                     // Previous button
                     if ($current_page > 1) :
-                        $prev_url = get_pagenum_link($current_page - 1) . '#events-content';
+                        $prev_url = get_pagenum_link($current_page - 1);
+                        if (!empty($current_category_slug)) {
+                            $prev_url = add_query_arg('event_category', $current_category_slug, $prev_url);
+                        }
+                        $prev_url .= '#events-content';
                     ?>
                         <a href="<?php echo esc_url($prev_url); ?>" class="pagination-arrow" aria-label="Previous page">
                             <span class="material-icons">chevron_left</span>
@@ -286,7 +306,11 @@ function ibew_get_event_category_class($category) {
                     
                     <!-- Page numbers -->
                     <?php for ($i = 1; $i <= $total_pages; $i++) :
-                        $page_url = get_pagenum_link($i) . '#events-content';
+                        $page_url = get_pagenum_link($i);
+                        if (!empty($current_category_slug)) {
+                            $page_url = add_query_arg('event_category', $current_category_slug, $page_url);
+                        }
+                        $page_url .= '#events-content';
                         $is_current = ($i == $current_page);
                     ?>
                         <?php if ($is_current) : ?>
@@ -298,7 +322,11 @@ function ibew_get_event_category_class($category) {
                     
                     <!-- Next button -->
                     <?php if ($current_page < $total_pages) :
-                        $next_url = get_pagenum_link($current_page + 1) . '#events-content';
+                        $next_url = get_pagenum_link($current_page + 1);
+                        if (!empty($current_category_slug)) {
+                            $next_url = add_query_arg('event_category', $current_category_slug, $next_url);
+                        }
+                        $next_url .= '#events-content';
                     ?>
                         <a href="<?php echo esc_url($next_url); ?>" class="pagination-arrow" aria-label="Next page">
                             <span class="material-icons">chevron_right</span>
