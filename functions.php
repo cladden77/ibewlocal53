@@ -25,6 +25,9 @@ function ibew_local_53_setup() {
     register_nav_menus(array(
         'primary' => __('Primary Menu', 'ibew-local-53'),
     ));
+    
+    // Register custom 16:12 image size for news and events
+    add_image_size('featured-16-12', 1280, 960, true);
 }
 add_action('after_setup_theme', 'ibew_local_53_setup');
 
