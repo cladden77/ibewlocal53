@@ -41,7 +41,7 @@
                 ));
                 ?>
             </nav>
-            <a href="/members-login" class="member-login-btn">
+            <a href="https://members.ibewlocal53.org/" class="member-login-btn">
                 <span class="material-icons login-icon">login</span>
                 <span class="login-text">Member Login</span>
             </a>
@@ -70,7 +70,7 @@
                     ?>
                 </nav>
                 <div class="mobile-menu-footer">
-                    <a href="/members-login" class="mobile-member-login-btn">
+                    <a href="https://members.ibewlocal53.org/" class="mobile-member-login-btn">
                         <span class="material-icons login-icon">login</span>
                         <span class="login-text">Member Login</span>
                     </a>
