@@ -7,25 +7,44 @@
 
 get_header();
 
-// Get all resource categories
+// Get all resource categories (only for documents)
 $resource_categories = get_terms(array(
     'taxonomy' => 'resource_category',
     'hide_empty' => true,
 ));
 
-// Get all resources
-$resources_query = new WP_Query(array(
+// Get all document resources
+$documents_query = new WP_Query(array(
     'post_type' => 'resource',
     'posts_per_page' => -1,
     'orderby' => 'title',
     'order' => 'ASC',
+    'meta_query' => array(
+        'relation' => 'OR',
+        array(
+            'key' => 'resource_type',
+            'value' => 'document',
+            'compare' => '=',
+        ),
+        array(
+            'key' => 'resource_type',
+            'compare' => 'NOT EXISTS',
+        ),
+    ),
 ));
 
-// Get all external links
+// Get all external link resources
 $external_links_query = new WP_Query(array(
-    'post_type' => 'external_link',
+    'post_type' => 'resource',
     'posts_per_page' => -1,
-    'meta_key' => 'external_link_order',
+    'meta_query' => array(
+        array(
+            'key' => 'resource_type',
+            'value' => 'external_link',
+            'compare' => '=',
+        ),
+    ),
+    'meta_key' => 'resource_display_order',
     'orderby' => array(
         'meta_value_num' => 'ASC',
         'title' => 'ASC',
@@ -75,8 +94,8 @@ $external_links_query = new WP_Query(array(
         
         <!-- Documents Grid -->
         <div class="resources-grid" id="resources-grid">
-            <?php if ($resources_query->have_posts()) : ?>
-                <?php while ($resources_query->have_posts()) : $resources_query->the_post(); 
+            <?php if ($documents_query->have_posts()) : ?>
+                <?php while ($documents_query->have_posts()) : $documents_query->the_post(); 
                     $file_info = ibew_local_53_get_resource_file_info(get_the_ID());
                     $categories = get_the_terms(get_the_ID(), 'resource_category');
                     $category_name = !empty($categories) ? $categories[0]->name : '';
@@ -167,7 +186,7 @@ $external_links_query = new WP_Query(array(
         <div class="external-links-grid">
             <?php if ($external_links_query->have_posts()) : ?>
                 <?php while ($external_links_query->have_posts()) : $external_links_query->the_post();
-                    $link_url = get_post_meta(get_the_ID(), 'external_link_url', true);
+                    $link_url = get_post_meta(get_the_ID(), 'resource_link_url', true);
                 ?>
                     <a href="<?php echo esc_url($link_url); ?>" class="external-link-item" target="_blank" rel="noopener noreferrer">
                         <span class="link-text"><?php the_title(); ?></span>

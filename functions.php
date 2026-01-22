@@ -478,30 +478,7 @@ function ibew_local_53_register_resource_post_type() {
         'has_archive' => true,
         'rewrite' => array('slug' => 'resources'),
         'supports' => array('title'),
-        'menu_icon' => 'dashicons-media-document',
-        'show_in_rest' => true,
-    ));
-
-    // Register External Link Post Type
-    register_post_type('external_link', array(
-        'labels' => array(
-            'name' => __('External Links', 'ibew-local-53'),
-            'singular_name' => __('External Link', 'ibew-local-53'),
-            'add_new' => __('Add New', 'ibew-local-53'),
-            'add_new_item' => __('Add New External Link', 'ibew-local-53'),
-            'edit_item' => __('Edit External Link', 'ibew-local-53'),
-            'new_item' => __('New External Link', 'ibew-local-53'),
-            'view_item' => __('View External Link', 'ibew-local-53'),
-            'search_items' => __('Search External Links', 'ibew-local-53'),
-            'not_found' => __('No external links found', 'ibew-local-53'),
-            'not_found_in_trash' => __('No external links found in Trash', 'ibew-local-53'),
-            'menu_name' => __('External Links', 'ibew-local-53'),
-        ),
-        'public' => true,
-        'has_archive' => false,
-        'rewrite' => array('slug' => 'external-links'),
-        'supports' => array('title'),
-        'menu_icon' => 'dashicons-admin-links',
+        'menu_icon' => 'dashicons-portfolio',
         'show_in_rest' => true,
     ));
 }
@@ -511,8 +488,8 @@ add_action('init', 'ibew_local_53_register_resource_post_type');
 function ibew_local_53_register_resource_taxonomy() {
     register_taxonomy('resource_category', 'resource', array(
         'labels' => array(
-            'name' => __('Resource Categories', 'ibew-local-53'),
-            'singular_name' => __('Resource Category', 'ibew-local-53'),
+            'name' => __('Document Categories', 'ibew-local-53'),
+            'singular_name' => __('Document Category', 'ibew-local-53'),
             'search_items' => __('Search Categories', 'ibew-local-53'),
             'all_items' => __('All Categories', 'ibew-local-53'),
             'parent_item' => __('Parent Category', 'ibew-local-53'),
@@ -521,7 +498,7 @@ function ibew_local_53_register_resource_taxonomy() {
             'update_item' => __('Update Category', 'ibew-local-53'),
             'add_new_item' => __('Add New Category', 'ibew-local-53'),
             'new_item_name' => __('New Category Name', 'ibew-local-53'),
-            'menu_name' => __('Categories', 'ibew-local-53'),
+            'menu_name' => __('Document Categories', 'ibew-local-53'),
         ),
         'hierarchical' => true,
         'public' => true,
@@ -536,7 +513,7 @@ add_action('init', 'ibew_local_53_register_resource_taxonomy');
 function ibew_local_53_add_resource_meta_box() {
     add_meta_box(
         'ibew_resource_meta',
-        __('Resource File', 'ibew-local-53'),
+        __('Resource Details', 'ibew-local-53'),
         'ibew_local_53_resource_meta_box_callback',
         'resource',
         'normal',
@@ -549,15 +526,18 @@ add_action('add_meta_boxes', 'ibew_local_53_add_resource_meta_box');
 function ibew_local_53_resource_meta_box_callback($post) {
     wp_nonce_field('ibew_resource_meta_box', 'ibew_resource_meta_box_nonce');
     
+    $resource_type = get_post_meta($post->ID, 'resource_type', true) ?: 'document';
     $file_id = get_post_meta($post->ID, 'resource_file_id', true);
-    $file_url = $file_id ? wp_get_attachment_url($file_id) : '';
-    $file_name = $file_id ? basename(get_attached_file($file_id)) : '';
+    $link_url = get_post_meta($post->ID, 'resource_link_url', true);
+    $display_order = get_post_meta($post->ID, 'resource_display_order', true);
     
-    // Get file metadata
+    // Get file metadata if exists
+    $file_name = '';
     $file_size = '';
     $file_type = '';
     if ($file_id) {
         $file_path = get_attached_file($file_id);
+        $file_name = basename($file_path);
         if (file_exists($file_path)) {
             $size_bytes = filesize($file_path);
             if ($size_bytes >= 1048576) {
@@ -569,11 +549,109 @@ function ibew_local_53_resource_meta_box_callback($post) {
         $file_type = strtoupper(pathinfo($file_path, PATHINFO_EXTENSION));
     }
     ?>
-    <div class="resource-file-upload">
+    <style>
+        .resource-type-selector {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 24px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #ddd;
+        }
+        .resource-type-option {
+            flex: 1;
+            position: relative;
+        }
+        .resource-type-option input[type="radio"] {
+            position: absolute;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+            z-index: 2;
+        }
+        .resource-type-option label {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background: #fff;
+        }
+        .resource-type-option input[type="radio"]:checked + label {
+            border-color: #2271b1;
+            background: #f0f7fc;
+        }
+        .resource-type-option input[type="radio"]:focus + label {
+            box-shadow: 0 0 0 2px #2271b1;
+        }
+        .resource-type-option .dashicons {
+            font-size: 32px;
+            width: 32px;
+            height: 32px;
+            margin-bottom: 8px;
+            color: #646970;
+        }
+        .resource-type-option input[type="radio"]:checked + label .dashicons {
+            color: #2271b1;
+        }
+        .resource-type-option .type-title {
+            font-weight: 600;
+            color: #1d2327;
+            margin-bottom: 4px;
+        }
+        .resource-type-option .type-description {
+            font-size: 12px;
+            color: #646970;
+            text-align: center;
+        }
+        .resource-fields-section {
+            display: none;
+            padding: 16px;
+            background: #f9f9f9;
+            border-radius: 8px;
+            margin-bottom: 16px;
+        }
+        .resource-fields-section.active {
+            display: block;
+        }
+        .resource-fields-section h4 {
+            margin: 0 0 16px 0;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #ddd;
+        }
+    </style>
+    
+    <!-- Resource Type Selector -->
+    <div class="resource-type-selector">
+        <div class="resource-type-option">
+            <input type="radio" id="resource_type_document" name="resource_type" value="document" <?php checked($resource_type, 'document'); ?> />
+            <label for="resource_type_document">
+                <span class="dashicons dashicons-media-document"></span>
+                <span class="type-title"><?php _e('Document', 'ibew-local-53'); ?></span>
+                <span class="type-description"><?php _e('Upload a PDF, Word doc, or spreadsheet', 'ibew-local-53'); ?></span>
+            </label>
+        </div>
+        <div class="resource-type-option">
+            <input type="radio" id="resource_type_link" name="resource_type" value="external_link" <?php checked($resource_type, 'external_link'); ?> />
+            <label for="resource_type_link">
+                <span class="dashicons dashicons-admin-links"></span>
+                <span class="type-title"><?php _e('External Link', 'ibew-local-53'); ?></span>
+                <span class="type-description"><?php _e('Link to an external website', 'ibew-local-53'); ?></span>
+            </label>
+        </div>
+    </div>
+    
+    <!-- Document Fields -->
+    <div id="document-fields" class="resource-fields-section <?php echo $resource_type === 'document' ? 'active' : ''; ?>">
+        <h4><span class="dashicons dashicons-media-document" style="margin-right: 8px;"></span><?php _e('Document Upload', 'ibew-local-53'); ?></h4>
+        
         <input type="hidden" id="resource_file_id" name="resource_file_id" value="<?php echo esc_attr($file_id); ?>" />
         
         <div id="resource-file-preview" style="margin-bottom: 15px; <?php echo $file_id ? '' : 'display:none;'; ?>">
-            <div style="background: #f0f0f1; padding: 15px; border-radius: 4px; display: flex; align-items: center; gap: 15px;">
+            <div style="background: #fff; padding: 15px; border-radius: 4px; border: 1px solid #ddd; display: flex; align-items: center; gap: 15px;">
                 <span class="dashicons dashicons-pdf" style="font-size: 36px; width: 36px; height: 36px; color: #c82e39;"></span>
                 <div>
                     <strong id="resource-file-name"><?php echo esc_html($file_name); ?></strong>
@@ -593,12 +671,50 @@ function ibew_local_53_resource_meta_box_callback($post) {
         </button>
         
         <p class="description" style="margin-top: 10px;">
-            <?php _e('Upload a PDF, DOC, DOCX, XLS, XLSX, or other document file.', 'ibew-local-53'); ?>
+            <?php _e('Upload a PDF, DOC, DOCX, XLS, XLSX, or other document file. Documents will appear in the "Official Documents" section.', 'ibew-local-53'); ?>
         </p>
+    </div>
+    
+    <!-- External Link Fields -->
+    <div id="link-fields" class="resource-fields-section <?php echo $resource_type === 'external_link' ? 'active' : ''; ?>">
+        <h4><span class="dashicons dashicons-admin-links" style="margin-right: 8px;"></span><?php _e('External Link', 'ibew-local-53'); ?></h4>
+        
+        <table class="form-table" style="margin: 0;">
+            <tr>
+                <th style="padding-left: 0;"><label for="resource_link_url"><?php _e('Link URL', 'ibew-local-53'); ?></label></th>
+                <td>
+                    <input type="url" id="resource_link_url" name="resource_link_url" value="<?php echo esc_attr($link_url); ?>" class="regular-text" placeholder="https://example.com" style="width: 100%;" />
+                    <p class="description"><?php _e('Enter the full URL including https://. Links will appear in the "External Resources" section.', 'ibew-local-53'); ?></p>
+                </td>
+            </tr>
+        </table>
+    </div>
+    
+    <!-- Display Order (for external links) -->
+    <div id="order-field" style="margin-top: 16px; <?php echo $resource_type === 'external_link' ? '' : 'display:none;'; ?>">
+        <label for="resource_display_order"><strong><?php _e('Display Order', 'ibew-local-53'); ?></strong></label>
+        <input type="number" id="resource_display_order" name="resource_display_order" value="<?php echo esc_attr($display_order ?: 0); ?>" class="small-text" min="0" style="margin-left: 10px;" />
+        <p class="description"><?php _e('Lower numbers appear first in the External Resources section.', 'ibew-local-53'); ?></p>
     </div>
     
     <script>
     jQuery(document).ready(function($) {
+        // Toggle fields based on resource type
+        $('input[name="resource_type"]').on('change', function() {
+            var type = $(this).val();
+            
+            if (type === 'document') {
+                $('#document-fields').addClass('active');
+                $('#link-fields').removeClass('active');
+                $('#order-field').hide();
+            } else {
+                $('#document-fields').removeClass('active');
+                $('#link-fields').addClass('active');
+                $('#order-field').show();
+            }
+        });
+        
+        // Media uploader for documents
         var mediaUploader;
         
         $('#upload-resource-btn').on('click', function(e) {
@@ -676,6 +792,15 @@ function ibew_local_53_save_resource_meta($post_id) {
         return;
     }
 
+    // Save resource type
+    if (isset($_POST['resource_type'])) {
+        $type = sanitize_text_field($_POST['resource_type']);
+        if (in_array($type, array('document', 'external_link'))) {
+            update_post_meta($post_id, 'resource_type', $type);
+        }
+    }
+
+    // Save document file
     if (isset($_POST['resource_file_id'])) {
         $file_id = absint($_POST['resource_file_id']);
         if ($file_id) {
@@ -684,79 +809,23 @@ function ibew_local_53_save_resource_meta($post_id) {
             delete_post_meta($post_id, 'resource_file_id');
         }
     }
+
+    // Save external link URL
+    if (isset($_POST['resource_link_url'])) {
+        $url = esc_url_raw($_POST['resource_link_url']);
+        if ($url) {
+            update_post_meta($post_id, 'resource_link_url', $url);
+        } else {
+            delete_post_meta($post_id, 'resource_link_url');
+        }
+    }
+
+    // Save display order
+    if (isset($_POST['resource_display_order'])) {
+        update_post_meta($post_id, 'resource_display_order', absint($_POST['resource_display_order']));
+    }
 }
 add_action('save_post', 'ibew_local_53_save_resource_meta');
-
-// Add External Link Meta Box
-function ibew_local_53_add_external_link_meta_box() {
-    add_meta_box(
-        'ibew_external_link_meta',
-        __('Link Details', 'ibew-local-53'),
-        'ibew_local_53_external_link_meta_box_callback',
-        'external_link',
-        'normal',
-        'high'
-    );
-}
-add_action('add_meta_boxes', 'ibew_local_53_add_external_link_meta_box');
-
-// External Link Meta Box Callback
-function ibew_local_53_external_link_meta_box_callback($post) {
-    wp_nonce_field('ibew_external_link_meta_box', 'ibew_external_link_meta_box_nonce');
-    
-    $link_url = get_post_meta($post->ID, 'external_link_url', true);
-    $link_order = get_post_meta($post->ID, 'external_link_order', true);
-    ?>
-    <table class="form-table">
-        <tr>
-            <th><label for="external_link_url"><?php _e('Link URL', 'ibew-local-53'); ?> <span style="color:red;">*</span></label></th>
-            <td>
-                <input type="url" id="external_link_url" name="external_link_url" value="<?php echo esc_attr($link_url); ?>" class="regular-text" required placeholder="https://example.com" />
-                <p class="description"><?php _e('Enter the full URL including https://', 'ibew-local-53'); ?></p>
-            </td>
-        </tr>
-        <tr>
-            <th><label for="external_link_order"><?php _e('Display Order', 'ibew-local-53'); ?></label></th>
-            <td>
-                <input type="number" id="external_link_order" name="external_link_order" value="<?php echo esc_attr($link_order ?: 0); ?>" class="small-text" min="0" />
-                <p class="description"><?php _e('Lower numbers appear first. Links with same order are sorted alphabetically.', 'ibew-local-53'); ?></p>
-            </td>
-        </tr>
-    </table>
-    <?php
-}
-
-// Save External Link Meta
-function ibew_local_53_save_external_link_meta($post_id) {
-    if (get_post_type($post_id) !== 'external_link') {
-        return;
-    }
-
-    if (!isset($_POST['ibew_external_link_meta_box_nonce'])) {
-        return;
-    }
-
-    if (!wp_verify_nonce($_POST['ibew_external_link_meta_box_nonce'], 'ibew_external_link_meta_box')) {
-        return;
-    }
-
-    if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
-        return;
-    }
-
-    if (!current_user_can('edit_post', $post_id)) {
-        return;
-    }
-
-    if (isset($_POST['external_link_url'])) {
-        update_post_meta($post_id, 'external_link_url', esc_url_raw($_POST['external_link_url']));
-    }
-
-    if (isset($_POST['external_link_order'])) {
-        update_post_meta($post_id, 'external_link_order', absint($_POST['external_link_order']));
-    }
-}
-add_action('save_post', 'ibew_local_53_save_external_link_meta');
 
 // Enqueue media uploader for resources
 function ibew_local_53_enqueue_resource_admin_scripts($hook) {
@@ -812,7 +881,8 @@ function ibew_local_53_resource_admin_columns($columns) {
     foreach ($columns as $key => $value) {
         $new_columns[$key] = $value;
         if ($key === 'title') {
-            $new_columns['resource_file'] = __('File', 'ibew-local-53');
+            $new_columns['resource_type'] = __('Type', 'ibew-local-53');
+            $new_columns['resource_details'] = __('Details', 'ibew-local-53');
         }
     }
     return $new_columns;
@@ -821,64 +891,74 @@ add_filter('manage_resource_posts_columns', 'ibew_local_53_resource_admin_column
 
 // Populate custom columns for Resource
 function ibew_local_53_resource_admin_column_content($column, $post_id) {
-    if ($column === 'resource_file') {
-        $file_info = ibew_local_53_get_resource_file_info($post_id);
-        if ($file_info) {
-            echo '<span style="color: #666;">' . esc_html($file_info['type']) . ' • ' . esc_html($file_info['size']) . '</span>';
+    $resource_type = get_post_meta($post_id, 'resource_type', true) ?: 'document';
+    
+    if ($column === 'resource_type') {
+        if ($resource_type === 'document') {
+            echo '<span class="dashicons dashicons-media-document" style="color: #c82e39;" title="Document"></span> ';
+            echo '<span style="color: #666;">Document</span>';
         } else {
-            echo '<span style="color: #999;">—</span>';
+            echo '<span class="dashicons dashicons-admin-links" style="color: #2271b1;" title="External Link"></span> ';
+            echo '<span style="color: #666;">External Link</span>';
+        }
+    }
+    
+    if ($column === 'resource_details') {
+        if ($resource_type === 'document') {
+            $file_info = ibew_local_53_get_resource_file_info($post_id);
+            if ($file_info) {
+                echo '<span style="color: #666;">' . esc_html($file_info['type']) . ' • ' . esc_html($file_info['size']) . '</span>';
+            } else {
+                echo '<span style="color: #d63638;">No file uploaded</span>';
+            }
+        } else {
+            $url = get_post_meta($post_id, 'resource_link_url', true);
+            if ($url) {
+                $display_url = strlen($url) > 50 ? substr($url, 0, 50) . '...' : $url;
+                echo '<a href="' . esc_url($url) . '" target="_blank" style="color: #2271b1;">' . esc_html($display_url) . '</a>';
+            } else {
+                echo '<span style="color: #d63638;">No URL set</span>';
+            }
         }
     }
 }
 add_action('manage_resource_posts_custom_column', 'ibew_local_53_resource_admin_column_content', 10, 2);
 
-// Add custom columns to External Link admin list
-function ibew_local_53_external_link_admin_columns($columns) {
-    $new_columns = array();
-    foreach ($columns as $key => $value) {
-        $new_columns[$key] = $value;
-        if ($key === 'title') {
-            $new_columns['link_url'] = __('URL', 'ibew-local-53');
-            $new_columns['link_order'] = __('Order', 'ibew-local-53');
-        }
-    }
-    return $new_columns;
-}
-add_filter('manage_external_link_posts_columns', 'ibew_local_53_external_link_admin_columns');
-
-// Populate custom columns for External Link
-function ibew_local_53_external_link_admin_column_content($column, $post_id) {
-    if ($column === 'link_url') {
-        $url = get_post_meta($post_id, 'external_link_url', true);
-        if ($url) {
-            echo '<a href="' . esc_url($url) . '" target="_blank">' . esc_html($url) . '</a>';
-        } else {
-            echo '<span style="color: #999;">—</span>';
-        }
-    }
-    if ($column === 'link_order') {
-        $order = get_post_meta($post_id, 'external_link_order', true);
-        echo esc_html($order ?: 0);
-    }
-}
-add_action('manage_external_link_posts_custom_column', 'ibew_local_53_external_link_admin_column_content', 10, 2);
-
-// Make External Link order column sortable
-function ibew_local_53_external_link_sortable_columns($columns) {
-    $columns['link_order'] = 'link_order';
-    return $columns;
-}
-add_filter('manage_edit-external_link_sortable_columns', 'ibew_local_53_external_link_sortable_columns');
-
-// Handle sorting by link order
-function ibew_local_53_external_link_orderby($query) {
-    if (!is_admin() || !$query->is_main_query()) {
+// Add filter dropdown for resource type in admin
+function ibew_local_53_resource_admin_filter() {
+    global $typenow;
+    
+    if ($typenow !== 'resource') {
         return;
     }
     
-    if ($query->get('orderby') === 'link_order') {
-        $query->set('meta_key', 'external_link_order');
-        $query->set('orderby', 'meta_value_num');
+    $current_type = isset($_GET['resource_type_filter']) ? $_GET['resource_type_filter'] : '';
+    ?>
+    <select name="resource_type_filter">
+        <option value=""><?php _e('All Types', 'ibew-local-53'); ?></option>
+        <option value="document" <?php selected($current_type, 'document'); ?>><?php _e('Documents', 'ibew-local-53'); ?></option>
+        <option value="external_link" <?php selected($current_type, 'external_link'); ?>><?php _e('External Links', 'ibew-local-53'); ?></option>
+    </select>
+    <?php
+}
+add_action('restrict_manage_posts', 'ibew_local_53_resource_admin_filter');
+
+// Handle resource type filter in admin
+function ibew_local_53_resource_admin_filter_query($query) {
+    global $pagenow, $typenow;
+    
+    if ($pagenow !== 'edit.php' || $typenow !== 'resource' || !is_admin() || !$query->is_main_query()) {
+        return;
+    }
+    
+    if (isset($_GET['resource_type_filter']) && !empty($_GET['resource_type_filter'])) {
+        $query->set('meta_query', array(
+            array(
+                'key' => 'resource_type',
+                'value' => sanitize_text_field($_GET['resource_type_filter']),
+                'compare' => '=',
+            ),
+        ));
     }
 }
-add_action('pre_get_posts', 'ibew_local_53_external_link_orderby');
+add_action('pre_get_posts', 'ibew_local_53_resource_admin_filter_query');
