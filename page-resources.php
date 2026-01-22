@@ -208,7 +208,7 @@ $external_links_query = new WP_Query(array(
             <p class="cta-text">Our staff is available at the Main Hall to assist with specific jurisdiction documentation and member requests.</p>
         </div>
         <div class="cta-actions reveal-fade-up reveal-delay-1">
-            <a href="mailto:info@ibewlocal53.org" class="btn btn-cta-gold">
+            <a href="mailto:localrep@ibewlocal53.org" class="btn btn-cta-gold">
                 Email Us
                 <span class="material-icons">arrow_forward</span>
             </a>
