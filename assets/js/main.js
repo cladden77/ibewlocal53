@@ -560,6 +560,107 @@
         }
     }
 
+    // Resources page filtering and search functionality
+    function initResourcesFilter() {
+        const filterChips = document.querySelectorAll('.resource-category-filters .filter-chip');
+        const searchInput = document.getElementById('resource-search');
+        const resourcesGrid = document.getElementById('resources-grid');
+        const noResultsMessage = document.getElementById('no-results-message');
+        
+        if (!resourcesGrid) {
+            return;
+        }
+        
+        const resourceCards = resourcesGrid.querySelectorAll('.resource-card');
+        let activeCategory = 'all';
+        let searchTerm = '';
+        
+        // Filter function that combines category and search
+        function filterResources() {
+            let visibleCount = 0;
+            
+            resourceCards.forEach(function(card) {
+                const cardCategories = card.getAttribute('data-categories') || '';
+                const cardTitle = card.getAttribute('data-title') || '';
+                
+                // Check category match
+                const categoryMatch = activeCategory === 'all' || cardCategories.includes(activeCategory);
+                
+                // Check search match (case-insensitive)
+                const searchMatch = searchTerm === '' || cardTitle.includes(searchTerm.toLowerCase());
+                
+                // Show card if both filters match
+                if (categoryMatch && searchMatch) {
+                    card.classList.remove('hidden');
+                    visibleCount++;
+                } else {
+                    card.classList.add('hidden');
+                }
+            });
+            
+            // Show/hide no results message
+            if (noResultsMessage) {
+                if (visibleCount === 0 && resourceCards.length > 0) {
+                    noResultsMessage.style.display = 'flex';
+                    resourcesGrid.style.display = 'none';
+                } else {
+                    noResultsMessage.style.display = 'none';
+                    resourcesGrid.style.display = 'grid';
+                }
+            }
+        }
+        
+        // Category filter chip click handlers
+        filterChips.forEach(function(chip) {
+            chip.addEventListener('click', function() {
+                // Remove active class from all chips
+                filterChips.forEach(function(c) {
+                    c.classList.remove('active');
+                });
+                
+                // Add active class to clicked chip
+                this.classList.add('active');
+                
+                // Update active category and filter
+                activeCategory = this.getAttribute('data-category');
+                filterResources();
+            });
+        });
+        
+        // Search input handler with debounce
+        if (searchInput) {
+            let searchTimeout;
+            
+            searchInput.addEventListener('input', function() {
+                clearTimeout(searchTimeout);
+                
+                searchTimeout = setTimeout(function() {
+                    searchTerm = searchInput.value.trim();
+                    filterResources();
+                }, 200); // 200ms debounce
+            });
+            
+            // Also handle Enter key
+            searchInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    clearTimeout(searchTimeout);
+                    searchTerm = searchInput.value.trim();
+                    filterResources();
+                }
+            });
+            
+            // Clear search on Escape
+            searchInput.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    searchInput.value = '';
+                    searchTerm = '';
+                    filterResources();
+                    searchInput.blur();
+                }
+            });
+        }
+    }
+
     // Initialize on DOM ready
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', function() {
@@ -568,6 +669,7 @@
             initEventsCarousel();
             initMobileMenu();
             initPaginationScroll();
+            initResourcesFilter();
         });
     } else {
         initScrollReveal();
@@ -575,6 +677,7 @@
         initEventsCarousel();
         initMobileMenu();
         initPaginationScroll();
+        initResourcesFilter();
     }
 
 })();

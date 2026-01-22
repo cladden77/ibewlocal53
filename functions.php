@@ -453,3 +453,432 @@ function ibew_local_53_enqueue_pagination_scripts() {
     ));
 }
 add_action('wp_enqueue_scripts', 'ibew_local_53_enqueue_pagination_scripts');
+
+// ============================================
+// RESOURCES POST TYPE & FUNCTIONALITY
+// ============================================
+
+// Register Resource Post Type
+function ibew_local_53_register_resource_post_type() {
+    register_post_type('resource', array(
+        'labels' => array(
+            'name' => __('Resources', 'ibew-local-53'),
+            'singular_name' => __('Resource', 'ibew-local-53'),
+            'add_new' => __('Add New', 'ibew-local-53'),
+            'add_new_item' => __('Add New Resource', 'ibew-local-53'),
+            'edit_item' => __('Edit Resource', 'ibew-local-53'),
+            'new_item' => __('New Resource', 'ibew-local-53'),
+            'view_item' => __('View Resource', 'ibew-local-53'),
+            'search_items' => __('Search Resources', 'ibew-local-53'),
+            'not_found' => __('No resources found', 'ibew-local-53'),
+            'not_found_in_trash' => __('No resources found in Trash', 'ibew-local-53'),
+            'menu_name' => __('Resources', 'ibew-local-53'),
+        ),
+        'public' => true,
+        'has_archive' => true,
+        'rewrite' => array('slug' => 'resources'),
+        'supports' => array('title'),
+        'menu_icon' => 'dashicons-media-document',
+        'show_in_rest' => true,
+    ));
+
+    // Register External Link Post Type
+    register_post_type('external_link', array(
+        'labels' => array(
+            'name' => __('External Links', 'ibew-local-53'),
+            'singular_name' => __('External Link', 'ibew-local-53'),
+            'add_new' => __('Add New', 'ibew-local-53'),
+            'add_new_item' => __('Add New External Link', 'ibew-local-53'),
+            'edit_item' => __('Edit External Link', 'ibew-local-53'),
+            'new_item' => __('New External Link', 'ibew-local-53'),
+            'view_item' => __('View External Link', 'ibew-local-53'),
+            'search_items' => __('Search External Links', 'ibew-local-53'),
+            'not_found' => __('No external links found', 'ibew-local-53'),
+            'not_found_in_trash' => __('No external links found in Trash', 'ibew-local-53'),
+            'menu_name' => __('External Links', 'ibew-local-53'),
+        ),
+        'public' => true,
+        'has_archive' => false,
+        'rewrite' => array('slug' => 'external-links'),
+        'supports' => array('title'),
+        'menu_icon' => 'dashicons-admin-links',
+        'show_in_rest' => true,
+    ));
+}
+add_action('init', 'ibew_local_53_register_resource_post_type');
+
+// Register Resource Categories Taxonomy
+function ibew_local_53_register_resource_taxonomy() {
+    register_taxonomy('resource_category', 'resource', array(
+        'labels' => array(
+            'name' => __('Resource Categories', 'ibew-local-53'),
+            'singular_name' => __('Resource Category', 'ibew-local-53'),
+            'search_items' => __('Search Categories', 'ibew-local-53'),
+            'all_items' => __('All Categories', 'ibew-local-53'),
+            'parent_item' => __('Parent Category', 'ibew-local-53'),
+            'parent_item_colon' => __('Parent Category:', 'ibew-local-53'),
+            'edit_item' => __('Edit Category', 'ibew-local-53'),
+            'update_item' => __('Update Category', 'ibew-local-53'),
+            'add_new_item' => __('Add New Category', 'ibew-local-53'),
+            'new_item_name' => __('New Category Name', 'ibew-local-53'),
+            'menu_name' => __('Categories', 'ibew-local-53'),
+        ),
+        'hierarchical' => true,
+        'public' => true,
+        'rewrite' => array('slug' => 'resource-category'),
+        'show_in_rest' => true,
+        'show_admin_column' => true,
+    ));
+}
+add_action('init', 'ibew_local_53_register_resource_taxonomy');
+
+// Add Resource Meta Box
+function ibew_local_53_add_resource_meta_box() {
+    add_meta_box(
+        'ibew_resource_meta',
+        __('Resource File', 'ibew-local-53'),
+        'ibew_local_53_resource_meta_box_callback',
+        'resource',
+        'normal',
+        'high'
+    );
+}
+add_action('add_meta_boxes', 'ibew_local_53_add_resource_meta_box');
+
+// Resource Meta Box Callback
+function ibew_local_53_resource_meta_box_callback($post) {
+    wp_nonce_field('ibew_resource_meta_box', 'ibew_resource_meta_box_nonce');
+    
+    $file_id = get_post_meta($post->ID, 'resource_file_id', true);
+    $file_url = $file_id ? wp_get_attachment_url($file_id) : '';
+    $file_name = $file_id ? basename(get_attached_file($file_id)) : '';
+    
+    // Get file metadata
+    $file_size = '';
+    $file_type = '';
+    if ($file_id) {
+        $file_path = get_attached_file($file_id);
+        if (file_exists($file_path)) {
+            $size_bytes = filesize($file_path);
+            if ($size_bytes >= 1048576) {
+                $file_size = number_format($size_bytes / 1048576, 1) . ' MB';
+            } else {
+                $file_size = number_format($size_bytes / 1024, 0) . ' KB';
+            }
+        }
+        $file_type = strtoupper(pathinfo($file_path, PATHINFO_EXTENSION));
+    }
+    ?>
+    <div class="resource-file-upload">
+        <input type="hidden" id="resource_file_id" name="resource_file_id" value="<?php echo esc_attr($file_id); ?>" />
+        
+        <div id="resource-file-preview" style="margin-bottom: 15px; <?php echo $file_id ? '' : 'display:none;'; ?>">
+            <div style="background: #f0f0f1; padding: 15px; border-radius: 4px; display: flex; align-items: center; gap: 15px;">
+                <span class="dashicons dashicons-pdf" style="font-size: 36px; width: 36px; height: 36px; color: #c82e39;"></span>
+                <div>
+                    <strong id="resource-file-name"><?php echo esc_html($file_name); ?></strong>
+                    <br>
+                    <span id="resource-file-info" style="color: #666; font-size: 12px;">
+                        <?php echo esc_html($file_type . ($file_size ? ' • ' . $file_size : '')); ?>
+                    </span>
+                </div>
+            </div>
+        </div>
+        
+        <button type="button" class="button button-primary" id="upload-resource-btn">
+            <?php echo $file_id ? __('Change File', 'ibew-local-53') : __('Upload File', 'ibew-local-53'); ?>
+        </button>
+        <button type="button" class="button" id="remove-resource-btn" style="<?php echo $file_id ? '' : 'display:none;'; ?>">
+            <?php _e('Remove File', 'ibew-local-53'); ?>
+        </button>
+        
+        <p class="description" style="margin-top: 10px;">
+            <?php _e('Upload a PDF, DOC, DOCX, XLS, XLSX, or other document file.', 'ibew-local-53'); ?>
+        </p>
+    </div>
+    
+    <script>
+    jQuery(document).ready(function($) {
+        var mediaUploader;
+        
+        $('#upload-resource-btn').on('click', function(e) {
+            e.preventDefault();
+            
+            if (mediaUploader) {
+                mediaUploader.open();
+                return;
+            }
+            
+            mediaUploader = wp.media({
+                title: '<?php _e('Select or Upload a Document', 'ibew-local-53'); ?>',
+                button: {
+                    text: '<?php _e('Use this file', 'ibew-local-53'); ?>'
+                },
+                multiple: false,
+                library: {
+                    type: ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet']
+                }
+            });
+            
+            mediaUploader.on('select', function() {
+                var attachment = mediaUploader.state().get('selection').first().toJSON();
+                $('#resource_file_id').val(attachment.id);
+                $('#resource-file-name').text(attachment.filename);
+                
+                var fileSize = '';
+                if (attachment.filesizeInBytes >= 1048576) {
+                    fileSize = (attachment.filesizeInBytes / 1048576).toFixed(1) + ' MB';
+                } else {
+                    fileSize = Math.round(attachment.filesizeInBytes / 1024) + ' KB';
+                }
+                var fileExt = attachment.filename.split('.').pop().toUpperCase();
+                $('#resource-file-info').text(fileExt + (fileSize ? ' • ' + fileSize : ''));
+                
+                $('#resource-file-preview').show();
+                $('#remove-resource-btn').show();
+                $('#upload-resource-btn').text('<?php _e('Change File', 'ibew-local-53'); ?>');
+            });
+            
+            mediaUploader.open();
+        });
+        
+        $('#remove-resource-btn').on('click', function(e) {
+            e.preventDefault();
+            $('#resource_file_id').val('');
+            $('#resource-file-preview').hide();
+            $(this).hide();
+            $('#upload-resource-btn').text('<?php _e('Upload File', 'ibew-local-53'); ?>');
+        });
+    });
+    </script>
+    <?php
+}
+
+// Save Resource Meta
+function ibew_local_53_save_resource_meta($post_id) {
+    if (get_post_type($post_id) !== 'resource') {
+        return;
+    }
+
+    if (!isset($_POST['ibew_resource_meta_box_nonce'])) {
+        return;
+    }
+
+    if (!wp_verify_nonce($_POST['ibew_resource_meta_box_nonce'], 'ibew_resource_meta_box')) {
+        return;
+    }
+
+    if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
+        return;
+    }
+
+    if (!current_user_can('edit_post', $post_id)) {
+        return;
+    }
+
+    if (isset($_POST['resource_file_id'])) {
+        $file_id = absint($_POST['resource_file_id']);
+        if ($file_id) {
+            update_post_meta($post_id, 'resource_file_id', $file_id);
+        } else {
+            delete_post_meta($post_id, 'resource_file_id');
+        }
+    }
+}
+add_action('save_post', 'ibew_local_53_save_resource_meta');
+
+// Add External Link Meta Box
+function ibew_local_53_add_external_link_meta_box() {
+    add_meta_box(
+        'ibew_external_link_meta',
+        __('Link Details', 'ibew-local-53'),
+        'ibew_local_53_external_link_meta_box_callback',
+        'external_link',
+        'normal',
+        'high'
+    );
+}
+add_action('add_meta_boxes', 'ibew_local_53_add_external_link_meta_box');
+
+// External Link Meta Box Callback
+function ibew_local_53_external_link_meta_box_callback($post) {
+    wp_nonce_field('ibew_external_link_meta_box', 'ibew_external_link_meta_box_nonce');
+    
+    $link_url = get_post_meta($post->ID, 'external_link_url', true);
+    $link_order = get_post_meta($post->ID, 'external_link_order', true);
+    ?>
+    <table class="form-table">
+        <tr>
+            <th><label for="external_link_url"><?php _e('Link URL', 'ibew-local-53'); ?> <span style="color:red;">*</span></label></th>
+            <td>
+                <input type="url" id="external_link_url" name="external_link_url" value="<?php echo esc_attr($link_url); ?>" class="regular-text" required placeholder="https://example.com" />
+                <p class="description"><?php _e('Enter the full URL including https://', 'ibew-local-53'); ?></p>
+            </td>
+        </tr>
+        <tr>
+            <th><label for="external_link_order"><?php _e('Display Order', 'ibew-local-53'); ?></label></th>
+            <td>
+                <input type="number" id="external_link_order" name="external_link_order" value="<?php echo esc_attr($link_order ?: 0); ?>" class="small-text" min="0" />
+                <p class="description"><?php _e('Lower numbers appear first. Links with same order are sorted alphabetically.', 'ibew-local-53'); ?></p>
+            </td>
+        </tr>
+    </table>
+    <?php
+}
+
+// Save External Link Meta
+function ibew_local_53_save_external_link_meta($post_id) {
+    if (get_post_type($post_id) !== 'external_link') {
+        return;
+    }
+
+    if (!isset($_POST['ibew_external_link_meta_box_nonce'])) {
+        return;
+    }
+
+    if (!wp_verify_nonce($_POST['ibew_external_link_meta_box_nonce'], 'ibew_external_link_meta_box')) {
+        return;
+    }
+
+    if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
+        return;
+    }
+
+    if (!current_user_can('edit_post', $post_id)) {
+        return;
+    }
+
+    if (isset($_POST['external_link_url'])) {
+        update_post_meta($post_id, 'external_link_url', esc_url_raw($_POST['external_link_url']));
+    }
+
+    if (isset($_POST['external_link_order'])) {
+        update_post_meta($post_id, 'external_link_order', absint($_POST['external_link_order']));
+    }
+}
+add_action('save_post', 'ibew_local_53_save_external_link_meta');
+
+// Enqueue media uploader for resources
+function ibew_local_53_enqueue_resource_admin_scripts($hook) {
+    global $post_type;
+    if ($post_type === 'resource' && in_array($hook, array('post.php', 'post-new.php'))) {
+        wp_enqueue_media();
+    }
+}
+add_action('admin_enqueue_scripts', 'ibew_local_53_enqueue_resource_admin_scripts');
+
+// Helper function to get resource file info
+function ibew_local_53_get_resource_file_info($post_id) {
+    $file_id = get_post_meta($post_id, 'resource_file_id', true);
+    if (!$file_id) {
+        return null;
+    }
+    
+    $file_path = get_attached_file($file_id);
+    $file_url = wp_get_attachment_url($file_id);
+    
+    if (!$file_path || !file_exists($file_path)) {
+        return null;
+    }
+    
+    $size_bytes = filesize($file_path);
+    if ($size_bytes >= 1048576) {
+        $file_size = number_format($size_bytes / 1048576, 1) . ' MB';
+    } else {
+        $file_size = number_format($size_bytes / 1024, 0) . ' KB';
+    }
+    
+    $file_type = strtoupper(pathinfo($file_path, PATHINFO_EXTENSION));
+    $file_name = basename($file_path);
+    
+    // Get the post modified date for "Updated" date
+    $post = get_post($post_id);
+    $updated_date = date('M j, Y', strtotime($post->post_modified));
+    
+    return array(
+        'id' => $file_id,
+        'url' => $file_url,
+        'path' => $file_path,
+        'name' => $file_name,
+        'size' => $file_size,
+        'type' => $file_type,
+        'updated' => $updated_date,
+    );
+}
+
+// Add custom columns to Resource admin list
+function ibew_local_53_resource_admin_columns($columns) {
+    $new_columns = array();
+    foreach ($columns as $key => $value) {
+        $new_columns[$key] = $value;
+        if ($key === 'title') {
+            $new_columns['resource_file'] = __('File', 'ibew-local-53');
+        }
+    }
+    return $new_columns;
+}
+add_filter('manage_resource_posts_columns', 'ibew_local_53_resource_admin_columns');
+
+// Populate custom columns for Resource
+function ibew_local_53_resource_admin_column_content($column, $post_id) {
+    if ($column === 'resource_file') {
+        $file_info = ibew_local_53_get_resource_file_info($post_id);
+        if ($file_info) {
+            echo '<span style="color: #666;">' . esc_html($file_info['type']) . ' • ' . esc_html($file_info['size']) . '</span>';
+        } else {
+            echo '<span style="color: #999;">—</span>';
+        }
+    }
+}
+add_action('manage_resource_posts_custom_column', 'ibew_local_53_resource_admin_column_content', 10, 2);
+
+// Add custom columns to External Link admin list
+function ibew_local_53_external_link_admin_columns($columns) {
+    $new_columns = array();
+    foreach ($columns as $key => $value) {
+        $new_columns[$key] = $value;
+        if ($key === 'title') {
+            $new_columns['link_url'] = __('URL', 'ibew-local-53');
+            $new_columns['link_order'] = __('Order', 'ibew-local-53');
+        }
+    }
+    return $new_columns;
+}
+add_filter('manage_external_link_posts_columns', 'ibew_local_53_external_link_admin_columns');
+
+// Populate custom columns for External Link
+function ibew_local_53_external_link_admin_column_content($column, $post_id) {
+    if ($column === 'link_url') {
+        $url = get_post_meta($post_id, 'external_link_url', true);
+        if ($url) {
+            echo '<a href="' . esc_url($url) . '" target="_blank">' . esc_html($url) . '</a>';
+        } else {
+            echo '<span style="color: #999;">—</span>';
+        }
+    }
+    if ($column === 'link_order') {
+        $order = get_post_meta($post_id, 'external_link_order', true);
+        echo esc_html($order ?: 0);
+    }
+}
+add_action('manage_external_link_posts_custom_column', 'ibew_local_53_external_link_admin_column_content', 10, 2);
+
+// Make External Link order column sortable
+function ibew_local_53_external_link_sortable_columns($columns) {
+    $columns['link_order'] = 'link_order';
+    return $columns;
+}
+add_filter('manage_edit-external_link_sortable_columns', 'ibew_local_53_external_link_sortable_columns');
+
+// Handle sorting by link order
+function ibew_local_53_external_link_orderby($query) {
+    if (!is_admin() || !$query->is_main_query()) {
+        return;
+    }
+    
+    if ($query->get('orderby') === 'link_order') {
+        $query->set('meta_key', 'external_link_order');
+        $query->set('orderby', 'meta_value_num');
+    }
+}
+add_action('pre_get_posts', 'ibew_local_53_external_link_orderby');
