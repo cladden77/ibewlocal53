@@ -208,11 +208,11 @@ $external_links_query = new WP_Query(array(
             <p class="cta-text">Our staff is available at the Main Hall to assist with specific jurisdiction documentation and member requests.</p>
         </div>
         <div class="cta-actions">
-            <a href="mailto:info@ibewlocal53.org" class="btn btn-outline">
+            <a href="mailto:info@ibewlocal53.org" class="btn btn-cta-gold">
                 Email Us
                 <span class="material-icons">arrow_forward</span>
             </a>
-            <a href="tel:+18164315434" class="btn btn-outline">
+            <a href="tel:+18164315434" class="btn btn-cta-outline">
                 Call (816) 431-5434
             </a>
         </div>
