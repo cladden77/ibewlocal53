@@ -44,7 +44,7 @@
         <div class="footer-column">
             <h4>Contact</h4>
             <div class="footer-contact">
-                <p>1808 Agawam Boulevard, Kansas City, MO 64138</p>
+                <p>1100 Admiral Boulevard  Kansas City, MO 64106</p>
                 <p><a href="tel:+18164315434">(816) 431-5434</a></p>
             </div>
         </div>
