@@ -54,7 +54,7 @@ $external_links_query = new WP_Query(array(
 
 <!-- Resources Hero Section -->
 <section class="archive-hero resources-hero">
-    <div class="archive-hero-container">
+    <div class="archive-hero-container hero-content">
         <h1 class="hero-title">Resources Hub</h1>
         <p class="hero-subtext">Download official documents and access essential external union tools and websites.</p>
     </div>
@@ -65,12 +65,12 @@ $external_links_query = new WP_Query(array(
     
     <!-- Official Documents Section -->
     <section class="resources-documents-section">
-        <div class="section-header-row">
+        <div class="section-header-row reveal-fade-up">
             <div class="section-header-left">
                 <h2 class="section-title">Official Documents</h2>
                 
                 <!-- Category Filter Chips -->
-                <div class="resource-category-filters">
+                <div class="resource-category-filters reveal-stagger">
                     <button class="filter-chip active" data-category="all">All Files</button>
                     <?php if (!empty($resource_categories) && !is_wp_error($resource_categories)) : ?>
                         <?php foreach ($resource_categories as $category) : ?>
@@ -83,7 +83,7 @@ $external_links_query = new WP_Query(array(
             </div>
             
             <!-- Search Input -->
-            <div class="resource-search-container">
+            <div class="resource-search-container reveal-fade-up reveal-delay-1">
                 <div class="resource-search-input">
                     <span class="material-icons search-icon">search</span>
                     <input type="text" id="resource-search" placeholder="Search documents..." />
@@ -92,7 +92,7 @@ $external_links_query = new WP_Query(array(
         </div>
         
         <!-- Documents Grid -->
-        <div class="resources-grid" id="resources-grid">
+        <div class="resources-grid reveal-stagger" id="resources-grid">
             <?php if ($documents_query->have_posts()) : ?>
                 <?php while ($documents_query->have_posts()) : $documents_query->the_post(); 
                     $file_info = ibew_local_53_get_resource_file_info(get_the_ID());
@@ -159,14 +159,14 @@ $external_links_query = new WP_Query(array(
                 <?php endwhile; ?>
                 <?php wp_reset_postdata(); ?>
             <?php else : ?>
-                <div class="no-resources-message">
+                <div class="no-resources-message reveal-fade-up">
                     <p>No documents available at this time. Check back soon!</p>
                 </div>
             <?php endif; ?>
         </div>
         
         <!-- No results message (hidden by default) -->
-        <div class="no-results-message" id="no-results-message" style="display: none;">
+        <div class="no-results-message reveal-fade-up" id="no-results-message" style="display: none;">
             <span class="material-icons">search_off</span>
             <p>No documents match your search criteria.</p>
         </div>
@@ -174,7 +174,7 @@ $external_links_query = new WP_Query(array(
     
     <!-- External Resources Section -->
     <section class="external-resources-section">
-        <div class="external-resources-header">
+        <div class="external-resources-header reveal-fade-up">
             <div class="header-accent"></div>
             <div class="header-content">
                 <h2 class="section-title">External Resources</h2>
@@ -182,7 +182,7 @@ $external_links_query = new WP_Query(array(
             </div>
         </div>
         
-        <div class="external-links-grid">
+        <div class="external-links-grid reveal-stagger">
             <?php if ($external_links_query->have_posts()) : ?>
                 <?php while ($external_links_query->have_posts()) : $external_links_query->the_post();
                     $link_url = get_post_meta(get_the_ID(), 'resource_link_url', true);
@@ -196,18 +196,18 @@ $external_links_query = new WP_Query(array(
                 <?php endwhile; ?>
                 <?php wp_reset_postdata(); ?>
             <?php else : ?>
-                <p class="no-links-message">No external links available at this time.</p>
+                <p class="no-links-message reveal-fade-up">No external links available at this time.</p>
             <?php endif; ?>
         </div>
     </section>
     
     <!-- Help CTA Section -->
     <section class="resources-cta-section">
-        <div class="cta-content">
+        <div class="cta-content reveal-fade-up">
             <h3 class="cta-title">Still can't find what you need?</h3>
             <p class="cta-text">Our staff is available at the Main Hall to assist with specific jurisdiction documentation and member requests.</p>
         </div>
-        <div class="cta-actions">
+        <div class="cta-actions reveal-fade-up reveal-delay-1">
             <a href="mailto:info@ibewlocal53.org" class="btn btn-cta-gold">
                 Email Us
                 <span class="material-icons">arrow_forward</span>
