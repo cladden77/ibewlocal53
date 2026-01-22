@@ -33,11 +33,11 @@
         <div class="footer-column">
             <h4>Resources</h4>
             <ul>
-                <li><a href="#">Member Login</a></li>
-                <li><a href="#">Pay Dues</a></li>
+                <li><a href="https://members.ibewlocal53.org/">Member Login</a></li>
+                <li><a href="https://members.ibewlocal53.org/">Pay Dues</a></li>
                 <li><a href="#">Benefits Portal</a></li>
                 <li><a href="#">Job Board</a></li>
-                <li><a href="#">Training Calendar</a></li>
+                <li><a href="/events">Training Calendar</a></li>
             </ul>
         </div>
         
