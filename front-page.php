@@ -244,7 +244,7 @@ get_header();
         <div class="cta-content">
             <h2 class="cta-title">Looking to join a Union?</h2>
             <p class="cta-text">Discover the benefits of union membership and start your journey with IBEW Local 53.</p>
-            <a href="#" class="btn btn-white">Join Now</a>
+            <a href="https://ibewyes.org" class="btn btn-white" target="_blank" rel="noopener noreferrer">Join Now</a>
         </div>
         <div class="cta-decoration">
             <img src="<?php echo get_template_directory_uri(); ?>/assets/images/join-now.png" alt="Join Now" class="cta-image" />
