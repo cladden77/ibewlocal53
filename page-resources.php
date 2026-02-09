@@ -54,7 +54,7 @@ $external_links_query = new WP_Query(array(
 
 <!-- Resources Hero Section -->
 <section class="archive-hero resources-hero">
-    <div class="archive-hero-container hero-content">
+    <div class="archive-hero-container reveal-fade-up">
         <h1 class="hero-title">Resources Hub</h1>
         <p class="hero-subtext">Download official documents and access essential external union tools and websites.</p>
     </div>

@@ -20,7 +20,7 @@ get_header();
             </h1>
             <p class="hero-subtext">IBEW Local 53 is dedicated to providing the highest quality electrical workers<br>for our communities while securing fair wages, benefits, and safety for our<br>members.</p>
             <div class="hero-buttons">
-                <a href="#" class="btn btn-primary">Join the Brotherhood <span class="btn-icon">arrow_forward</span></a>
+                <a href="https://ibewyes.org" class="btn btn-primary" target="_blank" rel="noopener noreferrer">Join the Brotherhood <span class="btn-icon">arrow_forward</span></a>
                 <a href="<?php echo home_url('/events'); ?>" class="btn btn-secondary">View Upcoming Events</a>
             </div>
         </div>
