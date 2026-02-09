@@ -14,8 +14,6 @@
             <p class="footer-description">Representing the electrical workers of Greater Kansas City since 1910. Building better lives for our members and a brighter future for our community.</p>
             <div class="social-icons">
                 <a href="#" class="social-icon" aria-label="Facebook">f</a>
-                <a href="#" class="social-icon" aria-label="Twitter">tw</a>
-                <a href="#" class="social-icon" aria-label="Instagram">IG</a>
             </div>
         </div>
         
