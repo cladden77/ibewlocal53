@@ -21,6 +21,12 @@ function ibew_local_53_setup() {
         'caption',
     ));
     
+    // Block editor support: wide alignment, block styles, editor styles
+    add_theme_support('align-wide');
+    add_theme_support('wp-block-styles');
+    add_theme_support('editor-styles');
+    add_editor_style(array('style.css', 'assets/css/main.css'));
+    
     // Register navigation menus
     register_nav_menus(array(
         'primary' => __('Primary Menu', 'ibew-local-53'),
@@ -30,6 +36,45 @@ function ibew_local_53_setup() {
     add_image_size('featured-16-12', 1280, 960, true);
 }
 add_action('after_setup_theme', 'ibew_local_53_setup');
+
+// Register block pattern category and patterns for page layouts
+function ibew_local_53_register_block_patterns() {
+    register_block_pattern_category('ibew-layouts', array(
+        'label'       => __('IBEW Layouts', 'ibew-local-53'),
+        'description' => __('Two-column and layout blocks for building pages.', 'ibew-local-53'),
+    ));
+    
+    $patterns = array(
+        'two-column-text-left-image-right' => array(
+            'title'       => __('Two Column: Text Left, Image Right', 'ibew-local-53'),
+            'description' => __('Heading and body text on the left, image on the right.', 'ibew-local-53'),
+        ),
+        'two-column-image-left-text-right' => array(
+            'title'       => __('Two Column: Image Left, Text Right', 'ibew-local-53'),
+            'description' => __('Image on the left, heading and body text on the right.', 'ibew-local-53'),
+        ),
+        'two-column-equal' => array(
+            'title'       => __('Two Column: Equal Columns', 'ibew-local-53'),
+            'description' => __('Two equal columns for text or mixed content.', 'ibew-local-53'),
+        ),
+    );
+    
+    foreach ($patterns as $slug => $props) {
+        $path = get_theme_file_path('patterns/' . $slug . '.php');
+        if (file_exists($path)) {
+            ob_start();
+            include $path;
+            $content = ob_get_clean();
+            if ($content) {
+                register_block_pattern('ibew-local-53/' . $slug, array_merge($props, array(
+                    'content'    => $content,
+                    'categories' => array('ibew-layouts'),
+                )));
+            }
+        }
+    }
+}
+add_action('init', 'ibew_local_53_register_block_patterns');
 
 // Enqueue styles and scripts
 function ibew_local_53_scripts() {
