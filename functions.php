@@ -76,6 +76,131 @@ function ibew_local_53_register_block_patterns() {
 }
 add_action('init', 'ibew_local_53_register_block_patterns');
 
+// ============================================
+// PAGE HERO OPTIONS (default page template)
+// ============================================
+
+function ibew_local_53_register_page_hero_meta() {
+    register_post_meta('page', 'ibew_hero_type', array(
+        'type'         => 'string',
+        'default'      => 'none',
+        'single'       => true,
+        'show_in_rest' => true,
+        'sanitize_callback' => function ($val) {
+            return in_array($val, array('none', 'resources', 'events'), true) ? $val : 'none';
+        },
+    ));
+    register_post_meta('page', 'ibew_hero_title', array(
+        'type'         => 'string',
+        'single'       => true,
+        'show_in_rest' => true,
+        'sanitize_callback' => 'sanitize_text_field',
+    ));
+    register_post_meta('page', 'ibew_hero_subtext', array(
+        'type'         => 'string',
+        'single'       => true,
+        'show_in_rest' => true,
+        'sanitize_callback' => 'sanitize_textarea_field',
+    ));
+    register_post_meta('page', 'ibew_hero_pill', array(
+        'type'         => 'string',
+        'single'       => true,
+        'show_in_rest' => true,
+        'sanitize_callback' => 'sanitize_text_field',
+    ));
+}
+add_action('init', 'ibew_local_53_register_page_hero_meta');
+
+function ibew_local_53_add_page_hero_meta_box() {
+    add_meta_box(
+        'ibew_page_hero',
+        __('Page Hero', 'ibew-local-53'),
+        'ibew_local_53_page_hero_meta_box_callback',
+        'page',
+        'normal',
+        'high'
+    );
+}
+add_action('add_meta_boxes', 'ibew_local_53_add_page_hero_meta_box');
+
+function ibew_local_53_page_hero_meta_box_callback($post) {
+    wp_nonce_field('ibew_page_hero_nonce', 'ibew_page_hero_nonce');
+    $hero_type   = get_post_meta($post->ID, 'ibew_hero_type', true) ?: 'none';
+    $hero_title  = get_post_meta($post->ID, 'ibew_hero_title', true);
+    $hero_subtext = get_post_meta($post->ID, 'ibew_hero_subtext', true);
+    $hero_pill   = get_post_meta($post->ID, 'ibew_hero_pill', true);
+    $page_title  = $post->post_title;
+    ?>
+    <p class="description" style="margin-bottom: 14px;"><?php esc_html_e('Choose a hero style for this page and optionally override the title and subtext. Leave hero title blank to use the page title.', 'ibew-local-53'); ?></p>
+    <table class="form-table">
+        <tr>
+            <th scope="row"><label for="ibew_hero_type"><?php esc_html_e('Hero type', 'ibew-local-53'); ?></label></th>
+            <td>
+                <select name="ibew_hero_type" id="ibew_hero_type">
+                    <option value="none" <?php selected($hero_type, 'none'); ?>><?php esc_html_e('None (default page title only)', 'ibew-local-53'); ?></option>
+                    <option value="resources" <?php selected($hero_type, 'resources'); ?>><?php esc_html_e('Resources style (full-width gradient, left-aligned)', 'ibew-local-53'); ?></option>
+                    <option value="events" <?php selected($hero_type, 'events'); ?>><?php esc_html_e('Events / News style (centered card with optional pill)', 'ibew-local-53'); ?></option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row"><label for="ibew_hero_title"><?php esc_html_e('Hero title', 'ibew-local-53'); ?></label></th>
+            <td>
+                <input type="text" name="ibew_hero_title" id="ibew_hero_title" value="<?php echo esc_attr($hero_title); ?>" class="large-text" placeholder="<?php echo esc_attr($page_title); ?>" />
+                <p class="description"><?php esc_html_e('Leave blank to use the page title.', 'ibew-local-53'); ?></p>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row"><label for="ibew_hero_subtext"><?php esc_html_e('Hero subtext', 'ibew-local-53'); ?></label></th>
+            <td>
+                <textarea name="ibew_hero_subtext" id="ibew_hero_subtext" rows="3" class="large-text"><?php echo esc_textarea($hero_subtext); ?></textarea>
+            </td>
+        </tr>
+        <tr id="ibew_hero_pill_row" style="<?php echo $hero_type !== 'events' ? 'display:none;' : ''; ?>">
+            <th scope="row"><label for="ibew_hero_pill"><?php esc_html_e('Pill text', 'ibew-local-53'); ?></label></th>
+            <td>
+                <input type="text" name="ibew_hero_pill" id="ibew_hero_pill" value="<?php echo esc_attr($hero_pill); ?>" class="regular-text" />
+                <p class="description"><?php esc_html_e('Optional. Shown above the title (Events/News style only).', 'ibew-local-53'); ?></p>
+            </td>
+        </tr>
+    </table>
+    <script>
+    jQuery(function($) {
+        $('#ibew_hero_type').on('change', function() {
+            var v = $(this).val();
+            $('#ibew_hero_pill_row').toggle(v === 'events');
+        });
+    });
+    </script>
+    <?php
+}
+
+function ibew_local_53_save_page_hero_meta($post_id) {
+    if (!isset($_POST['ibew_page_hero_nonce']) || !wp_verify_nonce($_POST['ibew_page_hero_nonce'], 'ibew_page_hero_nonce')) {
+        return;
+    }
+    if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
+        return;
+    }
+    if (!current_user_can('edit_post', $post_id) || get_post_type($post_id) !== 'page') {
+        return;
+    }
+    if (isset($_POST['ibew_hero_type'])) {
+        $val = sanitize_text_field($_POST['ibew_hero_type']);
+        update_post_meta($post_id, 'ibew_hero_type', in_array($val, array('none', 'resources', 'events'), true) ? $val : 'none');
+    }
+    if (isset($_POST['ibew_hero_title'])) {
+        update_post_meta($post_id, 'ibew_hero_title', sanitize_text_field($_POST['ibew_hero_title']));
+    }
+    if (isset($_POST['ibew_hero_subtext'])) {
+        update_post_meta($post_id, 'ibew_hero_subtext', sanitize_textarea_field($_POST['ibew_hero_subtext']));
+    }
+    if (isset($_POST['ibew_hero_pill'])) {
+        update_post_meta($post_id, 'ibew_hero_pill', sanitize_text_field($_POST['ibew_hero_pill']));
+    }
+}
+add_action('save_post_page', 'ibew_local_53_save_page_hero_meta');
+
 // Enqueue styles and scripts
 function ibew_local_53_scripts() {
     // Enqueue Inter font
