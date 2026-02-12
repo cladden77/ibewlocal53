@@ -475,8 +475,9 @@ function ibew_local_53_register_resource_post_type() {
             'menu_name' => __('Resources', 'ibew-local-53'),
         ),
         'public' => true,
-        'has_archive' => true,
-        'rewrite' => array('slug' => 'resources'),
+        // Keep resources queryable for WP_Query, but prevent archive URL collision with the Resources page.
+        'has_archive' => false,
+        'rewrite' => array('slug' => 'resource-item'),
         'supports' => array('title'),
         'menu_icon' => 'dashicons-portfolio',
         'show_in_rest' => true,
