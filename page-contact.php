@@ -106,7 +106,7 @@ get_header();
                 <div class="form-content">
                     <?php
                     // Display the page content from the WordPress editor
-                    // Add your Formidable Forms block or shortcode when editing this page
+                    // Contact Form 7 shortcode: add [contact-form-7 id="c3cb9bc" title="Contact form 1"] in the page content
                     if (have_posts()) :
                         while (have_posts()) : the_post();
                             the_content();

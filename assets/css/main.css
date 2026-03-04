@@ -2885,44 +2885,56 @@ a:hover {
     padding: 32px;
 }
 
-/* Formidable Forms Styling */
-.form-content .frm_forms {
+/* Contact Form 7 Styling - matches Figma design */
+.form-content .wpcf7 {
     width: 100%;
 }
 
-.form-content .frm_form_fields {
-    display: block;
-}
-
-.form-content .frm_fields_container {
+.form-content .wpcf7-form {
     display: flex;
-    flex-wrap: wrap;
-    column-gap: 24px;
-    row-gap: 24px;
+    flex-direction: column;
+    gap: 24px;
 }
 
-.form-content .frm_form_field {
-    margin-bottom: 0 !important;
+/* Form row layout: two-col = 50/50, default = full width */
+.form-content .form-row {
+    display: grid;
+    gap: 24px;
+    grid-template-columns: 1fr;
+}
+
+.form-content .form-row.two-col {
+    grid-template-columns: 1fr 1fr;
+}
+
+.form-content .form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
     position: relative;
-    width: 100%;
 }
 
-.form-content .frm_primary_label {
+.form-content .form-field label {
     font-family: var(--font-primary);
     font-size: 14px;
     font-weight: 500;
     color: #374151;
     line-height: 20px;
-    margin-bottom: 8px;
+    margin-bottom: 0;
     display: block;
 }
 
-/* Base input styling - matches Figma exactly */
-.form-content .frm_form_field input[type="text"],
-.form-content .frm_form_field input[type="email"],
-.form-content .frm_form_field input[type="tel"],
-.form-content .frm_form_field select,
-.form-content .frm_form_field textarea {
+.form-content .form-field .wpcf7-form-control-wrap {
+    display: block;
+    position: relative;
+}
+
+/* Base input styling - matches Figma */
+.form-content .form-field input[type="text"],
+.form-content .form-field input[type="email"],
+.form-content .form-field input[type="tel"],
+.form-content .form-field select.wpcf7-form-control,
+.form-content .form-field textarea.wpcf7-form-control {
     width: 100%;
     padding: 11px 13px;
     background-color: #f9fafb;
@@ -2940,67 +2952,28 @@ a:hover {
     -moz-appearance: none;
 }
 
-.form-content .frm_form_field input:focus,
-.form-content .frm_form_field select:focus,
-.form-content .frm_form_field textarea:focus {
+.form-content .form-field input:focus,
+.form-content .form-field select:focus,
+.form-content .form-field textarea:focus {
     outline: none;
     border-color: var(--color-primary);
     box-shadow: 0 0 0 3px rgba(43, 69, 143, 0.1);
 }
 
-/* Placeholder text styling */
-.form-content .frm_form_field input::placeholder,
-.form-content .frm_form_field textarea::placeholder {
+.form-content .form-field input::placeholder,
+.form-content .form-field textarea::placeholder {
     color: #6b7280;
     font-weight: 400;
 }
 
-/* Email and Phone fields with icons - wrapper for icon positioning */
-.form-content .frm_form_field:has(input[type="email"]) .frm_primary_label + div,
-.form-content .frm_form_field:has(input[type="tel"]) .frm_primary_label + div,
-.form-content .frm_form_field:has(input[type="email"]),
-.form-content .frm_form_field:has(input[type="tel"]) {
-    position: relative;
+/* Email and Phone - optional left padding if you add icons later */
+.form-content .form-field:has(input[type="email"]) input,
+.form-content .form-field:has(input[type="tel"]) input {
+    padding-left: 13px;
 }
 
-/* Email and Phone fields with icons - need left padding for icon */
-.form-content .frm_form_field input[type="email"],
-.form-content .frm_form_field input[type="tel"] {
-    padding-left: 41px;
-}
-
-/* Email icon - positioned inside input field */
-.form-content .frm_form_field:has(input[type="email"])::after {
-    content: 'email';
-    font-family: 'Material Icons';
-    font-size: 14px;
-    color: #9ca3af;
-    position: absolute;
-    left: 12px;
-    top: calc(20px + 8px + 28px);
-    transform: translateY(-50%);
-    pointer-events: none;
-    line-height: 1.43;
-    z-index: 2;
-}
-
-/* Phone icon - positioned inside input field */
-.form-content .frm_form_field:has(input[type="tel"])::after {
-    content: 'phone';
-    font-family: 'Material Icons';
-    font-size: 14px;
-    color: #9ca3af;
-    position: absolute;
-    left: 12px;
-    top: calc(20px + 8px + 28px);
-    transform: translateY(-50%);
-    pointer-events: none;
-    line-height: 1.43;
-    z-index: 2;
-}
-
-/* Select dropdown styling */
-.form-content .frm_form_field select {
+/* Select dropdown - custom arrow matching Figma */
+.form-content .form-field select.wpcf7-form-control {
     background-image: url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M7.2 9.6L12 14.4L16.8 9.6H7.2Z' stroke='%236B7280' stroke-width='1.8'/%3E%3C/svg%3E");
     background-repeat: no-repeat;
     background-position: right 9px center;
@@ -3009,27 +2982,26 @@ a:hover {
     color: #111827;
 }
 
-.form-content .frm_form_field select option {
+.form-content .form-field select option {
     color: #111827;
     background-color: #ffffff;
 }
 
-/* Textarea styling - matches Figma exactly */
-.form-content .frm_form_field textarea {
-    padding: 8px 12px 104px;
+/* Textarea - matches Figma */
+.form-content .form-field textarea.wpcf7-form-control {
     min-height: 140px;
     resize: vertical;
     line-height: 24px;
+    padding: 11px 13px;
 }
 
-/* Submit button styling - matches Figma exactly */
-.form-content .frm_submit {
-    margin-top: 16px !important;
-    padding-top: 16px;
+/* Submit row - no grid so button can sit on its own */
+.form-content .form-row:has(.wpcf7-submit) {
+    grid-template-columns: 1fr;
+    padding-top: 8px;
 }
 
-.form-content .frm_submit button,
-.form-content .frm_submit input[type="submit"] {
+.form-content .wpcf7-submit {
     background-color: #c82e39;
     color: #ffffff;
     font-family: var(--font-primary);
@@ -3048,107 +3020,400 @@ a:hover {
     gap: 8px;
 }
 
-/* Add send icon after button text */
-.form-content .frm_submit button::after,
-.form-content .frm_submit input[type="submit"]::after {
-    content: 'send';
-    font-family: 'Material Icons';
-    font-size: 14px;
-    font-weight: 400;
-    line-height: 1.43;
-    color: #ffffff;
-}
-
-.form-content .frm_submit button:hover,
-.form-content .frm_submit input[type="submit"]:hover {
+.form-content .wpcf7-submit:hover {
     background-color: #b02a34;
     transform: translateY(-1px);
 }
 
-/* Error and success messages */
-.form-content .frm_error_style {
-    background-color: #fee2e2;
-    color: #991b1b;
-    border: 1px solid #fca5a5;
-    border-radius: 8px;
+/* CF7 validation messages - match site style */
+.form-content .wpcf7-not-valid-tip {
+    color: #dc3232;
+    font-size: 13px;
+    margin-top: 4px;
+}
+
+.form-content .wpcf7-response-output {
+    margin: 16px 0 0;
     padding: 12px 16px;
-    margin-bottom: 16px;
-}
-
-.form-content .frm_message {
-    background-color: #d1fae5;
-    color: #065f46;
-    border: 1px solid #6ee7b7;
     border-radius: 8px;
-    padding: 16px;
-    margin-bottom: 16px;
-}
-
-/* Checkbox styling - matches Figma exactly */
-.form-content .frm_form_field.frm_checkbox_field,
-.form-content .frm_form_field.frm_checkbox_field .frm_checkbox_meta {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.form-content .frm_form_field.frm_checkbox_field label,
-.form-content .frm_form_field.horizontal_radio label {
-    display: flex;
-    align-items: center;
-    gap: 8px;
     font-size: 14px;
-    font-weight: 400;
-    line-height: 20px;
-    color: #4b5563;
-    cursor: pointer;
-    margin: 0;
+    border-width: 1px;
 }
 
-.form-content .frm_form_field.frm_checkbox_field input[type="checkbox"] {
-    width: 16px;
-    height: 16px;
-    min-width: 16px;
-    background-color: #ffffff;
+.form-content .wpcf7-form.sent .wpcf7-response-output {
+    border-color: #16a34a;
+    background-color: #ecfdf5;
+    color: #065f46;
+}
+
+.form-content .wpcf7-form.failed .wpcf7-response-output,
+.form-content .wpcf7-form.aborted .wpcf7-response-output,
+.form-content .wpcf7-form.invalid .wpcf7-response-output {
+    border-color: #dc3232;
+    background-color: #fef2f2;
+    color: #991b1b;
+}
+
+/* ============================================
+   OUT OF WORK FORM (CF7) - same styling as contact form
+   ============================================ */
+
+/* Grid layouts */
+.cf7-grid {
+    display: grid;
+    gap: 24px;
+    grid-template-columns: 1fr;
+}
+
+.cf7-grid--2 {
+    grid-template-columns: repeat(2, 1fr);
+}
+
+.cf7-grid--3 {
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.cf7-grid--4 {
+    grid-template-columns: repeat(4, 1fr);
+}
+
+.cf7-field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    position: relative;
+    min-width: 0;
+}
+
+.cf7-field label {
+    font-family: var(--font-primary);
+    font-size: 14px;
+    font-weight: 500;
+    color: #374151;
+    line-height: 20px;
+    margin: 0;
+    display: block;
+}
+
+.cf7-field .req {
+    color: var(--color-red);
+}
+
+.cf7-field .wpcf7-form-control-wrap {
+    display: block;
+}
+
+/* Inputs, select, textarea - match contact form */
+.cf7-field input[type="text"],
+.cf7-field input[type="email"],
+.cf7-field input[type="tel"],
+.cf7-field input[type="number"],
+.cf7-field input[type="date"],
+.cf7-field select.wpcf7-form-control,
+.cf7-field textarea.wpcf7-form-control {
+    width: 100%;
+    padding: 11px 13px;
+    background-color: #f9fafb;
     border: 1px solid #d1d5db;
     border-radius: 8px;
-    cursor: pointer;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    font-family: var(--font-primary);
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #111827;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
     appearance: none;
     -webkit-appearance: none;
     -moz-appearance: none;
-    margin: 0;
-    flex-shrink: 0;
+    box-sizing: border-box;
 }
 
-.form-content .frm_form_field.frm_checkbox_field input[type="checkbox"]:checked {
-    background-color: var(--color-primary);
+.cf7-field input:focus,
+.cf7-field select:focus,
+.cf7-field textarea:focus {
+    outline: none;
     border-color: var(--color-primary);
-    background-image: url("data:image/svg+xml,%3Csvg width='12' height='12' viewBox='0 0 12 12' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M10 3L4.5 8.5L2 6' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    box-shadow: 0 0 0 3px rgba(43, 69, 143, 0.1);
+}
+
+.cf7-field input::placeholder,
+.cf7-field textarea::placeholder {
+    color: #6b7280;
+}
+
+.cf7-field select.wpcf7-form-control {
+    background-image: url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M7.2 9.6L12 14.4L16.8 9.6H7.2Z' stroke='%236B7280' stroke-width='1.8'/%3E%3C/svg%3E");
     background-repeat: no-repeat;
-    background-position: center;
-    background-size: 12px 12px;
+    background-position: right 9px center;
+    background-size: 24px 24px;
+    padding-right: 40px;
 }
 
-/* Two column fields for Formidable - 50/50 layout matching Figma */
-/* First Name and Last Name - 50/50 */
-.form-content .frm_form_field.frm_half {
-    width: calc(50% - 12px) !important;
-    max-width: calc(50% - 12px) !important;
-    flex: 0 0 calc(50% - 12px) !important;
+.cf7-field select option {
+    color: #111827;
+    background-color: #ffffff;
 }
 
-/* Email and Phone - 50/50 */
-.form-content .frm_form_field.frm6 {
-    width: calc(50% - 12px) !important;
-    max-width: calc(50% - 12px) !important;
-    flex: 0 0 calc(50% - 12px) !important;
+/* Divider & section title */
+.cf7-divider {
+    border: 0;
+    height: 1px;
+    background-color: #e5e7eb;
+    margin: 32px 0;
 }
 
-/* Full width fields (Message, etc.) */
-.form-content .frm_form_field.frm_full {
-    width: 100% !important;
-    max-width: 100% !important;
-    flex: 0 0 100% !important;
+.cf7-section-title {
+    font-family: var(--font-primary);
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--color-gray-dark);
+    margin: 0 0 16px 0;
+    line-height: 24px;
+}
+
+/* Checkbox row (single row of options) */
+.cf7-checkrow {
+    margin-bottom: 24px;
+}
+
+.cf7-checkrow .wpcf7-form-control-wrap {
+    display: flex !important;
+    flex-wrap: wrap;
+}
+
+.cf7-checkrow .wpcf7-list-item {
+    display: inline-flex !important;
+    align-items: center;
+    gap: 10px;
+    margin: 0 32px 14px 0 !important; /* space between each option, wrap spacing */
+}
+
+.cf7-checkrow .wpcf7-list-item-label {
+    font-size: 14px;
+    font-weight: 400;
+    color: #374151;
+    cursor: pointer;
+}
+
+.cf7-checkrow input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    min-width: 18px;
+    accent-color: var(--color-primary);
+    cursor: pointer;
+}
+
+/* Force checkbox spacing when inside Out of Work form (override CF7 default) */
+.out-of-work-form-content .cf7-checkrow .wpcf7-form-control-wrap,
+.wpcf7 .cf7-checkrow .wpcf7-form-control-wrap {
+    display: flex !important;
+    flex-wrap: wrap !important;
+}
+
+.out-of-work-form-content .cf7-checkrow .wpcf7-list-item,
+.wpcf7 .cf7-checkrow .wpcf7-list-item {
+    margin: 0 32px 14px 0 !important;
+}
+
+.out-of-work-form-content .cf7-lists .wpcf7-list-item,
+.wpcf7 .cf7-lists .wpcf7-list-item {
+    margin: 0 24px 10px 0 !important;
+}
+
+/* Multi-column checkbox lists */
+.cf7-lists .cf7-field {
+    align-items: flex-start;
+}
+
+.cf7-lists .wpcf7-form-control-wrap {
+    display: flex !important;
+    flex-wrap: wrap;
+}
+
+.cf7-lists .wpcf7-list-item {
+    display: inline-flex !important;
+    align-items: center;
+    gap: 8px;
+    margin: 0 24px 10px 0 !important; /* space between each option, wrap spacing */
+}
+
+.cf7-lists .wpcf7-list-item-label {
+    font-size: 14px;
+    color: #374151;
+    cursor: pointer;
+}
+
+.cf7-lists input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    min-width: 18px;
+    accent-color: var(--color-primary);
+    cursor: pointer;
+}
+
+/* Helper text */
+.cf7-note {
+    font-size: 13px;
+    color: #6b7280;
+    margin-top: 4px;
+    display: block;
+}
+
+/* Upload blocks */
+.cf7-upload-cols {
+    gap: 32px;
+}
+
+.cf7-upload-title {
+    font-family: var(--font-primary);
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--color-gray-dark);
+    margin: 0 0 16px 0;
+    line-height: 24px;
+}
+
+.cf7-upload-block {
+    margin-bottom: 24px;
+}
+
+.cf7-upload-label {
+    font-size: 14px;
+    font-weight: 500;
+    color: #374151;
+    margin-bottom: 12px;
+    display: block;
+}
+
+.cf7-upload-small {
+    font-size: 13px;
+    color: #6b7280;
+    font-weight: 400;
+}
+
+.cf7-field input[type="file"] {
+    padding: 10px 12px 10px 0;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.cf7-field input[type="file"]::file-selector-button {
+    padding: 6px 12px;
+    margin-right: 12px;
+    margin-left: 0;
+    background-color: var(--color-primary);
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-family: var(--font-primary);
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+/* Acceptance checkbox */
+.cf7-ack .wpcf7-form-control-wrap {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+.cf7-ack input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    min-width: 20px;
+    margin-top: 2px;
+    accent-color: var(--color-primary);
+    cursor: pointer;
+}
+
+.cf7-ack .wpcf7-list-item-label {
+    font-size: 14px;
+    color: #374151;
+    line-height: 1.5;
+    cursor: pointer;
+}
+
+/* Signature + Submit row */
+.cf7-sign-submit {
+    align-items: flex-end;
+}
+
+.cf7-submit-wrap {
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+}
+
+.cf7-submit-wrap .wpcf7-submit {
+    background-color: #c82e39;
+    color: #ffffff;
+    font-family: var(--font-primary);
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 24px;
+    padding: 12px 32px;
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px -4px rgba(0, 0, 0, 0.1), 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.cf7-submit-wrap .wpcf7-submit:hover {
+    background-color: #b02a34;
+    transform: translateY(-1px);
+}
+
+/* Validation */
+.wpcf7-form .wpcf7-not-valid-tip {
+    color: #dc3232;
+    font-size: 13px;
+    margin-top: 4px;
+}
+
+.wpcf7-form .wpcf7-response-output {
+    margin: 16px 0 0;
+    padding: 12px 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    border-width: 1px;
+}
+
+/* Out of Work page layout */
+.out-of-work-page-wrapper {
+    background: #f3f4f6;
+}
+
+.out-of-work-page-wrapper .out-of-work-container {
+    padding: 32px var(--container-padding) 80px;
+    max-width: var(--container-max);
+    margin: 0 auto;
+}
+
+.out-of-work-form-card {
+    background-color: var(--color-white);
+    border-radius: 24px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    border: 1px solid var(--color-gray-light);
+    overflow: hidden;
+    max-width: 960px;
+    margin: 0 auto;
+}
+
+.out-of-work-form-content {
+    padding: 32px;
+}
+
+.out-of-work-form-content .wpcf7 {
+    width: 100%;
+}
+
+.out-of-work-form-content .wpcf7-form {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
 }
 
 /* Form placeholder when no form is configured */
@@ -3208,10 +3473,15 @@ a:hover {
     gap: var(--spacing-md);
 }
 
+/* form-row layout: two-col used in CF7 contact form for 50/50 fields */
 .form-row {
     display: grid;
-    grid-template-columns: 1fr 1fr;
     gap: 24px;
+    grid-template-columns: 1fr;
+}
+
+.form-row.two-col {
+    grid-template-columns: 1fr 1fr;
 }
 
 .form-group {
@@ -3882,12 +4152,15 @@ article.single-event {
 /* Tablet breakpoint */
 @media (max-width: 1024px) {
     .contact-page-wrapper .contact-container {
-        padding: 40px 24px 64px;
+        padding: 40px 0 64px;
+        width: 100%;
+        max-width: 100%;
     }
     
     .contact-layout {
         flex-direction: column;
         gap: 40px;
+        padding: 0 20px;
     }
     
     .info-card {
@@ -3898,28 +4171,28 @@ article.single-event {
     .form-card {
         max-width: 100%;
     }
-}
-
-/* Form fields stack at 1200px breakpoint */
-@media (max-width: 1200px) {
-    .form-content .frm_half,
-    .form-content .frm_form_field.frm_half,
-    .form-content .frm_first_half,
-    .form-content .frm_last_half,
-    .form-content .frm_form_field[class*="frm_first"],
-    .form-content .frm_form_field[class*="frm_last"],
-    .form-content .frm_form_field.frm6 {
-        width: 100% !important;
-        max-width: 100% !important;
-        flex: 0 0 100% !important;
-        display: block !important;
-        float: none !important;
+    
+    .out-of-work-page-wrapper .out-of-work-container {
+        padding: 40px 20px 64px;
     }
     
-    .form-content .frm_half.frm_first,
-    .form-content .frm_form_field.frm_first {
-        margin-right: 0 !important;
-        margin-bottom: 0 !important;
+    .out-of-work-form-content {
+        padding: 28px;
+    }
+}
+
+/* Form fields stack at 1200px - single column for Contact Form 7 */
+@media (max-width: 1200px) {
+    .form-content .form-row.two-col {
+        grid-template-columns: 1fr;
+    }
+    
+    /* Out of Work form: 4-col → 2-col, 3-col → 2-col */
+    .cf7-grid--4 {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .cf7-grid--3 {
+        grid-template-columns: repeat(2, 1fr);
     }
 }
 
@@ -4361,14 +4634,18 @@ article.single-event {
         opacity: 0.2;
     }
     
-    /* Contact Page Responsive */
+    /* Contact Page Responsive - stretch across viewport */
     .contact-page-wrapper .contact-container {
-        padding: 32px 24px 48px;
+        padding: 32px 0 48px;
+        width: 100%;
+        max-width: 100%;
     }
     
     .contact-layout {
         flex-direction: column;
         gap: 32px;
+        width: 100%;
+        padding: 0 16px;
     }
     
     .info-card {
@@ -4378,6 +4655,19 @@ article.single-event {
     
     .form-card {
         max-width: 100%;
+        width: 100%;
+    }
+    
+    .out-of-work-page-wrapper .out-of-work-container {
+        padding: 32px 16px 48px;
+    }
+    
+    .out-of-work-form-card {
+        border-radius: 20px;
+    }
+    
+    .out-of-work-form-content {
+        padding: 24px;
     }
     
     .form-header {
@@ -4392,29 +4682,19 @@ article.single-event {
         grid-template-columns: 1fr;
     }
     
-    /* Form fields responsive - stack on tablet and mobile */
-    .form-content .frm_fields_container {
-        gap: 24px;
+    /* Contact form: single column on tablet and below */
+    .form-content .form-row.two-col {
+        grid-template-columns: 1fr;
     }
     
-    .form-content .frm_half,
-    .form-content .frm_form_field.frm_half,
-    .form-content .frm_first_half,
-    .form-content .frm_last_half,
-    .form-content .frm_form_field[class*="frm_first"],
-    .form-content .frm_form_field[class*="frm_last"],
-    .form-content .frm_form_field.frm6 {
-        width: 100% !important;
-        max-width: 100% !important;
-        flex: 0 0 100% !important;
-        display: block !important;
-        float: none !important;
+    /* Out of Work form: all grids single column, upload cols stack */
+    .cf7-grid--2,
+    .cf7-grid--3,
+    .cf7-grid--4 {
+        grid-template-columns: 1fr;
     }
-    
-    .form-content .frm_half.frm_first,
-    .form-content .frm_form_field.frm_first {
-        margin-right: 0 !important;
-        margin-bottom: 0 !important;
+    .cf7-upload-cols {
+        grid-template-columns: 1fr;
     }
     
     .footer-container {
@@ -4444,17 +4724,20 @@ article.single-event {
 }
 
 @media (max-width: 480px) {
-    /* Contact Page Mobile */
+    /* Contact Page Mobile - full-width single column */
     .contact-page-wrapper .contact-container {
-        padding: 24px 16px 40px;
+        padding: 24px 0 40px;
+        width: 100%;
+        max-width: 100%;
     }
     
     .contact-layout {
         gap: 24px;
+        padding: 0 12px;
     }
     
     .info-card {
-        padding: 20px;
+        padding: 20px 16px;
     }
     
     .contact-card-title {
@@ -4480,6 +4763,11 @@ article.single-event {
         font-size: 18px;
     }
     
+    /* Form card: full-width single column */
+    .form-card {
+        width: 100%;
+    }
+    
     .form-header {
         padding: 16px 20px;
     }
@@ -4495,47 +4783,82 @@ article.single-event {
     }
     
     .form-content {
-        padding: 20px;
+        padding: 20px 16px 24px;
     }
     
-    .form-content .frm_form_fields,
-    .form-content .frm_fields_container {
+    /* Single column form: consistent vertical spacing */
+    .form-content .wpcf7-form {
         gap: 20px;
     }
     
-    .form-content .frm_primary_label {
-        font-size: 13px;
-        margin-bottom: 6px;
+    .form-content .form-row,
+    .form-content .form-row.two-col {
+        grid-template-columns: 1fr;
+        gap: 20px;
     }
     
-    .form-content .frm_form_field input[type="text"],
-    .form-content .frm_form_field input[type="email"],
-    .form-content .frm_form_field input[type="tel"],
-    .form-content .frm_form_field select,
-    .form-content .frm_form_field textarea {
-        padding: 10px 12px;
-        font-size: 15px;
+    .form-content .form-field {
+        min-width: 0; /* prevent overflow in grid */
     }
     
-    .form-content .frm_form_field input[type="email"],
-    .form-content .frm_form_field input[type="tel"] {
-        padding-left: 38px;
+    .form-content .form-field label {
+        font-size: 14px;
+        line-height: 20px;
+        margin-bottom: 0;
     }
     
-    /* Adjust icon position for mobile */
-    .form-content .frm_form_field:has(input[type="email"])::after,
-    .form-content .frm_form_field:has(input[type="tel"])::after {
-        left: 10px;
-        top: calc(19px + 6px + 10px);
-        font-size: 13px;
-    }
-    
-    .form-content .frm_submit button,
-    .form-content .frm_submit input[type="submit"] {
+    .form-content .form-field input[type="text"],
+    .form-content .form-field input[type="email"],
+    .form-content .form-field input[type="tel"],
+    .form-content .form-field select.wpcf7-form-control,
+    .form-content .form-field textarea.wpcf7-form-control {
         width: 100%;
-        padding: 12px 24px;
+        padding: 12px 14px;
+        font-size: 16px; /* avoids iOS zoom on focus */
+        min-height: 44px;
+        box-sizing: border-box;
     }
     
+    .form-content .form-field textarea.wpcf7-form-control {
+        min-height: 120px;
+        padding: 12px 14px;
+    }
+    
+    .form-content .form-row:has(.wpcf7-submit) {
+        padding-top: 4px;
+    }
+    
+    .form-content .wpcf7-submit {
+        width: 100%;
+        padding: 14px 24px;
+        font-size: 16px;
+        min-height: 48px;
+    }
+    
+    .out-of-work-page-wrapper .out-of-work-container {
+        padding: 24px 12px 40px;
+    }
+    
+    .out-of-work-form-content {
+        padding: 20px 16px 24px;
+    }
+    
+    /* Out of Work form: mobile spacing and full-width submit */
+    .cf7-grid {
+        gap: 20px;
+    }
+    .cf7-sign-submit {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .cf7-submit-wrap {
+        justify-content: stretch;
+    }
+    .cf7-submit-wrap .wpcf7-submit {
+        width: 100%;
+        padding: 14px 24px;
+        min-height: 48px;
+    }
     
     .archive-hero {
         padding: 32px var(--container-padding);
