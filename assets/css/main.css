@@ -3292,10 +3292,31 @@ a:hover {
     font-weight: 400;
 }
 
+/* Tighter spacing between file type label (PDF/DOC, JPEG) and Choose File button */
+.cf7-upload-block .cf7-field,
+.cf7-upload-cols .cf7-field {
+    gap: 2px !important;
+}
+
+.cf7-upload-block .cf7-field label.cf7-upload-small,
+.cf7-upload-cols .cf7-field label.cf7-upload-small {
+    margin-bottom: 0 !important;
+}
+
+.cf7-upload-block .cf7-field .wpcf7-form-control-wrap,
+.cf7-upload-cols .cf7-field .wpcf7-form-control-wrap {
+    margin-top: 0 !important;
+}
+
 .cf7-field input[type="file"] {
     padding: 10px 12px 10px 0;
     font-size: 14px;
     cursor: pointer;
+}
+
+.cf7-upload-block .cf7-field input[type="file"],
+.cf7-upload-cols .cf7-field input[type="file"] {
+    margin-top: -25px;
 }
 
 .cf7-field input[type="file"]::file-selector-button {
