@@ -201,6 +201,36 @@ $external_links_query = new WP_Query(array(
         </div>
     </section>
     
+    <!-- How to use the Mobile App Section -->
+    <?php
+    // Placeholder URLs for QR codes – replace with real instruction links when available
+    $mobile_app_qr_ios_url = 'https://example.com/mobile-app-ios-instructions';
+    $mobile_app_qr_android_url = 'https://example.com/mobile-app-android-instructions';
+    ?>
+    <section class="mobile-app-section">
+        <div class="mobile-app-header reveal-fade-up">
+            <div class="header-accent"></div>
+            <div class="header-content">
+                <h2 class="section-title">How to use the Mobile App</h2>
+                <p class="section-subtitle">Scan the QR code below for your device to view instructions.</p>
+            </div>
+        </div>
+        <div class="mobile-app-qr-grid reveal-stagger">
+            <div class="mobile-app-qr-item">
+                <div class="mobile-app-qr-image">
+                    <img src="<?php echo esc_url('https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=' . rawurlencode($mobile_app_qr_ios_url)); ?>" alt="QR code – iOS app instructions" width="200" height="200" />
+                </div>
+                <p class="mobile-app-qr-label">iOS</p>
+            </div>
+            <div class="mobile-app-qr-item">
+                <div class="mobile-app-qr-image">
+                    <img src="<?php echo esc_url('https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=' . rawurlencode($mobile_app_qr_android_url)); ?>" alt="QR code – Android app instructions" width="200" height="200" />
+                </div>
+                <p class="mobile-app-qr-label">Android</p>
+            </div>
+        </div>
+    </section>
+
     <!-- Help CTA Section -->
     <section class="resources-cta-section">
         <div class="cta-content reveal-fade-up">

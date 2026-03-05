@@ -6117,6 +6117,72 @@ article.single-event {
     color: #6b7280;
 }
 
+/* How to use the Mobile App Section */
+.mobile-app-section {
+    background: #ffffff;
+    border-radius: 24px;
+    padding: 0;
+    margin-bottom: 32px;
+    overflow: hidden;
+}
+
+.mobile-app-header {
+    display: flex;
+    gap: 18px;
+    padding: 24px 32px;
+    border-bottom: 1px solid #e9ebf1;
+    align-items: flex-start;
+}
+
+.mobile-app-header .section-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: #101219;
+    margin: 0 0 8px;
+}
+
+.mobile-app-header .section-subtitle {
+    font-size: 16px;
+    color: #5a678c;
+    margin: 0;
+    line-height: 1.4;
+}
+
+.mobile-app-qr-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 32px;
+    padding: 32px;
+    justify-content: center;
+}
+
+.mobile-app-qr-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+}
+
+.mobile-app-qr-image {
+    padding: 12px;
+    background: #fff;
+    border: 1px solid #e9ebf1;
+    border-radius: 12px;
+}
+
+.mobile-app-qr-image img {
+    display: block;
+    width: 200px;
+    height: 200px;
+}
+
+.mobile-app-qr-label {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 600;
+    color: #101219;
+}
+
 /* Resources CTA Section */
 .resources-cta-section {
     background: linear-gradient(90deg, #2b458f 0%, #1e3266 100%);
@@ -6269,6 +6335,18 @@ article.single-event {
         border-radius: 16px;
     }
     
+    .mobile-app-section {
+        border-radius: 16px;
+    }
+    
+    .mobile-app-header {
+        padding: 20px 24px;
+    }
+    
+    .mobile-app-qr-grid {
+        padding: 24px;
+    }
+    
     .external-resources-header {
         padding: 20px 24px;
     }
@@ -6340,6 +6418,12 @@ article.single-event {
         padding: 16px 20px;
     }
     
+    .mobile-app-header {
+        flex-direction: column;
+        gap: 12px;
+        padding: 16px 20px;
+    }
+    
     .header-accent {
         width: 40px;
         height: 4px;
@@ -6348,6 +6432,11 @@ article.single-event {
     
     .external-links-grid {
         padding: 16px 20px;
+    }
+    
+    .mobile-app-qr-grid {
+        padding: 20px;
+        gap: 24px;
     }
     
     .resources-cta-section {
