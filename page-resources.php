@@ -207,8 +207,8 @@ $external_links_query = new WP_Query(array(
     $mobile_app_qr_ios_url = 'https://example.com/mobile-app-ios-instructions';
     $mobile_app_qr_android_url = 'https://example.com/mobile-app-android-instructions';
     // Placeholder URLs for app store downloads – replace with your app's store listing URLs
-    $mobile_app_apple_store_url = 'https://apps.apple.com/app/placeholder';
-    $mobile_app_google_play_url = 'https://play.google.com/store/apps/details?id=com.placeholder';
+    $mobile_app_apple_store_url = 'https://apps.apple.com/us/app/laborpower-mobile/id1024823657';
+    $mobile_app_google_play_url = 'https://play.google.com/store/apps/details?id=com.workingsystems.lpmobile&hl=en';
     ?>
     <section class="mobile-app-section">
         <div class="mobile-app-header reveal-fade-up">
@@ -222,7 +222,7 @@ $external_links_query = new WP_Query(array(
             <p class="mobile-app-download-label">Download the app</p>
             <div class="mobile-app-store-badges">
                 <a href="<?php echo esc_url($mobile_app_apple_store_url); ?>" class="mobile-app-store-link" target="_blank" rel="noopener noreferrer" aria-label="Download on the App Store">
-                    <img src="<?php echo esc_url(get_template_directory_uri()); ?>/assets/images/app-store-badge.svg" alt="Download on the App Store" class="store-badge" width="120" height="40" />
+                    <img src="<?php echo esc_url(get_template_directory_uri()); ?>/assets/images/Download_on_the_App_Store_Badge.svg" alt="Download on the App Store" class="store-badge" width="120" height="40" />
                 </a>
                 <a href="<?php echo esc_url($mobile_app_google_play_url); ?>" class="mobile-app-store-link" target="_blank" rel="noopener noreferrer" aria-label="Get it on Google Play">
                     <img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" alt="Get it on Google Play" class="store-badge" width="135" height="40" />
