@@ -4256,7 +4256,7 @@ article.single-event {
         grid-template-columns: 1fr;
     }
     
-    /* Out of Work form: 4-col → 2-col, 3-col → 2-col */
+    /* Out of Work form: 4-col → 2-col, 3-col → 2-col (2-col stays 2-col for medium screens) */
     .cf7-grid--4 {
         grid-template-columns: repeat(2, 1fr);
     }
@@ -4761,6 +4761,12 @@ article.single-event {
     .cf7-grid--3,
     .cf7-grid--4 {
         grid-template-columns: 1fr;
+    }
+    .cf7-span-2 {
+        grid-column: 1 / -1;
+    }
+    .cf7-field {
+        min-width: 0;
     }
     .cf7-upload-cols {
         grid-template-columns: 1fr;
