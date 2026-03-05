@@ -6149,16 +6149,24 @@ article.single-event {
 }
 
 .mobile-app-download-row {
-    padding: 24px 32px 0;
+    padding: 24px 32px;
     border-bottom: 1px solid #e9ebf1;
     padding-bottom: 24px;
+    text-align: center;
 }
 
 .mobile-app-download-label {
-    margin: 0 0 12px;
+    margin: 0 0 8px;
     font-size: 14px;
     font-weight: 600;
     color: #101219;
+}
+
+.mobile-app-download-tagline {
+    margin: 0 0 16px;
+    font-size: 16px;
+    color: #5a678c;
+    line-height: 1.4;
 }
 
 .mobile-app-store-badges {
@@ -6166,6 +6174,7 @@ article.single-event {
     flex-wrap: wrap;
     gap: 16px;
     align-items: center;
+    justify-content: center;
 }
 
 .mobile-app-store-link {
@@ -6184,6 +6193,11 @@ article.single-event {
     width: auto;
     max-height: 40px;
     object-fit: contain;
+}
+
+.mobile-app-store-link .store-badge-google {
+    height: 58px;
+    max-height: 58px;
 }
 
 .mobile-app-qr-grid {
