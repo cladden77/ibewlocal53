@@ -6148,6 +6148,44 @@ article.single-event {
     line-height: 1.4;
 }
 
+.mobile-app-download-row {
+    padding: 24px 32px 0;
+    border-bottom: 1px solid #e9ebf1;
+    padding-bottom: 24px;
+}
+
+.mobile-app-download-label {
+    margin: 0 0 12px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #101219;
+}
+
+.mobile-app-store-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    align-items: center;
+}
+
+.mobile-app-store-link {
+    display: inline-block;
+    line-height: 0;
+    transition: opacity 0.2s ease;
+}
+
+.mobile-app-store-link:hover {
+    opacity: 0.85;
+}
+
+.mobile-app-store-link .store-badge {
+    display: block;
+    height: 40px;
+    width: auto;
+    max-height: 40px;
+    object-fit: contain;
+}
+
 .mobile-app-qr-grid {
     display: flex;
     flex-wrap: wrap;
@@ -6343,6 +6381,10 @@ article.single-event {
         padding: 20px 24px;
     }
     
+    .mobile-app-download-row {
+        padding: 20px 24px 20px;
+    }
+    
     .mobile-app-qr-grid {
         padding: 24px;
     }
@@ -6432,6 +6474,14 @@ article.single-event {
     
     .external-links-grid {
         padding: 16px 20px;
+    }
+    
+    .mobile-app-download-row {
+        padding: 16px 20px;
+    }
+    
+    .mobile-app-store-badges {
+        gap: 12px;
     }
     
     .mobile-app-qr-grid {
