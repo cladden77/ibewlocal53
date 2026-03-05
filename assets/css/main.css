@@ -3077,6 +3077,10 @@ a:hover {
     grid-template-columns: repeat(4, 1fr);
 }
 
+.cf7-span-2 {
+    grid-column: span 2;
+}
+
 .cf7-field {
     display: flex;
     flex-direction: column;
@@ -3385,6 +3389,50 @@ a:hover {
 .cf7-submit-wrap .wpcf7-submit:hover {
     background-color: #b02a34;
     transform: translateY(-1px);
+}
+
+/* CF7 grid form submit button - same styling when not inside .cf7-submit-wrap */
+.cf7-grid .wpcf7-submit {
+    background-color: #c82e39;
+    color: #ffffff;
+    font-family: var(--font-primary);
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 24px;
+    padding: 12px 32px;
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px -4px rgba(0, 0, 0, 0.1), 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.cf7-grid .wpcf7-submit:hover {
+    background-color: #b02a34;
+    transform: translateY(-1px);
+}
+
+.cf7-submit-center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.cf7-submit-center .wpcf7-form-control-wrap {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    position: relative;
+}
+
+/* Remove spinner from layout flow so it doesn't push the button left */
+.cf7-submit-center .wpcf7-spinner {
+    position: absolute;
+    margin: 0;
+    left: calc(50% + 56px);
+    top: 50%;
+    transform: translateY(-50%);
 }
 
 /* Validation */
