@@ -3176,26 +3176,38 @@ a:hover {
     line-height: 24px;
 }
 
-/* Checkbox row (single row of options) */
+/* Checkbox row (single row of options) – all in one line, checkbox and label centered */
 .cf7-checkrow {
     margin-bottom: 24px;
 }
 
 .cf7-checkrow .wpcf7-form-control-wrap {
     display: flex !important;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
+    align-items: center;
 }
 
 .cf7-checkrow .wpcf7-list-item {
     display: inline-flex !important;
     align-items: center;
+    margin: 0 32px 0 0 !important;
+    flex-shrink: 0;
+}
+
+/* Label wraps checkbox + text: keep them in one row, vertically centered */
+.cf7-checkrow .wpcf7-list-item label {
+    display: flex !important;
+    flex-direction: row;
+    align-items: center;
     gap: 10px;
-    margin: 0 32px 14px 0 !important; /* space between each option, wrap spacing */
+    cursor: pointer;
+    margin: 0;
 }
 
 .cf7-checkrow .wpcf7-list-item-label {
     font-size: 14px;
     font-weight: 400;
+    line-height: 18px;
     color: #374151;
     cursor: pointer;
 }
@@ -3204,6 +3216,7 @@ a:hover {
     width: 18px;
     height: 18px;
     min-width: 18px;
+    flex-shrink: 0;
     accent-color: var(--color-primary);
     cursor: pointer;
 }
@@ -3212,12 +3225,12 @@ a:hover {
 .out-of-work-form-content .cf7-checkrow .wpcf7-form-control-wrap,
 .wpcf7 .cf7-checkrow .wpcf7-form-control-wrap {
     display: flex !important;
-    flex-wrap: wrap !important;
+    flex-wrap: nowrap !important;
 }
 
 .out-of-work-form-content .cf7-checkrow .wpcf7-list-item,
 .wpcf7 .cf7-checkrow .wpcf7-list-item {
-    margin: 0 32px 14px 0 !important;
+    margin: 0 32px 0 0 !important;
 }
 
 .out-of-work-form-content .cf7-lists .wpcf7-list-item,
