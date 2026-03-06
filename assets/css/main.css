@@ -3362,38 +3362,52 @@ a:hover {
     cursor: pointer;
 }
 
-/* Acceptance checkbox */
-.cf7-ack .wpcf7-form-control-wrap {
+/* Acceptance checkbox - centered to first line, second line indented */
+.out-of-work-form-content .cf7-ack .wpcf7-form-control-wrap {
+    display: block;
+}
+
+.out-of-work-form-content .cf7-ack .wpcf7-list-item label {
     display: flex;
     align-items: flex-start;
     gap: 12px;
 }
 
-.cf7-ack input[type="checkbox"] {
+.out-of-work-form-content .cf7-ack input[type="checkbox"] {
     width: 20px;
     height: 20px;
     min-width: 20px;
-    margin-top: 2px;
+    margin: 0;
+    margin-top: calc((1.5em - 20px) / 2); /* center with first line of label text */
+    flex-shrink: 0;
     accent-color: var(--color-primary);
     cursor: pointer;
 }
 
-.cf7-ack .wpcf7-list-item-label {
+.out-of-work-form-content .cf7-ack .wpcf7-list-item-label {
     font-size: 14px;
     color: #374151;
     line-height: 1.5;
     cursor: pointer;
+    padding-left: 0.25em;
 }
 
-/* Signature + Submit row */
+/* Signature + Submit row - button centered under signature field */
 .cf7-sign-submit {
-    align-items: flex-end;
+    align-items: flex-start;
+}
+
+.out-of-work-form-content .cf7-sign-submit .cf7-submit-wrap {
+    grid-column: 1;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
 }
 
 .cf7-submit-wrap {
     display: flex;
     align-items: flex-end;
-    justify-content: flex-end;
+    justify-content: center;
 }
 
 .cf7-submit-wrap .wpcf7-submit {
@@ -4952,6 +4966,9 @@ article.single-event {
         align-items: stretch;
     }
     .cf7-submit-wrap {
+        justify-content: stretch;
+    }
+    .out-of-work-form-content .cf7-sign-submit .cf7-submit-wrap {
         justify-content: stretch;
     }
     .cf7-submit-wrap .wpcf7-submit {
