@@ -1373,6 +1373,154 @@ function ibew_local_53_member_dashboard_admin_notice() {
 add_action('admin_notices', 'ibew_local_53_member_dashboard_admin_notice');
 
 // ============================================
+// PMPRO: MEMBERS-ONLY RESOURCES, NEWS, AND EVENTS
+// ============================================
+// Exposes PMPro "Require Membership" (editor sidebar + classic meta box) on these post types
+// and hides restricted items from theme listing queries. Single news/event views still use
+// PMPro's content filter for the login / levels message.
+
+/**
+ * Post types that can be restricted in the editor via Paid Memberships Pro.
+ *
+ * @return string[]
+ */
+function ibew_local_53_pmpro_member_content_post_types() {
+    return array('resource', 'news', 'event');
+}
+
+/**
+ * @param string[] $types Default PMPro restrictable types.
+ * @return string[]
+ */
+function ibew_local_53_pmpro_restrictable_post_types($types) {
+    if (!function_exists('pmpro_getAllLevels')) {
+        return $types;
+    }
+    return array_values(array_unique(array_merge((array) $types, ibew_local_53_pmpro_member_content_post_types())));
+}
+add_filter('pmpro_restrictable_post_types', 'ibew_local_53_pmpro_restrictable_post_types');
+
+/**
+ * Include custom post types when PMPro's "filter searches and archives" runs.
+ *
+ * @param string[] $types Default types.
+ * @return string[]
+ */
+function ibew_local_53_pmpro_search_filter_post_types($types) {
+    if (!function_exists('pmpro_getAllLevels')) {
+        return $types;
+    }
+    return array_values(array_unique(array_merge((array) $types, ibew_local_53_pmpro_member_content_post_types())));
+}
+add_filter('pmpro_search_filter_post_types', 'ibew_local_53_pmpro_search_filter_post_types');
+
+/**
+ * Find a published resource that uses this attachment as its document file.
+ *
+ * @param int $attachment_id Attachment post ID.
+ * @return int Resource post ID or 0.
+ */
+function ibew_local_53_get_resource_id_for_attachment($attachment_id) {
+    $attachment_id = (int) $attachment_id;
+    if ($attachment_id < 1) {
+        return 0;
+    }
+    static $cache = array();
+    if (array_key_exists($attachment_id, $cache)) {
+        return $cache[$attachment_id];
+    }
+    $q = new WP_Query(array(
+        'post_type'              => 'resource',
+        'post_status'            => 'publish',
+        'posts_per_page'         => 1,
+        'fields'                 => 'ids',
+        'no_found_rows'          => true,
+        'update_post_meta_cache' => false,
+        'update_post_term_cache' => false,
+        'meta_query'             => array(
+            array(
+                'key'   => 'resource_file_id',
+                'value' => $attachment_id,
+            ),
+        ),
+    ));
+    $cache[$attachment_id] = !empty($q->posts) ? (int) $q->posts[0] : 0;
+    return $cache[$attachment_id];
+}
+
+/**
+ * Block direct downloads of files tied to a members-only resource.
+ */
+function ibew_local_53_pmpro_protect_resource_file_attachments() {
+    if (!function_exists('pmpro_has_membership_access') || !function_exists('pmpro_url')) {
+        return;
+    }
+    if (!is_attachment()) {
+        return;
+    }
+    $att_id = get_queried_object_id();
+    if ($att_id < 1) {
+        return;
+    }
+    $resource_id = ibew_local_53_get_resource_id_for_attachment($att_id);
+    if ($resource_id < 1) {
+        return;
+    }
+    if (pmpro_has_membership_access($resource_id)) {
+        return;
+    }
+    wp_safe_redirect(pmpro_url('levels'));
+    exit;
+}
+add_action('template_redirect', 'ibew_local_53_pmpro_protect_resource_file_attachments', 5);
+
+/**
+ * Remove member-restricted resources, news, and events from listing queries (not singular main).
+ *
+ * @param WP_Post[] $posts Posts for the current query.
+ * @param WP_Query  $query Query instance.
+ * @return WP_Post[]
+ */
+function ibew_local_53_pmpro_filter_member_content_in_lists($posts, $query) {
+    if (!function_exists('pmpro_has_membership_access')) {
+        return $posts;
+    }
+    if (is_admin()) {
+        return $posts;
+    }
+    if (defined('REST_REQUEST') && REST_REQUEST) {
+        return $posts;
+    }
+    if ($query->is_singular() && $query->is_main_query()) {
+        return $posts;
+    }
+    $member_types = ibew_local_53_pmpro_member_content_post_types();
+    $q_type = $query->get('post_type');
+    if ($q_type === '') {
+        return $posts;
+    }
+    if ($q_type !== 'any') {
+        $q_types = is_array($q_type) ? $q_type : array($q_type);
+        if (!array_intersect($member_types, $q_types)) {
+            return $posts;
+        }
+    }
+    $out = array();
+    foreach ($posts as $post) {
+        if (!$post instanceof WP_Post) {
+            $out[] = $post;
+            continue;
+        }
+        if (in_array($post->post_type, $member_types, true) && !pmpro_has_membership_access($post->ID)) {
+            continue;
+        }
+        $out[] = $post;
+    }
+    return $out;
+}
+add_filter('the_posts', 'ibew_local_53_pmpro_filter_member_content_in_lists', 10, 2);
+
+// ============================================
 // PMPRO: FREE TIER VIA WORDPRESS REGISTRATION (optional)
 // ============================================
 // If IBEW_PMPRO_DEFAULT_FREE_LEVEL_ID is set to a free level ID, native WP registration
