@@ -6599,6 +6599,17 @@ article.single-event {
     color: var(--color-primary);
 }
 
+/* Nav block/shortcode inside PMPro account or generic content */
+.pmpro .ibew-member-nav-block,
+.entry-content .ibew-member-nav-block,
+.page-content-wrapper .ibew-member-nav-block {
+    margin-bottom: var(--spacing-md);
+}
+
+.ibew-member-nav-block .member-dashboard-nav {
+    margin-bottom: var(--spacing-sm);
+}
+
 .member-dashboard-rule {
     border: none;
     border-top: 1px solid #e9ebf1;
@@ -6678,6 +6689,228 @@ article.single-event {
     .member-dashboard-nav-link {
         padding: 8px 14px;
         font-size: 13px;
+    }
+}
+
+/* ============================================
+   MEMBER REGISTER (page-member-register.php)
+   ============================================ */
+
+.member-register-page-wrapper {
+    min-height: 60vh;
+}
+
+.member-register-container {
+    max-width: var(--container-max);
+    margin: 0 auto;
+    padding: 0 var(--container-padding) var(--spacing-xl);
+}
+
+.member-register-secondary {
+    text-align: center;
+    font-size: 15px;
+    color: #5a678c;
+    margin: 0 0 var(--spacing-lg);
+}
+
+.member-register-secondary a {
+    color: var(--color-primary);
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.member-register-secondary a:hover {
+    text-decoration: underline;
+}
+
+.member-register-secondary-sep {
+    margin: 0 0.35em;
+    color: #c5cad8;
+}
+
+.member-register-card {
+    background: #ffffff;
+    border-radius: 24px;
+    padding: 28px 24px 36px;
+    border: 1px solid #e9ebf1;
+    box-shadow: 0 4px 24px rgba(16, 18, 25, 0.06);
+}
+
+.member-register-pmpro .pmpro {
+    max-width: 100%;
+}
+
+.member-register-fallback {
+    text-align: center;
+    color: #374151;
+    font-size: 16px;
+    line-height: 1.5;
+    margin: 0 0 16px;
+}
+
+.member-register-fallback-actions {
+    text-align: center;
+    margin: 0;
+}
+
+.member-register-editor {
+    margin-top: var(--spacing-xl);
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.member-register-editor .page-content-wrapper {
+    font-size: 16px;
+    line-height: 1.6;
+    color: #374151;
+}
+
+.member-register-free-path {
+    margin-top: var(--spacing-xl);
+    padding: 28px 24px;
+    background: #f8fafc;
+    border: 1px solid #e9ebf1;
+    border-radius: 20px;
+    text-align: center;
+}
+
+.member-register-free-title {
+    margin: 0 0 10px;
+    font-size: 20px;
+    font-weight: 700;
+    color: #101219;
+}
+
+.member-register-free-text {
+    margin: 0 0 18px;
+    font-size: 15px;
+    line-height: 1.5;
+    color: #5a678c;
+}
+
+.member-register-free-actions {
+    margin: 0;
+}
+
+/* Simple member registration form */
+.ibew-register-notice {
+    padding: 16px 18px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    font-size: 15px;
+    line-height: 1.5;
+}
+
+.ibew-register-notice p {
+    margin: 0;
+}
+
+.ibew-register-notice--success {
+    background: #ecfdf5;
+    border: 1px solid #a7f3d0;
+    color: #065f46;
+}
+
+.ibew-register-notice--error {
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    color: #991b1b;
+}
+
+.member-register-logged-in {
+    text-align: center;
+    font-size: 16px;
+    color: #374151;
+    margin: 0;
+}
+
+.member-register-logged-in a {
+    color: var(--color-primary);
+    font-weight: 600;
+}
+
+.ibew-register-honeypot {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+}
+
+.ibew-member-register-form {
+    position: relative;
+}
+
+.ibew-register-fields {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px 20px;
+    margin-bottom: 8px;
+}
+
+.ibew-register-field--full {
+    grid-column: 1 / -1;
+}
+
+.ibew-register-field label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: 8px;
+}
+
+.ibew-register-field .req {
+    color: #dc2626;
+}
+
+.ibew-register-field input {
+    width: 100%;
+    box-sizing: border-box;
+    height: 48px;
+    padding: 0 14px;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    font-size: 15px;
+    font-family: var(--font-primary);
+    color: #101219;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.ibew-register-field input:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(43, 69, 143, 0.12);
+}
+
+.ibew-register-submit-wrap {
+    margin: 24px 0 0;
+    text-align: center;
+}
+
+.ibew-register-submit {
+    min-width: 200px;
+}
+
+@media (max-width: 600px) {
+    .member-register-card {
+        padding: 20px 16px 28px;
+        border-radius: 16px;
+    }
+
+    .member-register-free-path {
+        padding: 22px 18px;
+    }
+
+    .ibew-register-fields {
+        grid-template-columns: 1fr;
+    }
+
+    .ibew-register-field--full {
+        grid-column: 1;
     }
 }
 

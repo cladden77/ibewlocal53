@@ -525,6 +525,186 @@ function ibew_local_53_handle_contact_form() {
 add_action('admin_post_ibew_contact_form', 'ibew_local_53_handle_contact_form');
 add_action('admin_post_nopriv_ibew_contact_form', 'ibew_local_53_handle_contact_form');
 
+/**
+ * Member Register page: create user from First Name, Last Name, Email (no levels redirect).
+ */
+function ibew_local_53_handle_member_register_form() {
+    if (!isset($_POST['ibew_member_register_nonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['ibew_member_register_nonce'])), 'ibew_member_register')) {
+        wp_die(esc_html__('Security check failed.', 'ibew-local-53'), '', array('response' => 403));
+    }
+
+    if (!empty($_POST['website'])) {
+        wp_die(esc_html__('Spam detected.', 'ibew-local-53'), '', array('response' => 400));
+    }
+
+    if (isset($_POST['form_time']) && time() - intval($_POST['form_time']) < 3) {
+        wp_die(esc_html__('Please wait a moment before submitting.', 'ibew-local-53'), '', array('response' => 429));
+    }
+
+    $page_id = isset($_POST['ibew_register_page_id']) ? absint($_POST['ibew_register_page_id']) : 0;
+    $redirect_base = home_url('/');
+    if ($page_id && get_post_meta($page_id, '_wp_page_template', true) === 'page-member-register.php') {
+        $redirect_base = get_permalink($page_id);
+    }
+
+    $fail = function ($code) use ($redirect_base) {
+        wp_safe_redirect(add_query_arg('ibew_reg', $code, $redirect_base));
+        exit;
+    };
+
+    if (!get_option('users_can_register')) {
+        $fail('closed');
+    }
+
+    if (is_user_logged_in()) {
+        $fail('logged_in');
+    }
+
+    $first_name = isset($_POST['ibew_reg_first_name']) ? sanitize_text_field(wp_unslash($_POST['ibew_reg_first_name'])) : '';
+    $last_name = isset($_POST['ibew_reg_last_name']) ? sanitize_text_field(wp_unslash($_POST['ibew_reg_last_name'])) : '';
+    $email = isset($_POST['ibew_reg_email']) ? sanitize_email(wp_unslash($_POST['ibew_reg_email'])) : '';
+
+    if ($first_name === '' || $last_name === '' || $email === '' || !is_email($email)) {
+        $fail('invalid');
+    }
+
+    if (email_exists($email)) {
+        $fail('duplicate');
+    }
+
+    $base = sanitize_user(strtolower($first_name . $last_name), true);
+    if ($base === '') {
+        $email_local = explode('@', $email);
+        $local_part = isset($email_local[0]) ? $email_local[0] : 'user';
+        $base = sanitize_user($local_part, true);
+    }
+    if ($base === '') {
+        $base = 'member';
+    }
+
+    $user_login = $base;
+    $n = 1;
+    while (username_exists($user_login)) {
+        $user_login = $base . $n;
+        $n++;
+    }
+
+    $password = wp_generate_password(24);
+    $user_id = wp_insert_user(array(
+        'user_login'   => $user_login,
+        'user_email'   => $email,
+        'user_pass'    => $password,
+        'first_name'   => $first_name,
+        'last_name'    => $last_name,
+        'display_name' => trim($first_name . ' ' . $last_name),
+        'role'         => get_option('default_role'),
+    ));
+
+    if (is_wp_error($user_id)) {
+        $fail('error');
+    }
+
+    if (apply_filters('ibew_local_53_hide_member_portal_users_from_users_list', true)) {
+        update_user_meta($user_id, 'ibew_local_53_hide_wp_users_list', '1');
+    }
+
+    if (function_exists('wp_send_new_user_notifications')) {
+        wp_send_new_user_notifications($user_id, 'user');
+    } elseif (function_exists('wp_new_user_notification')) {
+        wp_new_user_notification($user_id, null, 'user');
+    }
+
+    wp_safe_redirect(add_query_arg('ibew_reg', 'success', $redirect_base));
+    exit;
+}
+add_action('admin_post_ibew_member_register', 'ibew_local_53_handle_member_register_form');
+add_action('admin_post_nopriv_ibew_member_register', 'ibew_local_53_handle_member_register_form');
+
+/**
+ * User meta key: hide this user on Users → All Users (they still exist; PMPro Members list unchanged).
+ */
+function ibew_local_53_get_hide_wp_users_list_meta_key() {
+    return 'ibew_local_53_hide_wp_users_list';
+}
+
+/**
+ * Remove "hide from Users list" when the user can create/edit content (promoted beyond typical member).
+ *
+ * @param int $user_id User ID.
+ */
+function ibew_local_53_unhide_user_if_can_edit_posts($user_id) {
+    $user_id = (int) $user_id;
+    if ($user_id < 1) {
+        return;
+    }
+    if (!user_can($user_id, 'edit_posts')) {
+        return;
+    }
+    $key = ibew_local_53_get_hide_wp_users_list_meta_key();
+    if (get_user_meta($user_id, $key, true)) {
+        delete_user_meta($user_id, $key);
+    }
+}
+add_action('profile_update', 'ibew_local_53_unhide_user_if_can_edit_posts', 10, 1);
+add_action('set_user_role', 'ibew_local_53_unhide_user_if_can_edit_posts', 10, 1);
+
+/**
+ * Exclude portal-registered members from the Users admin screen only (not from PMPro SQL).
+ *
+ * @param WP_User_Query $user_query User query instance.
+ */
+function ibew_local_53_exclude_hidden_users_from_users_admin($user_query) {
+    if (!is_admin()) {
+        return;
+    }
+    global $pagenow;
+    if ($pagenow !== 'users.php') {
+        return;
+    }
+    if (!apply_filters('ibew_local_53_hide_member_portal_users_from_users_list', true)) {
+        return;
+    }
+    if (isset($_GET['show_all_users']) && $_GET['show_all_users'] === '1' && current_user_can('list_users')) {
+        return;
+    }
+    global $wpdb;
+    $key = ibew_local_53_get_hide_wp_users_list_meta_key();
+    $user_query->query_where .= $wpdb->prepare(
+        " AND {$wpdb->users}.ID NOT IN (
+            SELECT user_id FROM {$wpdb->usermeta}
+            WHERE meta_key = %s AND meta_value = '1'
+        )",
+        $key
+    );
+}
+add_action('pre_user_query', 'ibew_local_53_exclude_hidden_users_from_users_admin', 5);
+
+/**
+ * Explain hidden portal members on Users screen.
+ */
+function ibew_local_53_users_admin_hidden_members_notice() {
+    global $pagenow;
+    if ($pagenow !== 'users.php' || !current_user_can('list_users')) {
+        return;
+    }
+    if (!apply_filters('ibew_local_53_hide_member_portal_users_from_users_list', true)) {
+        return;
+    }
+    if (isset($_GET['show_all_users']) && $_GET['show_all_users'] === '1') {
+        return;
+    }
+    echo '<div class="notice notice-info is-dismissible"><p>';
+    esc_html_e('Members who registered through the Member Register form are omitted from this list but still appear in Paid Memberships Pro under Memberships → Members.', 'ibew-local-53');
+    echo ' ';
+    printf(
+        '<a href="%s">%s</a>',
+        esc_url(add_query_arg('show_all_users', '1')),
+        esc_html__('Show every WordPress user', 'ibew-local-53')
+    );
+    echo '</p></div>';
+}
+add_action('admin_notices', 'ibew_local_53_users_admin_hidden_members_notice');
+
 // Helper function to format event date
 function ibew_local_53_format_event_date($datetime, $format = 'F j, Y') {
     if (empty($datetime)) {
@@ -1191,3 +1371,207 @@ function ibew_local_53_member_dashboard_admin_notice() {
     echo '</p></div>';
 }
 add_action('admin_notices', 'ibew_local_53_member_dashboard_admin_notice');
+
+// ============================================
+// PMPRO: FREE TIER VIA WORDPRESS REGISTRATION (optional)
+// ============================================
+// If IBEW_PMPRO_DEFAULT_FREE_LEVEL_ID is set to a free level ID, native WP registration
+// assigns that level (user_register) and PMPro no longer redirects register to levels.
+// @link https://www.paidmembershipspro.com/assign-default-membership-level-wordpress-user-registration/
+
+/**
+ * Membership level ID to assign on WordPress user_register (0 = disabled).
+ *
+ * @return int
+ */
+function ibew_local_53_pmpro_default_free_level_id() {
+    $id = 0;
+    if (defined('IBEW_PMPRO_DEFAULT_FREE_LEVEL_ID')) {
+        $id = (int) IBEW_PMPRO_DEFAULT_FREE_LEVEL_ID;
+    }
+    return (int) apply_filters('ibew_local_53_pmpro_default_free_level_id', $id);
+}
+
+/**
+ * Whether the site should allow the native WP register screen alongside PMPro.
+ */
+function ibew_local_53_pmpro_native_free_registration_enabled() {
+    return ibew_local_53_pmpro_default_free_level_id() > 0 && get_option('users_can_register');
+}
+
+/**
+ * Stop PMPro from redirecting wp-login.php?action=register to the levels page when
+ * we use the free-level-on-user_register flow.
+ *
+ * @param bool $allow_redirect Default true.
+ * @return bool
+ */
+function ibew_local_53_pmpro_maybe_disable_register_redirect($allow_redirect) {
+    if (ibew_local_53_pmpro_native_free_registration_enabled()) {
+        return false;
+    }
+    return $allow_redirect;
+}
+add_filter('pmpro_login_redirect', 'ibew_local_53_pmpro_maybe_disable_register_redirect');
+
+/**
+ * Assign the configured free PMPro level to new users (WordPress registration only).
+ *
+ * @param int $user_id New user ID.
+ */
+function ibew_local_53_pmpro_assign_default_free_level_on_register($user_id) {
+    if (!function_exists('pmpro_changeMembershipLevel') || !function_exists('pmpro_getLevel') || !function_exists('pmpro_isLevelFree')) {
+        return;
+    }
+    $level_id = ibew_local_53_pmpro_default_free_level_id();
+    if ($level_id < 1) {
+        return;
+    }
+    // Checkout and other flows may assign a level in the same request; do not override.
+    if (function_exists('pmpro_hasMembershipLevel') && pmpro_hasMembershipLevel(false, $user_id)) {
+        return;
+    }
+    $level = pmpro_getLevel($level_id);
+    if (empty($level)) {
+        return;
+    }
+    if (!pmpro_isLevelFree($level)) {
+        return;
+    }
+    pmpro_changeMembershipLevel($level_id, $user_id);
+}
+add_action('user_register', 'ibew_local_53_pmpro_assign_default_free_level_on_register', 20, 1);
+
+/**
+ * Permalink for the Member Dashboard page (used after login). Empty if missing/unpublished.
+ *
+ * @return string
+ */
+function ibew_local_53_get_member_dashboard_permalink() {
+    static $cached = false;
+    static $url = '';
+    if ($cached) {
+        return $url;
+    }
+    $cached = true;
+    $page = get_page_by_path('member-dashboard', OBJECT, 'page');
+    if (!$page instanceof WP_Post || $page->post_status !== 'publish') {
+        return $url;
+    }
+    $url = apply_filters('ibew_local_53_member_dashboard_login_url', get_permalink($page));
+    return $url;
+}
+
+/**
+ * When PMPro would send an active member to the Account page, send them to Member Dashboard instead.
+ * Respects other redirect_to targets (admin, checkout, etc.).
+ *
+ * @param string         $redirect_to URL.
+ * @param string         $request     Requested redirect (unused).
+ * @param WP_User|mixed $user        Logged-in user.
+ * @return string
+ */
+function ibew_local_53_pmpro_login_redirect_member_dashboard($redirect_to, $request, $user) {
+    if (!($user instanceof WP_User) || !$user->exists()) {
+        return $redirect_to;
+    }
+    $dashboard = ibew_local_53_get_member_dashboard_permalink();
+    if ($dashboard === '') {
+        return $redirect_to;
+    }
+    if (!function_exists('pmpro_url')) {
+        return $redirect_to;
+    }
+    $account = pmpro_url('account');
+    if ($account === '') {
+        return $redirect_to;
+    }
+    if (untrailingslashit((string) $redirect_to) !== untrailingslashit((string) $account)) {
+        return $redirect_to;
+    }
+    return $dashboard;
+}
+add_filter('pmpro_login_redirect_url', 'ibew_local_53_pmpro_login_redirect_member_dashboard', 15, 3);
+
+/**
+ * Fallback if another plugin alters login_redirect after PMPro (same account → dashboard swap).
+ *
+ * @param string           $redirect_to Redirect URL.
+ * @param string           $request     Requested redirect.
+ * @param WP_User|WP_Error $user        User or error.
+ * @return string
+ */
+function ibew_local_53_login_redirect_member_dashboard_fallback($redirect_to, $request, $user) {
+    if (!($user instanceof WP_User) || !$user->exists()) {
+        return $redirect_to;
+    }
+    return ibew_local_53_pmpro_login_redirect_member_dashboard($redirect_to, $request, $user);
+}
+add_filter('login_redirect', 'ibew_local_53_login_redirect_member_dashboard_fallback', 100, 3);
+
+require_once get_template_directory() . '/inc/member-dashboard-nav.php';
+
+/**
+ * Body classes so PMPro frontend styles apply on the Member Register template.
+ */
+function ibew_local_53_member_register_body_class($classes) {
+    if (is_page_template('page-member-register.php')) {
+        $classes[] = 'pmpro';
+        $classes[] = 'ibew-member-register';
+    }
+    return $classes;
+}
+add_filter('body_class', 'ibew_local_53_member_register_body_class');
+
+/**
+ * Ensure a published Member Register page exists (PMPro levels / checkout entry).
+ */
+function ibew_local_53_ensure_member_register_page() {
+    if (!is_admin() || !current_user_can('manage_options')) {
+        return;
+    }
+
+    $slug = 'member-register';
+    $page = get_page_by_path($slug, OBJECT, 'page');
+
+    if ($page instanceof WP_Post && $page->post_status === 'publish') {
+        $tpl = get_post_meta($page->ID, '_wp_page_template', true);
+        if ($tpl !== 'page-member-register.php') {
+            update_post_meta($page->ID, '_wp_page_template', 'page-member-register.php');
+        }
+        return;
+    }
+
+    $post_id = wp_insert_post(
+        array(
+            'post_title'   => __('Member Register', 'ibew-local-53'),
+            'post_name'    => $slug,
+            'post_status'  => 'publish',
+            'post_type'    => 'page',
+            'post_content' => '',
+        ),
+        true
+    );
+
+    if (is_wp_error($post_id) || !$post_id) {
+        return;
+    }
+
+    update_post_meta($post_id, '_wp_page_template', 'page-member-register.php');
+    set_transient('ibew_member_register_created_notice', 1, 60);
+}
+add_action('admin_init', 'ibew_local_53_ensure_member_register_page', 21);
+
+/**
+ * Admin notice after Member Register page is auto-created.
+ */
+function ibew_local_53_member_register_admin_notice() {
+    if (!get_transient('ibew_member_register_created_notice') || !current_user_can('manage_options')) {
+        return;
+    }
+    delete_transient('ibew_member_register_created_notice');
+    echo '<div class="notice notice-success is-dismissible"><p>';
+    esc_html_e('IBEW Local 53: The Member Register page was created. Add it to your menu and ensure Paid Memberships Pro has membership levels configured.', 'ibew-local-53');
+    echo '</p></div>';
+}
+add_action('admin_notices', 'ibew_local_53_member_register_admin_notice');

@@ -1,0 +1,22 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "ibew-local-53/member-nav",
+	"version": "1.0.0",
+	"title": "Member Quick Nav",
+	"category": "widgets",
+	"icon": "menu",
+	"description": "Resources, Forms, Events, and My Account—same links as the member dashboard. Add above PMPro account or on any member page.",
+	"keywords": ["member", "menu", "navigation", "pmpro", "dashboard"],
+	"supports": {
+		"html": false,
+		"align": ["wide", "full"]
+	},
+	"attributes": {
+		"showRule": {
+			"type": "boolean",
+			"default": true
+		}
+	},
+	"textdomain": "ibew-local-53"
+}

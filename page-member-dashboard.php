@@ -134,14 +134,7 @@ if ( ! $forms_hub_url ) {
 </section>
 
 <div class="member-dashboard-wrap resources-page-container">
-	<nav class="member-dashboard-nav reveal-fade-up" aria-label="<?php esc_attr_e( 'Member dashboard sections', 'ibew-local-53' ); ?>">
-		<a class="member-dashboard-nav-link" href="#member-dashboard-resources"><?php esc_html_e( 'Resources', 'ibew-local-53' ); ?></a>
-		<a class="member-dashboard-nav-link" href="#member-dashboard-forms"><?php esc_html_e( 'Forms', 'ibew-local-53' ); ?></a>
-		<a class="member-dashboard-nav-link" href="#member-dashboard-events"><?php esc_html_e( 'Events', 'ibew-local-53' ); ?></a>
-		<a class="member-dashboard-nav-link" href="<?php echo esc_url( $account_url ); ?>"><?php esc_html_e( 'My Account', 'ibew-local-53' ); ?></a>
-	</nav>
-
-	<hr class="member-dashboard-rule" />
+	<?php ibew_local_53_render_member_dashboard_nav( array( 'show_rule' => true ) ); ?>
 
 	<section id="member-dashboard-resources" class="member-dashboard-section resources-documents-section">
 		<div class="member-dashboard-section-head">
