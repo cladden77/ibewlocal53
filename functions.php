@@ -1226,6 +1226,82 @@ function ibew_local_53_get_resource_file_info($post_id) {
     );
 }
 
+/**
+ * Insert a column immediately before the Date column (or append if Date is missing).
+ *
+ * @param array  $columns Existing columns.
+ * @param string $slug    New column key.
+ * @param string $label   Column heading.
+ * @return array
+ */
+function ibew_local_53_admin_columns_insert_before_date($columns, $slug, $label) {
+    if (!is_array($columns)) {
+        return $columns;
+    }
+    $new_columns = array();
+    $inserted = false;
+    foreach ($columns as $key => $value) {
+        if ($key === 'date') {
+            $new_columns[$slug] = $label;
+            $inserted = true;
+        }
+        $new_columns[$key] = $value;
+    }
+    if (!$inserted) {
+        $new_columns[$slug] = $label;
+    }
+    return $new_columns;
+}
+
+/**
+ * Membership level IDs required to view this post (PMPro "Require Membership" on the post).
+ *
+ * @param int $post_id Post ID.
+ * @return int[]
+ */
+function ibew_local_53_pmpro_get_post_restriction_level_ids($post_id) {
+    global $wpdb;
+    $post_id = (int) $post_id;
+    if ($post_id < 1 || empty($wpdb->pmpro_memberships_pages)) {
+        return array();
+    }
+    $col = $wpdb->get_col(
+        $wpdb->prepare(
+            "SELECT membership_id FROM {$wpdb->pmpro_memberships_pages} WHERE page_id = %d",
+            $post_id
+        )
+    );
+    return array_map('intval', (array) $col);
+}
+
+/**
+ * Echo admin list cell: Public vs Members only (with level names in title tooltip).
+ *
+ * @param int $post_id Post ID.
+ */
+function ibew_local_53_pmpro_render_admin_visibility_cell($post_id) {
+    if (!function_exists('pmpro_getAllLevels')) {
+        echo '<span aria-hidden="true">—</span>';
+        return;
+    }
+    $level_ids = ibew_local_53_pmpro_get_post_restriction_level_ids($post_id);
+    if (empty($level_ids)) {
+        echo '<span class="ibew-visibility-public">' . esc_html__('Public', 'ibew-local-53') . '</span>';
+        return;
+    }
+    $levels = pmpro_getAllLevels(true, true);
+    $names = array();
+    foreach ($levels as $level) {
+        if (is_object($level) && in_array((int) $level->id, $level_ids, true)) {
+            $names[] = $level->name;
+        }
+    }
+    $title = !empty($names) ? implode(', ', $names) : '';
+    echo '<span class="ibew-visibility-members"' . ($title !== '' ? ' title="' . esc_attr($title) . '"' : '') . '>';
+    echo esc_html__('Members only', 'ibew-local-53');
+    echo '</span>';
+}
+
 // Add custom columns to Resource admin list
 function ibew_local_53_resource_admin_columns($columns) {
     $new_columns = array();
@@ -1236,7 +1312,11 @@ function ibew_local_53_resource_admin_columns($columns) {
             $new_columns['resource_details'] = __('Details', 'ibew-local-53');
         }
     }
-    return $new_columns;
+    return ibew_local_53_admin_columns_insert_before_date(
+        $new_columns,
+        'ibew_pmpro_visibility',
+        __('Visibility', 'ibew-local-53')
+    );
 }
 add_filter('manage_resource_posts_columns', 'ibew_local_53_resource_admin_columns');
 
@@ -1272,8 +1352,53 @@ function ibew_local_53_resource_admin_column_content($column, $post_id) {
             }
         }
     }
+
+    if ($column === 'ibew_pmpro_visibility') {
+        ibew_local_53_pmpro_render_admin_visibility_cell($post_id);
+    }
 }
 add_action('manage_resource_posts_custom_column', 'ibew_local_53_resource_admin_column_content', 10, 2);
+
+/**
+ * Visibility column on News and Events admin lists.
+ *
+ * @param string $column  Column key.
+ * @param int    $post_id Post ID.
+ */
+function ibew_local_53_news_event_pmpro_visibility_column($column, $post_id) {
+    if ($column !== 'ibew_pmpro_visibility') {
+        return;
+    }
+    ibew_local_53_pmpro_render_admin_visibility_cell($post_id);
+}
+add_action('manage_news_posts_custom_column', 'ibew_local_53_news_event_pmpro_visibility_column', 10, 2);
+add_action('manage_event_posts_custom_column', 'ibew_local_53_news_event_pmpro_visibility_column', 10, 2);
+
+/**
+ * @param array $columns Default columns.
+ * @return array
+ */
+function ibew_local_53_news_admin_columns($columns) {
+    return ibew_local_53_admin_columns_insert_before_date(
+        $columns,
+        'ibew_pmpro_visibility',
+        __('Visibility', 'ibew-local-53')
+    );
+}
+add_filter('manage_news_posts_columns', 'ibew_local_53_news_admin_columns');
+
+/**
+ * @param array $columns Default columns.
+ * @return array
+ */
+function ibew_local_53_event_admin_columns($columns) {
+    return ibew_local_53_admin_columns_insert_before_date(
+        $columns,
+        'ibew_pmpro_visibility',
+        __('Visibility', 'ibew-local-53')
+    );
+}
+add_filter('manage_event_posts_columns', 'ibew_local_53_event_admin_columns');
 
 // Add filter dropdown for resource type in admin
 function ibew_local_53_resource_admin_filter() {
