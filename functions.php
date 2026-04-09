@@ -1133,3 +1133,61 @@ function ibew_local_53_resource_admin_filter_query($query) {
     }
 }
 add_action('pre_get_posts', 'ibew_local_53_resource_admin_filter_query');
+
+// ============================================
+// MEMBER DASHBOARD PAGE (bootstrap)
+// ============================================
+
+/**
+ * Ensure a published Member Dashboard page exists and uses the correct template.
+ * Runs in admin for users who can manage_options; creates the page once if missing.
+ */
+function ibew_local_53_ensure_member_dashboard_page() {
+    if (!is_admin() || !current_user_can('manage_options')) {
+        return;
+    }
+
+    $slug = 'member-dashboard';
+    $page = get_page_by_path($slug, OBJECT, 'page');
+
+    if ($page instanceof WP_Post && $page->post_status === 'publish') {
+        $tpl = get_post_meta($page->ID, '_wp_page_template', true);
+        if ($tpl !== 'page-member-dashboard.php') {
+            update_post_meta($page->ID, '_wp_page_template', 'page-member-dashboard.php');
+        }
+        return;
+    }
+
+    $post_id = wp_insert_post(
+        array(
+            'post_title'   => __('Member Dashboard', 'ibew-local-53'),
+            'post_name'    => $slug,
+            'post_status'  => 'publish',
+            'post_type'    => 'page',
+            'post_content' => '',
+        ),
+        true
+    );
+
+    if (is_wp_error($post_id) || !$post_id) {
+        return;
+    }
+
+    update_post_meta($post_id, '_wp_page_template', 'page-member-dashboard.php');
+    set_transient('ibew_member_dashboard_created_notice', 1, 60);
+}
+add_action('admin_init', 'ibew_local_53_ensure_member_dashboard_page', 20);
+
+/**
+ * After auto-creating the Member Dashboard page, prompt to set PMPro restrictions.
+ */
+function ibew_local_53_member_dashboard_admin_notice() {
+    if (!get_transient('ibew_member_dashboard_created_notice') || !current_user_can('manage_options')) {
+        return;
+    }
+    delete_transient('ibew_member_dashboard_created_notice');
+    echo '<div class="notice notice-success is-dismissible"><p>';
+    esc_html_e('IBEW Local 53: The Member Dashboard page was created. Edit the page and use Paid Memberships Pro to require the appropriate membership level (Require Membership / content settings).', 'ibew-local-53');
+    echo '</p></div>';
+}
+add_action('admin_notices', 'ibew_local_53_member_dashboard_admin_notice');

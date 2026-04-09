@@ -6558,3 +6558,126 @@ article.single-event {
     }
 }
 
+/* ============================================
+   MEMBER DASHBOARD (page-member-dashboard.php)
+   ============================================ */
+
+.member-dashboard-hero .hero-title {
+    font-size: clamp(1.75rem, 4vw, 2.5rem);
+}
+
+.member-dashboard-wrap {
+    padding-top: var(--spacing-lg);
+    padding-bottom: var(--spacing-xl);
+}
+
+.member-dashboard-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: flex-start;
+    margin-bottom: var(--spacing-md);
+}
+
+.member-dashboard-nav-link {
+    display: inline-flex;
+    align-items: center;
+    padding: 10px 20px;
+    border-radius: 20px;
+    border: 1px solid #e5e7eb;
+    background: #ffffff;
+    color: #374151;
+    font-size: 14px;
+    font-weight: 600;
+    font-family: var(--font-primary);
+    text-decoration: none;
+    transition: border-color 0.2s ease, color 0.2s ease, background 0.2s ease;
+}
+
+.member-dashboard-nav-link:hover {
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+}
+
+.member-dashboard-rule {
+    border: none;
+    border-top: 1px solid #e9ebf1;
+    margin: 0 0 var(--spacing-lg);
+}
+
+.member-dashboard-section {
+    margin-bottom: var(--spacing-md);
+}
+
+.member-dashboard-section .section-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: #101219;
+    margin: 0 0 16px;
+}
+
+.member-dashboard-section-head {
+    margin-bottom: 8px;
+}
+
+.member-dashboard-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.member-dashboard-list-item {
+    padding: 12px 0;
+    border-bottom: 1px solid #f3f4f6;
+    font-size: 16px;
+    line-height: 1.4;
+}
+
+.member-dashboard-list-item:last-child {
+    border-bottom: none;
+}
+
+.member-dashboard-list-link {
+    color: var(--color-primary);
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.member-dashboard-list-link:hover {
+    text-decoration: underline;
+}
+
+.member-dashboard-list-text {
+    color: #101219;
+    font-weight: 600;
+}
+
+.member-dashboard-list-muted {
+    color: #5a678c;
+    font-size: 15px;
+    font-weight: 500;
+}
+
+.member-dashboard-view-all {
+    margin: 20px 0 0;
+}
+
+.member-dashboard-help {
+    margin-top: var(--spacing-lg);
+}
+
+.member-dashboard-editor-content {
+    margin-top: var(--spacing-xl);
+}
+
+@media (max-width: 600px) {
+    .member-dashboard-nav {
+        gap: 8px;
+    }
+
+    .member-dashboard-nav-link {
+        padding: 8px 14px;
+        font-size: 13px;
+    }
+}
+
