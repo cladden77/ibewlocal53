@@ -33,6 +33,7 @@ function ibew_local_53_render_member_dashboard_nav($args = array()) {
     $events_href    = $dashboard ? $dashboard . '#member-dashboard-events' : '#member-dashboard-events';
 
     $account_url = (function_exists('pmpro_url')) ? pmpro_url('account') : home_url('/membership-account/');
+    $logout_url  = wp_logout_url(home_url('/'));
     ?>
     <div class="ibew-member-nav-block">
         <nav class="member-dashboard-nav reveal-fade-up" aria-label="<?php esc_attr_e('Member dashboard sections', 'ibew-local-53'); ?>">
@@ -40,6 +41,7 @@ function ibew_local_53_render_member_dashboard_nav($args = array()) {
             <a class="member-dashboard-nav-link" href="<?php echo esc_url($forms_href); ?>"><?php esc_html_e('Forms', 'ibew-local-53'); ?></a>
             <a class="member-dashboard-nav-link" href="<?php echo esc_url($events_href); ?>"><?php esc_html_e('Events', 'ibew-local-53'); ?></a>
             <a class="member-dashboard-nav-link" href="<?php echo esc_url($account_url); ?>"><?php esc_html_e('My Account', 'ibew-local-53'); ?></a>
+            <a class="member-dashboard-nav-link" href="<?php echo esc_url($logout_url); ?>"><?php esc_html_e('Logout', 'ibew-local-53'); ?></a>
         </nav>
         <?php if ($args['show_rule']) : ?>
             <hr class="member-dashboard-rule" />
