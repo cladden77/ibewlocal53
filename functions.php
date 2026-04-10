@@ -30,12 +30,28 @@ function ibew_local_53_setup() {
     // Register navigation menus
     register_nav_menus(array(
         'primary' => __('Primary Menu', 'ibew-local-53'),
+        'member_primary' => __('Member Primary Menu', 'ibew-local-53'),
     ));
     
     // Register custom 16:12 image size for news and events
     add_image_size('featured-16-12', 1280, 960, true);
 }
 add_action('after_setup_theme', 'ibew_local_53_setup');
+
+/**
+ * Resolve which header menu location to render.
+ *
+ * Logged-in users get `member_primary` when assigned; everyone else falls back
+ * to the default `primary` location.
+ *
+ * @return string
+ */
+function ibew_local_53_get_header_menu_location() {
+    if (is_user_logged_in() && has_nav_menu('member_primary')) {
+        return 'member_primary';
+    }
+    return 'primary';
+}
 
 // Register block pattern category and patterns for page layouts
 function ibew_local_53_register_block_patterns() {

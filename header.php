@@ -7,6 +7,7 @@
 </head>
 <body <?php body_class(); ?>>
 <?php wp_body_open(); ?>
+<?php $header_menu_location = function_exists('ibew_local_53_get_header_menu_location') ? ibew_local_53_get_header_menu_location() : 'primary'; ?>
 
 <header class="site-header">
     <div class="header-container">
@@ -35,7 +36,7 @@
             <nav class="main-navigation">
                 <?php
                 wp_nav_menu(array(
-                    'theme_location' => 'primary',
+                    'theme_location' => $header_menu_location,
                     'menu_class' => 'nav-menu',
                     'container' => false,
                 ));
@@ -63,7 +64,7 @@
                 <nav class="mobile-navigation">
                     <?php
                     wp_nav_menu(array(
-                        'theme_location' => 'primary',
+                        'theme_location' => $header_menu_location,
                         'menu_class' => 'mobile-nav-menu',
                         'container' => false,
                     ));
