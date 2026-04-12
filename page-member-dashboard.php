@@ -12,13 +12,14 @@ get_header();
 $user = wp_get_current_user();
 $name = ($user && $user->exists()) ? $user->display_name : '';
 
-// Featured document resources (same rules as Resources page documents section).
-$dashboard_resources = new WP_Query(
+// Document resources: members-only first, then public (same document rules as Resources page).
+$dashboard_resources_query = new WP_Query(
 	array(
 		'post_type'      => 'resource',
-		'posts_per_page' => 4,
+		'posts_per_page' => -1,
 		'orderby'        => 'title',
 		'order'          => 'ASC',
+		'no_found_rows'  => true,
 		'meta_query'     => array(
 			'relation' => 'OR',
 			array(
@@ -33,6 +34,13 @@ $dashboard_resources = new WP_Query(
 		),
 	)
 );
+$dashboard_resource_posts = function_exists( 'ibew_local_53_order_resource_posts_members_first' )
+	? ibew_local_53_order_resource_posts_members_first( $dashboard_resources_query->posts )
+	: $dashboard_resources_query->posts;
+$ibew_dashboard_restricted_ids = array();
+if ( ! empty( $dashboard_resource_posts ) && function_exists( 'ibew_local_53_pmpro_get_restricted_post_ids' ) ) {
+	$ibew_dashboard_restricted_ids = array_flip( ibew_local_53_pmpro_get_restricted_post_ids( wp_list_pluck( $dashboard_resource_posts, 'ID' ) ) );
+}
 
 // Match datetime-local values saved from the event editor (site-local).
 $now_meta = current_time( 'Y-m-d' ) . 'T' . current_time( 'H:i' );
@@ -141,13 +149,15 @@ if ( ! $forms_hub_url ) {
 			<h2 class="section-title"><?php esc_html_e( 'Resources', 'ibew-local-53' ); ?></h2>
 		</div>
 		<div class="resources-grid">
-			<?php
-			if ( $dashboard_resources->have_posts() ) :
-				while ( $dashboard_resources->have_posts() ) :
-					$dashboard_resources->the_post();
-					$file_info     = function_exists( 'ibew_local_53_get_resource_file_info' ) ? ibew_local_53_get_resource_file_info( get_the_ID() ) : null;
-					$categories    = get_the_terms( get_the_ID(), 'resource_category' );
-					$category_name = ! empty( $categories ) ? $categories[0]->name : '';
+			<?php if ( ! empty( $dashboard_resource_posts ) ) : ?>
+				<?php
+				foreach ( $dashboard_resource_posts as $ibew_dash_res_post ) :
+					setup_postdata( $ibew_dash_res_post );
+					$ibew_res_id       = (int) $ibew_dash_res_post->ID;
+					$ibew_members_only = isset( $ibew_dashboard_restricted_ids[ $ibew_res_id ] );
+					$file_info         = function_exists( 'ibew_local_53_get_resource_file_info' ) ? ibew_local_53_get_resource_file_info( $ibew_res_id ) : null;
+					$categories        = get_the_terms( $ibew_res_id, 'resource_category' );
+					$category_name     = ! empty( $categories ) ? $categories[0]->name : '';
 
 					$icon_bg_color = '#fef2f2';
 					$icon_color    = '#dc2626';
@@ -179,15 +189,18 @@ if ( ! $forms_hub_url ) {
 					<article class="resource-card">
 						<div class="resource-card-content">
 							<div class="resource-icon" style="background-color: <?php echo esc_attr( $icon_bg_color ); ?>;">
-								<svg width="30" height="36" viewBox="0 0 30 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+								<svg width="30" height="36" viewBox="0 0 30 36" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
 									<path d="M18.75 0H3.75C1.6875 0 0 1.6875 0 3.75V32.25C0 34.3125 1.6875 36 3.75 36H26.25C28.3125 36 30 34.3125 30 32.25V11.25L18.75 0ZM22.5 28.5H7.5V24.75H22.5V28.5ZM22.5 21H7.5V17.25H22.5V21ZM16.875 13.125V2.8125L27.1875 13.125H16.875Z" fill="<?php echo esc_attr( $icon_color ); ?>"/>
 								</svg>
 							</div>
 							<div class="resource-info">
+								<?php if ( $ibew_members_only ) : ?>
+									<span class="resource-category member-dashboard-resource-visibility"><?php esc_html_e( 'Members only', 'ibew-local-53' ); ?></span>
+								<?php endif; ?>
 								<?php if ( $category_name ) : ?>
 									<span class="resource-category"><?php echo esc_html( $category_name ); ?></span>
 								<?php endif; ?>
-								<h3 class="resource-title"><?php the_title(); ?></h3>
+								<h3 class="resource-title"><?php echo esc_html( get_the_title( $ibew_res_id ) ); ?></h3>
 								<?php if ( $file_info ) : ?>
 									<span class="resource-meta"><?php echo esc_html( $file_info['type'] ); ?> • <?php echo esc_html( $file_info['size'] ); ?> • <?php esc_html_e( 'Updated', 'ibew-local-53' ); ?> <?php echo esc_html( $file_info['updated'] ); ?></span>
 								<?php endif; ?>
@@ -196,7 +209,7 @@ if ( ! $forms_hub_url ) {
 						<?php if ( $file_info && ! empty( $file_info['url'] ) ) : ?>
 							<div class="resource-actions">
 								<a href="<?php echo esc_url( $file_info['url'] ); ?>" class="btn btn-download" download>
-									<svg width="18" height="22" viewBox="0 0 18 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+									<svg width="18" height="22" viewBox="0 0 18 22" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
 										<path d="M18 7.75H12.75V0.25H5.25V7.75H0L9 16.75L18 7.75ZM0 19.25V21.75H18V19.25H0Z" fill="currentColor"/>
 									</svg>
 									<span><?php esc_html_e( 'Download', 'ibew-local-53' ); ?></span>
@@ -209,7 +222,7 @@ if ( ! $forms_hub_url ) {
 						<?php endif; ?>
 					</article>
 					<?php
-				endwhile;
+				endforeach;
 				wp_reset_postdata();
 			else :
 				?>

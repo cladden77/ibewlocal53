@@ -6673,6 +6673,11 @@ article.single-event {
     margin: 20px 0 0;
 }
 
+.resource-card .member-dashboard-resource-visibility {
+    color: var(--color-primary);
+    letter-spacing: 0.06em;
+}
+
 .member-dashboard-help {
     margin-top: var(--spacing-lg);
 }

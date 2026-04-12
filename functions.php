@@ -224,8 +224,8 @@ function ibew_local_53_scripts() {
     // Enqueue Material Icons
     wp_enqueue_style('material-icons', 'https://fonts.googleapis.com/icon?family=Material+Icons', array(), null);
     wp_enqueue_style('ibew-local-53-style', get_stylesheet_uri(), array(), '1.0.0');
-    wp_enqueue_style('ibew-local-53-main', get_template_directory_uri() . '/assets/css/main.css', array(), '1.0.0');
-    wp_enqueue_script('ibew-local-53-main', get_template_directory_uri() . '/assets/js/main.js', array(), '1.0.0', true);
+    wp_enqueue_style('ibew-local-53-main', get_template_directory_uri() . '/assets/css/main.css', array(), '1.0.2');
+    wp_enqueue_script('ibew-local-53-main', get_template_directory_uri() . '/assets/js/main.js', array(), '1.0.2', true);
 }
 add_action('wp_enqueue_scripts', 'ibew_local_53_scripts');
 
@@ -1288,6 +1288,79 @@ function ibew_local_53_pmpro_get_post_restriction_level_ids($post_id) {
         )
     );
     return array_map('intval', (array) $col);
+}
+
+/**
+ * Post IDs in this list that have at least one PMPro "Require Membership" level (single query).
+ *
+ * @param int[] $post_ids Post IDs.
+ * @return int[]
+ */
+function ibew_local_53_pmpro_get_restricted_post_ids(array $post_ids) {
+    global $wpdb;
+    $post_ids = array_values(array_unique(array_filter(array_map('intval', $post_ids))));
+    if (empty($post_ids)) {
+        return array();
+    }
+    sort($post_ids, SORT_NUMERIC);
+    static $cache = array();
+    $cache_key = implode(',', $post_ids);
+    if (isset($cache[$cache_key])) {
+        return $cache[$cache_key];
+    }
+    if (empty($wpdb->pmpro_memberships_pages)) {
+        $cache[$cache_key] = array();
+        return array();
+    }
+    $ids_sql = implode(',', $post_ids);
+    $sql = "SELECT DISTINCT page_id FROM {$wpdb->pmpro_memberships_pages} WHERE page_id IN ($ids_sql)";
+    $rows = $wpdb->get_col($sql);
+    $cache[$cache_key] = array_map('intval', (array) $rows);
+    return $cache[$cache_key];
+}
+
+/**
+ * Whether a resource post is restricted via PMPro (Require Membership on the post).
+ *
+ * @param int $post_id Post ID.
+ * @return bool
+ */
+function ibew_local_53_resource_requires_pmpro_membership($post_id) {
+    return !empty(ibew_local_53_pmpro_get_post_restriction_level_ids((int) $post_id));
+}
+
+/**
+ * Sort resource posts: members-only first, then public; each group by title (case-insensitive).
+ *
+ * @param WP_Post[] $posts Posts from a resource query.
+ * @return WP_Post[]
+ */
+function ibew_local_53_order_resource_posts_members_first(array $posts) {
+    $restricted = array();
+    $public = array();
+    $valid = array();
+    foreach ($posts as $post) {
+        if ($post instanceof WP_Post) {
+            $valid[] = $post;
+        }
+    }
+    if (empty($valid)) {
+        return array();
+    }
+    $restricted_ids = array_flip(ibew_local_53_pmpro_get_restricted_post_ids(wp_list_pluck($valid, 'ID')));
+    foreach ($valid as $post) {
+        if (isset($restricted_ids[$post->ID])) {
+            $restricted[] = $post;
+        } else {
+            $public[] = $post;
+        }
+    }
+    $cmp = static function ($a, $b) {
+        return strcasecmp($a->post_title, $b->post_title);
+    };
+    usort($restricted, $cmp);
+    usort($public, $cmp);
+    return array_merge($restricted, $public);
 }
 
 /**
