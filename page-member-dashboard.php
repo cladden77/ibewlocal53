@@ -231,7 +231,7 @@ if ( ! $forms_hub_url ) {
 				<?php endforeach; ?>
 			<?php else : ?>
 				<li class="member-dashboard-list-item">
-					<span class="member-dashboard-list-muted"><?php esc_html_e( 'No member-only form pages yet. Edit each form page and assign at least one level under Require Membership (Paid Memberships Pro).', 'ibew-local-53' ); ?></span>
+					<span class="member-dashboard-list-muted"><?php esc_html_e( 'No form pages are linked yet. Edit a form page and enable Show in Member Dashboard forms list (Member Dashboard forms box).', 'ibew-local-53' ); ?></span>
 				</li>
 			<?php endif; ?>
 		</ul>

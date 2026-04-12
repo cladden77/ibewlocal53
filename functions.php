@@ -218,43 +218,44 @@ function ibew_local_53_save_page_hero_meta($post_id) {
 add_action('save_post_page', 'ibew_local_53_save_page_hero_meta');
 
 // ============================================
-// MEMBER DASHBOARD: FORM PAGES (PMPro "Require Membership")
+// MEMBER DASHBOARD: FORMS LIST (opt-in per page)
 // ============================================
+// Require Membership (PMPro) controls who can view a page. This flag only controls
+// whether the page is linked under "Forms" on the Member Dashboard.
 
 /**
- * Published pages that appear on the Member Dashboard forms list.
- * Uses Paid Memberships Pro "Require Membership" (same as pmpro_memberships_pages), not a separate checkbox.
+ * @return void
+ */
+function ibew_local_53_register_member_dashboard_forms_list_meta() {
+    register_post_meta(
+        'page',
+        'ibew_show_in_member_dashboard_forms',
+        array(
+            'type'              => 'boolean',
+            'single'            => true,
+            'default'           => false,
+            'show_in_rest'      => true,
+            'sanitize_callback' => function ( $value ) {
+                return (bool) $value;
+            },
+            'auth_callback'     => function () {
+                return current_user_can( 'edit_pages' );
+            },
+        )
+    );
+}
+add_action( 'init', 'ibew_local_53_register_member_dashboard_forms_list_meta' );
+
+/**
+ * Published pages linked under Forms on the Member Dashboard (editor opt-in only).
  *
  * @return WP_Post[]
  */
 function ibew_local_53_get_member_dashboard_form_pages() {
-    global $wpdb;
-    if ( empty( $wpdb->pmpro_memberships_pages ) ) {
-        return array();
-    }
-    $page_ids = $wpdb->get_col(
-        "SELECT DISTINCT pmp.page_id FROM {$wpdb->pmpro_memberships_pages} pmp
-		INNER JOIN {$wpdb->posts} p ON p.ID = pmp.page_id
-		WHERE p.post_type = 'page' AND p.post_status = 'publish'"
-    );
-    if ( empty( $page_ids ) ) {
-        return array();
-    }
-    $page_ids = array_map( 'intval', (array) $page_ids );
-    foreach ( $page_ids as $idx => $pid ) {
-        if ( 'page-member-dashboard.php' === get_page_template_slug( $pid ) ) {
-            unset( $page_ids[ $idx ] );
-        }
-    }
-    $page_ids = array_values( $page_ids );
-    if ( empty( $page_ids ) ) {
-        return array();
-    }
-    return get_posts(
+    $posts = get_posts(
         array(
             'post_type'           => 'page',
             'post_status'         => 'publish',
-            'post__in'            => $page_ids,
             'posts_per_page'      => -1,
             'orderby'             => array(
                 'menu_order' => 'ASC',
@@ -262,9 +263,87 @@ function ibew_local_53_get_member_dashboard_form_pages() {
             ),
             'no_found_rows'       => true,
             'ignore_sticky_posts' => true,
+            'meta_query'          => array(
+                'relation' => 'OR',
+                array(
+                    'key'   => 'ibew_show_in_member_dashboard_forms',
+                    'value' => '1',
+                ),
+                // Legacy meta from earlier theme versions (same meaning).
+                array(
+                    'key'   => 'ibew_member_only_form',
+                    'value' => '1',
+                ),
+            ),
         )
     );
+    if ( empty( $posts ) ) {
+        return array();
+    }
+    $out = array();
+    foreach ( $posts as $post ) {
+        if ( ! ( $post instanceof WP_Post ) ) {
+            continue;
+        }
+        if ( 'page-member-dashboard.php' === get_page_template_slug( $post->ID ) ) {
+            continue;
+        }
+        $out[] = $post;
+    }
+    return $out;
 }
+
+function ibew_local_53_add_member_dashboard_forms_list_meta_box() {
+    add_meta_box(
+        'ibew_page_member_dashboard_forms_list',
+        __( 'Member Dashboard forms', 'ibew-local-53' ),
+        'ibew_local_53_member_dashboard_forms_list_meta_box_callback',
+        'page',
+        'side',
+        'default'
+    );
+}
+add_action( 'add_meta_boxes', 'ibew_local_53_add_member_dashboard_forms_list_meta_box' );
+
+/**
+ * @param WP_Post $post Current post.
+ */
+function ibew_local_53_member_dashboard_forms_list_meta_box_callback( $post ) {
+    wp_nonce_field( 'ibew_member_dashboard_forms_list_nonce', 'ibew_member_dashboard_forms_list_nonce' );
+    $checked = (bool) get_post_meta( $post->ID, 'ibew_show_in_member_dashboard_forms', true );
+    if ( ! $checked ) {
+        $checked = (bool) get_post_meta( $post->ID, 'ibew_member_only_form', true );
+    }
+    ?>
+    <p>
+        <label>
+            <input type="checkbox" name="ibew_show_in_member_dashboard_forms" value="1" <?php checked( $checked ); ?> />
+            <?php esc_html_e( 'Show in Member Dashboard forms list', 'ibew-local-53' ); ?>
+        </label>
+    </p>
+    <p class="description"><?php esc_html_e( 'If checked, this page is listed under Forms on the Member Dashboard. This is separate from Require Membership: use Paid Memberships Pro to control who can open the page; use this only for form pages you want linked from the dashboard.', 'ibew-local-53' ); ?></p>
+    <?php
+}
+
+function ibew_local_53_save_member_dashboard_forms_list_meta( $post_id ) {
+    if ( ! isset( $_POST['ibew_member_dashboard_forms_list_nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['ibew_member_dashboard_forms_list_nonce'] ) ), 'ibew_member_dashboard_forms_list_nonce' ) ) {
+        return;
+    }
+    if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
+        return;
+    }
+    if ( ! current_user_can( 'edit_post', $post_id ) || 'page' !== get_post_type( $post_id ) ) {
+        return;
+    }
+    if ( ! empty( $_POST['ibew_show_in_member_dashboard_forms'] ) ) {
+        update_post_meta( $post_id, 'ibew_show_in_member_dashboard_forms', '1' );
+    } else {
+        delete_post_meta( $post_id, 'ibew_show_in_member_dashboard_forms' );
+    }
+    // Clear legacy key so the OR query does not keep showing unchecked pages.
+    delete_post_meta( $post_id, 'ibew_member_only_form' );
+}
+add_action( 'save_post_page', 'ibew_local_53_save_member_dashboard_forms_list_meta' );
 
 // Enqueue styles and scripts
 function ibew_local_53_scripts() {
