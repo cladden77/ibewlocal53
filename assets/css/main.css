@@ -5930,11 +5930,48 @@ article.single-event {
     color: #9ca3af;
 }
 
+/* Resources documents: two-row grid + pagination */
+.resources-documents-grid-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 28px;
+}
+
+.resources-pagination {
+    margin-top: 0;
+    padding-top: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.resources-pagination .pagination-nav {
+    justify-content: center;
+}
+
+.resources-pagination button.page-number,
+.resources-pagination button.pagination-arrow {
+    appearance: none;
+    -webkit-appearance: none;
+    margin: 0;
+    font-family: inherit;
+    cursor: pointer;
+}
+
+.resources-pagination button.pagination-arrow.pagination-disabled {
+    cursor: not-allowed;
+}
+
 /* Resources Grid */
 .resources-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 24px;
+}
+
+.resource-card.resource-card--paged-out {
+    display: none !important;
 }
 
 /* Resource Card */

@@ -91,7 +91,8 @@ $external_links_query = new WP_Query(array(
             </div>
         </div>
         
-        <!-- Documents Grid -->
+        <!-- Documents Grid (two rows per page + pagination) -->
+        <div class="resources-documents-grid-wrap">
         <div class="resources-grid reveal-stagger" id="resources-grid">
             <?php if ($documents_query->have_posts()) : ?>
                 <?php while ($documents_query->have_posts()) : $documents_query->the_post(); 
@@ -163,6 +164,10 @@ $external_links_query = new WP_Query(array(
                     <p>No documents available at this time. Check back soon!</p>
                 </div>
             <?php endif; ?>
+        </div>
+        <nav class="resources-pagination pagination" id="resources-pagination" aria-label="Document list pages" hidden>
+            <div class="pagination-nav" id="resources-pagination-nav"></div>
+        </nav>
         </div>
         
         <!-- No results message (hidden by default) -->

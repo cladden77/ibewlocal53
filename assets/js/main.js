@@ -560,12 +560,14 @@
         }
     }
 
-    // Resources page filtering and search functionality
+    // Resources page filtering, search, and two-row pagination (matches theme breakpoints)
     function initResourcesFilter() {
         const filterChips = document.querySelectorAll('.resource-category-filters .filter-chip');
         const searchInput = document.getElementById('resource-search');
         const resourcesGrid = document.getElementById('resources-grid');
         const noResultsMessage = document.getElementById('no-results-message');
+        const resourcesPagination = document.getElementById('resources-pagination');
+        const resourcesPaginationNav = document.getElementById('resources-pagination-nav');
         
         if (!resourcesGrid) {
             return;
@@ -574,91 +576,201 @@
         const resourceCards = resourcesGrid.querySelectorAll('.resource-card');
         let activeCategory = 'all';
         let searchTerm = '';
-        
-        // Filter function that combines category and search
-        function filterResources() {
-            let visibleCount = 0;
-            
-            resourceCards.forEach(function(card) {
-                const cardCategories = card.getAttribute('data-categories') || '';
-                const cardTitle = card.getAttribute('data-title') || '';
-                
-                // Check category match
-                const categoryMatch = activeCategory === 'all' || cardCategories.includes(activeCategory);
-                
-                // Check search match (case-insensitive)
-                const searchMatch = searchTerm === '' || cardTitle.includes(searchTerm.toLowerCase());
-                
-                // Show card if both filters match
-                if (categoryMatch && searchMatch) {
-                    card.classList.remove('hidden');
-                    visibleCount++;
-                } else {
-                    card.classList.add('hidden');
+        let resourcesCurrentPage = 1;
+
+        function getResourcesGridColumnCount() {
+            if (window.matchMedia('(max-width: 768px)').matches) {
+                return 1;
+            }
+            if (window.matchMedia('(max-width: 1200px)').matches) {
+                return 2;
+            }
+            return 3;
+        }
+
+        function getResourcesPageSize() {
+            return getResourcesGridColumnCount() * 2;
+        }
+
+        function cardMatchesFilters(card) {
+            const cardCategories = card.getAttribute('data-categories') || '';
+            const cardTitle = card.getAttribute('data-title') || '';
+            const categoryMatch = activeCategory === 'all' || cardCategories.includes(activeCategory);
+            const searchMatch = searchTerm === '' || cardTitle.includes(searchTerm.toLowerCase());
+            return categoryMatch && searchMatch;
+        }
+
+        function renderResourcesPagination(totalMatching, pageSize) {
+            if (!resourcesPagination || !resourcesPaginationNav) {
+                return;
+            }
+            const totalPages = Math.max(1, Math.ceil(totalMatching / pageSize));
+            if (totalMatching === 0 || totalPages <= 1) {
+                resourcesPagination.hidden = true;
+                resourcesPaginationNav.innerHTML = '';
+                return;
+            }
+            resourcesPagination.hidden = false;
+            resourcesPaginationNav.innerHTML = '';
+
+            const prevBtn = document.createElement('button');
+            prevBtn.type = 'button';
+            prevBtn.className = 'pagination-arrow' + (resourcesCurrentPage <= 1 ? ' pagination-disabled' : '');
+            prevBtn.setAttribute('aria-label', 'Previous page');
+            prevBtn.disabled = resourcesCurrentPage <= 1;
+            prevBtn.innerHTML = '<span class="material-icons">chevron_left</span>';
+            prevBtn.addEventListener('click', function() {
+                if (resourcesCurrentPage > 1) {
+                    resourcesCurrentPage--;
+                    filterResources();
                 }
             });
-            
-            // Show/hide no results message
+            resourcesPaginationNav.appendChild(prevBtn);
+
+            for (let i = 1; i <= totalPages; i++) {
+                const pageBtn = document.createElement('button');
+                pageBtn.type = 'button';
+                pageBtn.className = 'page-number' + (i === resourcesCurrentPage ? ' current' : '');
+                pageBtn.textContent = String(i);
+                pageBtn.setAttribute('aria-label', 'Page ' + i);
+                if (i === resourcesCurrentPage) {
+                    pageBtn.setAttribute('aria-current', 'page');
+                } else {
+                    pageBtn.removeAttribute('aria-current');
+                }
+                if (i !== resourcesCurrentPage) {
+                    pageBtn.addEventListener('click', function() {
+                        resourcesCurrentPage = i;
+                        filterResources();
+                    });
+                }
+                resourcesPaginationNav.appendChild(pageBtn);
+            }
+
+            const nextBtn = document.createElement('button');
+            nextBtn.type = 'button';
+            nextBtn.className = 'pagination-arrow' + (resourcesCurrentPage >= totalPages ? ' pagination-disabled' : '');
+            nextBtn.setAttribute('aria-label', 'Next page');
+            nextBtn.disabled = resourcesCurrentPage >= totalPages;
+            nextBtn.innerHTML = '<span class="material-icons">chevron_right</span>';
+            nextBtn.addEventListener('click', function() {
+                if (resourcesCurrentPage < totalPages) {
+                    resourcesCurrentPage++;
+                    filterResources();
+                }
+            });
+            resourcesPaginationNav.appendChild(nextBtn);
+        }
+
+        // Filter + two rows per page (page size = columns × 2)
+        function filterResources() {
+            const pageSize = getResourcesPageSize();
+            const matchingCards = [];
+
+            resourceCards.forEach(function(card) {
+                if (cardMatchesFilters(card)) {
+                    matchingCards.push(card);
+                }
+            });
+
+            const visibleCount = matchingCards.length;
+            let totalPages = Math.max(1, Math.ceil(visibleCount / pageSize));
+
+            if (resourcesCurrentPage > totalPages) {
+                resourcesCurrentPage = totalPages;
+            }
+            if (resourcesCurrentPage < 1) {
+                resourcesCurrentPage = 1;
+            }
+
+            const startIndex = (resourcesCurrentPage - 1) * pageSize;
+
+            resourceCards.forEach(function(card) {
+                card.classList.remove('resource-card--paged-out');
+                if (!cardMatchesFilters(card)) {
+                    card.classList.add('hidden');
+                } else {
+                    card.classList.remove('hidden');
+                }
+            });
+
+            matchingCards.forEach(function(card, index) {
+                if (index < startIndex || index >= startIndex + pageSize) {
+                    card.classList.add('resource-card--paged-out');
+                }
+            });
+
             if (noResultsMessage) {
                 if (visibleCount === 0 && resourceCards.length > 0) {
                     noResultsMessage.style.display = 'flex';
                     resourcesGrid.style.display = 'none';
+                    if (resourcesPagination) {
+                        resourcesPagination.hidden = true;
+                    }
                 } else {
                     noResultsMessage.style.display = 'none';
                     resourcesGrid.style.display = 'grid';
+                    renderResourcesPagination(visibleCount, pageSize);
                 }
+            } else {
+                renderResourcesPagination(visibleCount, pageSize);
             }
         }
+
+        let resizeTimer;
+        window.addEventListener('resize', function() {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(function() {
+                filterResources();
+            }, 150);
+        });
         
         // Category filter chip click handlers
         filterChips.forEach(function(chip) {
             chip.addEventListener('click', function() {
-                // Remove active class from all chips
                 filterChips.forEach(function(c) {
                     c.classList.remove('active');
                 });
-                
-                // Add active class to clicked chip
                 this.classList.add('active');
-                
-                // Update active category and filter
                 activeCategory = this.getAttribute('data-category');
+                resourcesCurrentPage = 1;
                 filterResources();
             });
         });
         
-        // Search input handler with debounce
         if (searchInput) {
             let searchTimeout;
             
             searchInput.addEventListener('input', function() {
                 clearTimeout(searchTimeout);
-                
                 searchTimeout = setTimeout(function() {
                     searchTerm = searchInput.value.trim();
+                    resourcesCurrentPage = 1;
                     filterResources();
-                }, 200); // 200ms debounce
+                }, 200);
             });
             
-            // Also handle Enter key
             searchInput.addEventListener('keypress', function(e) {
                 if (e.key === 'Enter') {
                     clearTimeout(searchTimeout);
                     searchTerm = searchInput.value.trim();
+                    resourcesCurrentPage = 1;
                     filterResources();
                 }
             });
             
-            // Clear search on Escape
             searchInput.addEventListener('keydown', function(e) {
                 if (e.key === 'Escape') {
                     searchInput.value = '';
                     searchTerm = '';
+                    resourcesCurrentPage = 1;
                     filterResources();
                     searchInput.blur();
                 }
             });
         }
+
+        filterResources();
     }
 
     // Initialize on DOM ready
