@@ -31,15 +31,6 @@ $can_register = (bool) get_option( 'users_can_register' );
 	</section>
 
 	<div class="member-register-container">
-		<p class="member-register-secondary reveal-fade-up">
-			<?php esc_html_e( 'Already a member?', 'ibew-local-53' ); ?>
-			<a href="<?php echo esc_url( $login_url ); ?>"><?php esc_html_e( 'Log in', 'ibew-local-53' ); ?></a>
-			<?php if ( $levels_url ) : ?>
-				<span class="member-register-secondary-sep" aria-hidden="true">·</span>
-				<a href="<?php echo esc_url( $levels_url ); ?>"><?php esc_html_e( 'Paid membership options', 'ibew-local-53' ); ?></a>
-			<?php endif; ?>
-		</p>
-
 		<div class="member-register-card reveal-fade-up">
 			<?php if ( 'success' === $reg_status ) : ?>
 				<div class="ibew-register-notice ibew-register-notice--success" role="status">
@@ -122,6 +113,10 @@ $can_register = (bool) get_option( 'users_can_register' );
 					</p>
 				</form>
 			<?php endif; ?>
+			<p class="member-register-secondary reveal-fade-up">
+			<?php esc_html_e( 'Already a member?', 'ibew-local-53' ); ?>
+			<a href="<?php echo esc_url( $login_url ); ?>"><?php esc_html_e( 'Log in', 'ibew-local-53' ); ?></a>
+		</p>
 		</div>
 
 		<?php

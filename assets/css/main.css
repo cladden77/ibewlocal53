@@ -6811,13 +6811,14 @@ article.single-event {
     max-width: var(--container-max);
     margin: 0 auto;
     padding: 0 var(--container-padding) var(--spacing-xl);
+    margin-top: 50px;
 }
 
 .member-register-secondary {
     text-align: center;
     font-size: 15px;
     color: #5a678c;
-    margin: 0 0 var(--spacing-lg);
+    margin: 10px 0 var(--spacing-lg);
 }
 
 .member-register-secondary a {

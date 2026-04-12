@@ -1996,6 +1996,65 @@ function ibew_local_53_get_member_dashboard_permalink() {
 }
 
 /**
+ * Permalink for the Member Register page (Join Now on PMPro login). Empty if missing/unpublished.
+ *
+ * @return string
+ */
+function ibew_local_53_get_member_register_permalink() {
+    static $cached = false;
+    static $url = '';
+    if ($cached) {
+        return $url;
+    }
+    $cached = true;
+    $page = get_page_by_path('member-register', OBJECT, 'page');
+    if (!$page instanceof WP_Post || $page->post_status !== 'publish') {
+        return $url;
+    }
+    $url = apply_filters('ibew_local_53_member_register_page_url', get_permalink($page));
+    return $url;
+}
+
+/**
+ * Point PMPro login footer "Join Now" at the member registration page instead of the levels page.
+ *
+ * @param array  $links       Keys: login, register, lost_password (HTML fragments).
+ * @param string $pmpro_form  login|lost_password.
+ * @return array
+ */
+function ibew_local_53_pmpro_login_join_now_to_member_register($links, $_pmpro_form) {
+    if (empty($links['register'])) {
+        return $links;
+    }
+    $register_url = ibew_local_53_get_member_register_permalink();
+    if ($register_url === '') {
+        return $links;
+    }
+    $links['register'] = sprintf(
+        '<a href="%s">%s</a>',
+        esc_url($register_url),
+        esc_html__('Join Now', 'ibew-local-53')
+    );
+    return $links;
+}
+add_filter('pmpro_login_forms_handler_nav', 'ibew_local_53_pmpro_login_join_now_to_member_register', 10, 2);
+
+/**
+ * When PMPro redirects ?action=register on the login page, send users to Member Register instead of levels.
+ *
+ * @param string $url Default levels URL from PMPro.
+ * @return string
+ */
+function ibew_local_53_pmpro_register_redirect_to_member_register($url) {
+    $register_page = ibew_local_53_get_member_register_permalink();
+    if ($register_page !== '') {
+        return $register_page;
+    }
+    return $url;
+}
+add_filter('pmpro_register_redirect', 'ibew_local_53_pmpro_register_redirect_to_member_register', 10, 1);
+
+/**
  * When PMPro would send an active member to the Account page, send them to Member Dashboard instead.
  * Respects other redirect_to targets (admin, checkout, etc.).
  *
