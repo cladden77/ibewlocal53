@@ -560,6 +560,131 @@
         }
     }
 
+    // Two rows per page: page size matches .resources-grid breakpoints (1 / 2 / 3 columns × 2)
+    function getResourceGridPageSize() {
+        var cols = 3;
+        if (window.matchMedia('(max-width: 768px)').matches) {
+            cols = 1;
+        } else if (window.matchMedia('(max-width: 1200px)').matches) {
+            cols = 2;
+        }
+        return cols * 2;
+    }
+
+    function renderResourcePaginationNav(nav, paginationEl, pageState, totalMatching, pageSize, applyLayout) {
+        if (!nav || !paginationEl) {
+            return;
+        }
+        var totalPages = Math.max(1, Math.ceil(totalMatching / pageSize));
+        if (totalMatching === 0 || totalPages <= 1) {
+            paginationEl.hidden = true;
+            nav.innerHTML = '';
+            return;
+        }
+        paginationEl.hidden = false;
+        nav.innerHTML = '';
+
+        var prevBtn = document.createElement('button');
+        prevBtn.type = 'button';
+        prevBtn.className = 'pagination-arrow' + (pageState.page <= 1 ? ' pagination-disabled' : '');
+        prevBtn.setAttribute('aria-label', 'Previous page');
+        prevBtn.disabled = pageState.page <= 1;
+        prevBtn.innerHTML = '<span class="material-icons">chevron_left</span>';
+        prevBtn.addEventListener('click', function() {
+            if (pageState.page > 1) {
+                pageState.page--;
+                applyLayout();
+            }
+        });
+        nav.appendChild(prevBtn);
+
+        var i;
+        for (i = 1; i <= totalPages; i++) {
+            (function(pageNum) {
+                var pageBtn = document.createElement('button');
+                pageBtn.type = 'button';
+                pageBtn.className = 'page-number' + (pageNum === pageState.page ? ' current' : '');
+                pageBtn.textContent = String(pageNum);
+                pageBtn.setAttribute('aria-label', 'Page ' + pageNum);
+                if (pageNum === pageState.page) {
+                    pageBtn.setAttribute('aria-current', 'page');
+                } else {
+                    pageBtn.removeAttribute('aria-current');
+                }
+                if (pageNum !== pageState.page) {
+                    pageBtn.addEventListener('click', function() {
+                        pageState.page = pageNum;
+                        applyLayout();
+                    });
+                }
+                nav.appendChild(pageBtn);
+            })(i);
+        }
+
+        var nextBtn = document.createElement('button');
+        nextBtn.type = 'button';
+        nextBtn.className = 'pagination-arrow' + (pageState.page >= totalPages ? ' pagination-disabled' : '');
+        nextBtn.setAttribute('aria-label', 'Next page');
+        nextBtn.disabled = pageState.page >= totalPages;
+        nextBtn.innerHTML = '<span class="material-icons">chevron_right</span>';
+        nextBtn.addEventListener('click', function() {
+            if (pageState.page < totalPages) {
+                pageState.page++;
+                applyLayout();
+            }
+        });
+        nav.appendChild(nextBtn);
+    }
+
+    // Member dashboard: all resource cards, two-row pagination (no category/search)
+    function initMemberDashboardResourcesPagination() {
+        var grid = document.getElementById('member-dashboard-resources-grid');
+        var pagination = document.getElementById('member-dashboard-resources-pagination');
+        var nav = document.getElementById('member-dashboard-resources-pagination-nav');
+        if (!grid || !pagination || !nav) {
+            return;
+        }
+        var resourceCards = grid.querySelectorAll('.resource-card');
+        if (resourceCards.length === 0) {
+            return;
+        }
+        var pageState = { page: 1 };
+
+        function applyLayout() {
+            var pageSize = getResourceGridPageSize();
+            var matchingCards = Array.prototype.slice.call(resourceCards);
+            var visibleCount = matchingCards.length;
+            var totalPages = Math.max(1, Math.ceil(visibleCount / pageSize));
+
+            if (pageState.page > totalPages) {
+                pageState.page = totalPages;
+            }
+            if (pageState.page < 1) {
+                pageState.page = 1;
+            }
+            var startIndex = (pageState.page - 1) * pageSize;
+
+            resourceCards.forEach(function(card) {
+                card.classList.remove('resource-card--paged-out');
+            });
+            matchingCards.forEach(function(card, index) {
+                if (index < startIndex || index >= startIndex + pageSize) {
+                    card.classList.add('resource-card--paged-out');
+                }
+            });
+
+            renderResourcePaginationNav(nav, pagination, pageState, visibleCount, pageSize, applyLayout);
+        }
+
+        var resizeTimer;
+        window.addEventListener('resize', function() {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(applyLayout, 150);
+        });
+
+        applyLayout();
+    }
+
     // Resources page filtering, search, and two-row pagination (matches theme breakpoints)
     function initResourcesFilter() {
         const filterChips = document.querySelectorAll('.resource-category-filters .filter-chip');
@@ -576,21 +701,7 @@
         const resourceCards = resourcesGrid.querySelectorAll('.resource-card');
         let activeCategory = 'all';
         let searchTerm = '';
-        let resourcesCurrentPage = 1;
-
-        function getResourcesGridColumnCount() {
-            if (window.matchMedia('(max-width: 768px)').matches) {
-                return 1;
-            }
-            if (window.matchMedia('(max-width: 1200px)').matches) {
-                return 2;
-            }
-            return 3;
-        }
-
-        function getResourcesPageSize() {
-            return getResourcesGridColumnCount() * 2;
-        }
+        const pageState = { page: 1 };
 
         function cardMatchesFilters(card) {
             const cardCategories = card.getAttribute('data-categories') || '';
@@ -600,71 +711,8 @@
             return categoryMatch && searchMatch;
         }
 
-        function renderResourcesPagination(totalMatching, pageSize) {
-            if (!resourcesPagination || !resourcesPaginationNav) {
-                return;
-            }
-            const totalPages = Math.max(1, Math.ceil(totalMatching / pageSize));
-            if (totalMatching === 0 || totalPages <= 1) {
-                resourcesPagination.hidden = true;
-                resourcesPaginationNav.innerHTML = '';
-                return;
-            }
-            resourcesPagination.hidden = false;
-            resourcesPaginationNav.innerHTML = '';
-
-            const prevBtn = document.createElement('button');
-            prevBtn.type = 'button';
-            prevBtn.className = 'pagination-arrow' + (resourcesCurrentPage <= 1 ? ' pagination-disabled' : '');
-            prevBtn.setAttribute('aria-label', 'Previous page');
-            prevBtn.disabled = resourcesCurrentPage <= 1;
-            prevBtn.innerHTML = '<span class="material-icons">chevron_left</span>';
-            prevBtn.addEventListener('click', function() {
-                if (resourcesCurrentPage > 1) {
-                    resourcesCurrentPage--;
-                    filterResources();
-                }
-            });
-            resourcesPaginationNav.appendChild(prevBtn);
-
-            for (let i = 1; i <= totalPages; i++) {
-                const pageBtn = document.createElement('button');
-                pageBtn.type = 'button';
-                pageBtn.className = 'page-number' + (i === resourcesCurrentPage ? ' current' : '');
-                pageBtn.textContent = String(i);
-                pageBtn.setAttribute('aria-label', 'Page ' + i);
-                if (i === resourcesCurrentPage) {
-                    pageBtn.setAttribute('aria-current', 'page');
-                } else {
-                    pageBtn.removeAttribute('aria-current');
-                }
-                if (i !== resourcesCurrentPage) {
-                    pageBtn.addEventListener('click', function() {
-                        resourcesCurrentPage = i;
-                        filterResources();
-                    });
-                }
-                resourcesPaginationNav.appendChild(pageBtn);
-            }
-
-            const nextBtn = document.createElement('button');
-            nextBtn.type = 'button';
-            nextBtn.className = 'pagination-arrow' + (resourcesCurrentPage >= totalPages ? ' pagination-disabled' : '');
-            nextBtn.setAttribute('aria-label', 'Next page');
-            nextBtn.disabled = resourcesCurrentPage >= totalPages;
-            nextBtn.innerHTML = '<span class="material-icons">chevron_right</span>';
-            nextBtn.addEventListener('click', function() {
-                if (resourcesCurrentPage < totalPages) {
-                    resourcesCurrentPage++;
-                    filterResources();
-                }
-            });
-            resourcesPaginationNav.appendChild(nextBtn);
-        }
-
-        // Filter + two rows per page (page size = columns × 2)
         function filterResources() {
-            const pageSize = getResourcesPageSize();
+            const pageSize = getResourceGridPageSize();
             const matchingCards = [];
 
             resourceCards.forEach(function(card) {
@@ -674,16 +722,16 @@
             });
 
             const visibleCount = matchingCards.length;
-            let totalPages = Math.max(1, Math.ceil(visibleCount / pageSize));
+            const totalPages = Math.max(1, Math.ceil(visibleCount / pageSize));
 
-            if (resourcesCurrentPage > totalPages) {
-                resourcesCurrentPage = totalPages;
+            if (pageState.page > totalPages) {
+                pageState.page = totalPages;
             }
-            if (resourcesCurrentPage < 1) {
-                resourcesCurrentPage = 1;
+            if (pageState.page < 1) {
+                pageState.page = 1;
             }
 
-            const startIndex = (resourcesCurrentPage - 1) * pageSize;
+            const startIndex = (pageState.page - 1) * pageSize;
 
             resourceCards.forEach(function(card) {
                 card.classList.remove('resource-card--paged-out');
@@ -710,10 +758,10 @@
                 } else {
                     noResultsMessage.style.display = 'none';
                     resourcesGrid.style.display = 'grid';
-                    renderResourcesPagination(visibleCount, pageSize);
+                    renderResourcePaginationNav(resourcesPaginationNav, resourcesPagination, pageState, visibleCount, pageSize, filterResources);
                 }
             } else {
-                renderResourcesPagination(visibleCount, pageSize);
+                renderResourcePaginationNav(resourcesPaginationNav, resourcesPagination, pageState, visibleCount, pageSize, filterResources);
             }
         }
 
@@ -725,7 +773,6 @@
             }, 150);
         });
         
-        // Category filter chip click handlers
         filterChips.forEach(function(chip) {
             chip.addEventListener('click', function() {
                 filterChips.forEach(function(c) {
@@ -733,7 +780,7 @@
                 });
                 this.classList.add('active');
                 activeCategory = this.getAttribute('data-category');
-                resourcesCurrentPage = 1;
+                pageState.page = 1;
                 filterResources();
             });
         });
@@ -745,7 +792,7 @@
                 clearTimeout(searchTimeout);
                 searchTimeout = setTimeout(function() {
                     searchTerm = searchInput.value.trim();
-                    resourcesCurrentPage = 1;
+                    pageState.page = 1;
                     filterResources();
                 }, 200);
             });
@@ -754,7 +801,7 @@
                 if (e.key === 'Enter') {
                     clearTimeout(searchTimeout);
                     searchTerm = searchInput.value.trim();
-                    resourcesCurrentPage = 1;
+                    pageState.page = 1;
                     filterResources();
                 }
             });
@@ -763,7 +810,7 @@
                 if (e.key === 'Escape') {
                     searchInput.value = '';
                     searchTerm = '';
-                    resourcesCurrentPage = 1;
+                    pageState.page = 1;
                     filterResources();
                     searchInput.blur();
                 }
@@ -782,6 +829,7 @@
             initMobileMenu();
             initPaginationScroll();
             initResourcesFilter();
+            initMemberDashboardResourcesPagination();
         });
     } else {
         initScrollReveal();
@@ -790,6 +838,7 @@
         initMobileMenu();
         initPaginationScroll();
         initResourcesFilter();
+        initMemberDashboardResourcesPagination();
     }
 
 })();

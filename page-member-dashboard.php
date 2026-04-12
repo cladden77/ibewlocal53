@@ -74,21 +74,6 @@ $ibew_dashboard_page_link = static function ( $slug ) {
 	return ( $page && 'publish' === $page->post_status ) ? get_permalink( $page ) : '';
 };
 
-$resources_hub_url = home_url( '/resources/' );
-$resources_pages   = get_posts(
-	array(
-		'post_type'      => 'page',
-		'posts_per_page' => 1,
-		'post_status'    => 'publish',
-		'meta_key'       => '_wp_page_template',
-		'meta_value'     => 'page-resources.php',
-		'fields'         => 'ids',
-	)
-);
-if ( ! empty( $resources_pages ) ) {
-	$resources_hub_url = get_permalink( $resources_pages[0] );
-}
-
 $events_archive_url = get_post_type_archive_link( 'event' );
 if ( ! $events_archive_url ) {
 	$events_archive_url = home_url( '/events/' );
@@ -148,7 +133,8 @@ if ( ! $forms_hub_url ) {
 		<div class="member-dashboard-section-head">
 			<h2 class="section-title"><?php esc_html_e( 'Resources', 'ibew-local-53' ); ?></h2>
 		</div>
-		<div class="resources-grid">
+		<div class="resources-documents-grid-wrap">
+		<div class="resources-grid" id="member-dashboard-resources-grid">
 			<?php if ( ! empty( $dashboard_resource_posts ) ) : ?>
 				<?php
 				foreach ( $dashboard_resource_posts as $ibew_dash_res_post ) :
@@ -231,9 +217,10 @@ if ( ! $forms_hub_url ) {
 				</div>
 			<?php endif; ?>
 		</div>
-		<p class="member-dashboard-view-all">
-			<a href="<?php echo esc_url( $resources_hub_url ); ?>" class="btn btn-tertiary"><?php esc_html_e( 'View All Resources', 'ibew-local-53' ); ?></a>
-		</p>
+		<nav class="resources-pagination pagination" id="member-dashboard-resources-pagination" aria-label="<?php esc_attr_e( 'Resources list pages', 'ibew-local-53' ); ?>" hidden>
+			<div class="pagination-nav" id="member-dashboard-resources-pagination-nav"></div>
+		</nav>
+		</div>
 	</section>
 
 	<hr class="member-dashboard-rule" />
