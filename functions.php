@@ -305,6 +305,49 @@ function ibew_local_53_register_taxonomies() {
 }
 add_action('init', 'ibew_local_53_register_taxonomies');
 
+/**
+ * Map event category term to a CSS class for list/card styling.
+ *
+ * @param WP_Term $category Event category term.
+ * @return string
+ */
+function ibew_get_event_category_class( $category ) {
+    $name_lower = strtolower( $category->name );
+    $slug        = $category->slug;
+
+    if ( strpos( $name_lower, 'union' ) !== false && strpos( $name_lower, 'meeting' ) !== false ) {
+        return 'union-meetings';
+    }
+    if ( strpos( $name_lower, 'social' ) !== false && strpos( $name_lower, 'event' ) !== false ) {
+        return 'social-events';
+    }
+    if ( strpos( $name_lower, 'training' ) !== false || strpos( $name_lower, 'safety' ) !== false ) {
+        return 'training-safety';
+    }
+    if ( strpos( $name_lower, 'holiday' ) !== false ) {
+        return 'holiday';
+    }
+
+    if ( strpos( $slug, 'union' ) !== false ) {
+        return 'union-meetings';
+    }
+    if ( strpos( $slug, 'social' ) !== false ) {
+        return 'social-events';
+    }
+    if ( strpos( $slug, 'training' ) !== false || strpos( $slug, 'safety' ) !== false ) {
+        return 'training-safety';
+    }
+    if ( strpos( $slug, 'holiday' ) !== false ) {
+        return 'holiday';
+    }
+
+    $additional_colors = array( 'category-5', 'category-6', 'category-7', 'category-8', 'category-9', 'category-10' );
+    $hash              = crc32( $slug );
+    $color_index       = abs( $hash ) % count( $additional_colors );
+
+    return $additional_colors[ $color_index ];
+}
+
 // Register Event Meta Fields
 function ibew_local_53_register_event_meta() {
     register_post_meta('event', 'event_start_datetime', array(

@@ -6,51 +6,6 @@
  */
 
 get_header();
-
-/**
- * Map event category to CSS class for consistent styling
- * First 4 categories get specific colors, additional categories get assigned from a color palette
- */
-function ibew_get_event_category_class($category) {
-    $name_lower = strtolower($category->name);
-    $slug = $category->slug;
-    
-    // Map by name first (most reliable) - Primary 4 categories
-    if (strpos($name_lower, 'union') !== false && strpos($name_lower, 'meeting') !== false) {
-        return 'union-meetings';
-    }
-    if (strpos($name_lower, 'social') !== false && strpos($name_lower, 'event') !== false) {
-        return 'social-events';
-    }
-    if (strpos($name_lower, 'training') !== false || strpos($name_lower, 'safety') !== false) {
-        return 'training-safety';
-    }
-    if (strpos($name_lower, 'holiday') !== false) {
-        return 'holiday';
-    }
-    
-    // Fallback to slug-based mapping for primary 4
-    if (strpos($slug, 'union') !== false) {
-        return 'union-meetings';
-    }
-    if (strpos($slug, 'social') !== false) {
-        return 'social-events';
-    }
-    if (strpos($slug, 'training') !== false || strpos($slug, 'safety') !== false) {
-        return 'training-safety';
-    }
-    if (strpos($slug, 'holiday') !== false) {
-        return 'holiday';
-    }
-    
-    // For additional categories (5th and beyond), assign colors from a palette
-    // Use a hash of the slug to consistently assign the same category to the same color
-    $additional_colors = array('category-5', 'category-6', 'category-7', 'category-8', 'category-9', 'category-10');
-    $hash = crc32($slug);
-    $color_index = abs($hash) % count($additional_colors);
-    
-    return $additional_colors[$color_index];
-}
 ?>
 
 <!-- Events Archive Hero -->

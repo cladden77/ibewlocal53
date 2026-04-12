@@ -254,28 +254,83 @@ if ( ! $forms_hub_url ) {
 		<div class="member-dashboard-section-head">
 			<h2 class="section-title"><?php esc_html_e( 'Upcoming Events', 'ibew-local-53' ); ?></h2>
 		</div>
-		<ul class="member-dashboard-list">
-			<?php
-			if ( $dashboard_events->have_posts() ) :
+		<?php if ( $dashboard_events->have_posts() ) : ?>
+			<div class="member-dashboard-events-row">
+				<?php
 				while ( $dashboard_events->have_posts() ) :
 					$dashboard_events->the_post();
-					$start = get_post_meta( get_the_ID(), 'event_start_datetime', true );
-					$label = get_the_title();
-					if ( $start && function_exists( 'ibew_local_53_format_event_date' ) ) {
-						$label .= ' – ' . ibew_local_53_format_event_date( $start, 'F j' );
+					$ibew_dash_event_id = get_the_ID();
+					$start_datetime     = get_post_meta( $ibew_dash_event_id, 'event_start_datetime', true );
+					$end_datetime       = get_post_meta( $ibew_dash_event_id, 'event_end_datetime', true );
+					$all_day            = get_post_meta( $ibew_dash_event_id, 'event_all_day', true );
+					$location           = get_post_meta( $ibew_dash_event_id, 'event_location', true );
+					$cta_label          = get_post_meta( $ibew_dash_event_id, 'event_cta_label', true );
+					$cta_url            = get_post_meta( $ibew_dash_event_id, 'event_cta_url', true );
+
+					$datetime_for_format = str_replace( 'T', ' ', $start_datetime );
+					if ( strlen( $datetime_for_format ) === 16 ) {
+						$datetime_for_format .= ':00';
+					}
+					$date_badge_month   = $start_datetime ? date( 'M', strtotime( $datetime_for_format ) ) : '';
+					$date_badge_day     = $start_datetime ? date( 'd', strtotime( $datetime_for_format ) ) : '';
+					$date_badge_weekday = $start_datetime ? date( 'D', strtotime( $datetime_for_format ) ) : '';
+					$event_date_only     = $start_datetime ? substr( $start_datetime, 0, 10 ) : '';
+
+					$event_categories = get_the_terms( $ibew_dash_event_id, 'event_category' );
+					$category_name    = ( ! empty( $event_categories ) && ! is_wp_error( $event_categories ) ) ? $event_categories[0]->name : __( 'Event', 'ibew-local-53' );
+					$category_class   = ( ! empty( $event_categories ) && ! is_wp_error( $event_categories ) ) ? ibew_get_event_category_class( $event_categories[0] ) : 'event';
+
+					$time_display = '';
+					if ( $all_day ) {
+						$time_display = __( 'All Day', 'ibew-local-53' );
+					} elseif ( ! empty( $start_datetime ) && function_exists( 'ibew_local_53_format_event_time' ) ) {
+						$start_time = ibew_local_53_format_event_time( $start_datetime );
+						if ( ! empty( $end_datetime ) ) {
+							$end_time     = ibew_local_53_format_event_time( $end_datetime );
+							$time_display = $start_time . ' - ' . $end_time;
+						} else {
+							$time_display = $start_time;
+						}
 					}
 					?>
-					<li class="member-dashboard-list-item">
-						<a href="<?php the_permalink(); ?>" class="member-dashboard-list-link"><?php echo esc_html( $label ); ?></a>
-					</li>
+					<article class="event-list-item member-dashboard-event-card" data-event-date="<?php echo esc_attr( $event_date_only ); ?>" data-event-category="<?php echo esc_attr( $category_class ); ?>">
+						<div class="event-date-badge <?php echo esc_attr( $category_class ); ?>">
+							<span class="date-month"><?php echo esc_html( $date_badge_month ); ?></span>
+							<span class="date-day"><?php echo esc_html( $date_badge_day ); ?></span>
+							<span class="date-weekday"><?php echo esc_html( $date_badge_weekday ); ?></span>
+						</div>
+						<div class="event-list-body">
+							<div class="event-list-top">
+								<span class="event-category-pill <?php echo esc_attr( $category_class ); ?>">
+									<span class="category-dot <?php echo esc_attr( $category_class ); ?>"></span>
+									<?php echo esc_html( $category_name ); ?>
+								</span>
+								<?php if ( $time_display ) : ?>
+									<span class="event-time"><span class="material-icons" aria-hidden="true">schedule</span><?php echo esc_html( $time_display ); ?></span>
+								<?php endif; ?>
+							</div>
+							<h3 class="event-list-title"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h3>
+							<p class="event-list-description"><?php echo esc_html( wp_trim_words( get_the_excerpt(), 25 ) ); ?></p>
+							<div class="event-list-footer">
+								<?php if ( $location ) : ?>
+									<span class="event-location"><span class="material-icons" aria-hidden="true">location_on</span><?php echo esc_html( $location ); ?></span>
+								<?php endif; ?>
+								<?php if ( $cta_label && $cta_url ) : ?>
+									<a href="<?php echo esc_url( $cta_url ); ?>" class="event-cta-link"><?php echo esc_html( $cta_label ); ?> <span class="material-icons" aria-hidden="true">arrow_forward</span></a>
+								<?php else : ?>
+									<a href="<?php the_permalink(); ?>" class="event-cta-link"><?php esc_html_e( 'Event Details', 'ibew-local-53' ); ?> <span class="material-icons" aria-hidden="true">arrow_forward</span></a>
+								<?php endif; ?>
+							</div>
+						</div>
+					</article>
 					<?php
 				endwhile;
 				wp_reset_postdata();
-			else :
 				?>
-				<li class="member-dashboard-list-item"><span class="member-dashboard-list-muted"><?php esc_html_e( 'No upcoming events scheduled.', 'ibew-local-53' ); ?></span></li>
-			<?php endif; ?>
-		</ul>
+			</div>
+		<?php else : ?>
+			<p class="member-dashboard-events-empty member-dashboard-list-muted"><?php esc_html_e( 'No upcoming events scheduled.', 'ibew-local-53' ); ?></p>
+		<?php endif; ?>
 		<p class="member-dashboard-view-all">
 			<a href="<?php echo esc_url( $events_archive_url ); ?>" class="btn btn-tertiary"><?php esc_html_e( 'View All Events', 'ibew-local-53' ); ?></a>
 		</p>
