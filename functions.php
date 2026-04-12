@@ -217,6 +217,55 @@ function ibew_local_53_save_page_hero_meta($post_id) {
 }
 add_action('save_post_page', 'ibew_local_53_save_page_hero_meta');
 
+// ============================================
+// MEMBER DASHBOARD: FORM PAGES (PMPro "Require Membership")
+// ============================================
+
+/**
+ * Published pages that appear on the Member Dashboard forms list.
+ * Uses Paid Memberships Pro "Require Membership" (same as pmpro_memberships_pages), not a separate checkbox.
+ *
+ * @return WP_Post[]
+ */
+function ibew_local_53_get_member_dashboard_form_pages() {
+    global $wpdb;
+    if ( empty( $wpdb->pmpro_memberships_pages ) ) {
+        return array();
+    }
+    $page_ids = $wpdb->get_col(
+        "SELECT DISTINCT pmp.page_id FROM {$wpdb->pmpro_memberships_pages} pmp
+		INNER JOIN {$wpdb->posts} p ON p.ID = pmp.page_id
+		WHERE p.post_type = 'page' AND p.post_status = 'publish'"
+    );
+    if ( empty( $page_ids ) ) {
+        return array();
+    }
+    $page_ids = array_map( 'intval', (array) $page_ids );
+    foreach ( $page_ids as $idx => $pid ) {
+        if ( 'page-member-dashboard.php' === get_page_template_slug( $pid ) ) {
+            unset( $page_ids[ $idx ] );
+        }
+    }
+    $page_ids = array_values( $page_ids );
+    if ( empty( $page_ids ) ) {
+        return array();
+    }
+    return get_posts(
+        array(
+            'post_type'           => 'page',
+            'post_status'         => 'publish',
+            'post__in'            => $page_ids,
+            'posts_per_page'      => -1,
+            'orderby'             => array(
+                'menu_order' => 'ASC',
+                'title'      => 'ASC',
+            ),
+            'no_found_rows'       => true,
+            'ignore_sticky_posts' => true,
+        )
+    );
+}
+
 // Enqueue styles and scripts
 function ibew_local_53_scripts() {
     // Enqueue Inter font

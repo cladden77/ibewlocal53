@@ -81,24 +81,9 @@ if ( ! $events_archive_url ) {
 
 $account_url = ( function_exists( 'pmpro_url' ) ) ? pmpro_url( 'account' ) : home_url( '/membership-account/' );
 
-$dashboard_forms = array(
-	array(
-		'slug'  => 'out-of-work',
-		'label' => __( 'Out of Work Form', 'ibew-local-53' ),
-	),
-	array(
-		'slug'  => 'update-contact-info',
-		'label' => __( 'Update Contact Info', 'ibew-local-53' ),
-	),
-	array(
-		'slug'  => 'member-inquiry',
-		'label' => __( 'Member Inquiry', 'ibew-local-53' ),
-	),
-	array(
-		'slug'  => 'training-request',
-		'label' => __( 'Training Request', 'ibew-local-53' ),
-	),
-);
+$dashboard_form_pages = function_exists( 'ibew_local_53_get_member_dashboard_form_pages' )
+	? ibew_local_53_get_member_dashboard_form_pages()
+	: array();
 
 $contact_page_url = $ibew_dashboard_page_link( 'contact' );
 $forms_hub_url    = $ibew_dashboard_page_link( 'forms' );
@@ -230,18 +215,25 @@ if ( ! $forms_hub_url ) {
 			<h2 class="section-title"><?php esc_html_e( 'Forms', 'ibew-local-53' ); ?></h2>
 		</div>
 		<ul class="member-dashboard-list">
-			<?php foreach ( $dashboard_forms as $form ) : ?>
-				<?php
-				$form_url = $ibew_dashboard_page_link( $form['slug'] );
-				?>
+			<?php if ( ! empty( $dashboard_form_pages ) ) : ?>
+				<?php foreach ( $dashboard_form_pages as $ibew_form_page ) : ?>
+					<?php
+					$form_url = get_permalink( $ibew_form_page );
+					$form_label = get_the_title( $ibew_form_page );
+					?>
+					<li class="member-dashboard-list-item">
+						<?php if ( $form_url ) : ?>
+							<a href="<?php echo esc_url( $form_url ); ?>" class="member-dashboard-list-link"><?php echo esc_html( $form_label ); ?></a>
+						<?php else : ?>
+							<span class="member-dashboard-list-text"><?php echo esc_html( $form_label ); ?></span>
+						<?php endif; ?>
+					</li>
+				<?php endforeach; ?>
+			<?php else : ?>
 				<li class="member-dashboard-list-item">
-					<?php if ( $form_url ) : ?>
-						<a href="<?php echo esc_url( $form_url ); ?>" class="member-dashboard-list-link"><?php echo esc_html( $form['label'] ); ?></a>
-					<?php else : ?>
-						<span class="member-dashboard-list-text"><?php echo esc_html( $form['label'] ); ?></span>
-					<?php endif; ?>
+					<span class="member-dashboard-list-muted"><?php esc_html_e( 'No member-only form pages yet. Edit each form page and assign at least one level under Require Membership (Paid Memberships Pro).', 'ibew-local-53' ); ?></span>
 				</li>
-			<?php endforeach; ?>
+			<?php endif; ?>
 		</ul>
 		<p class="member-dashboard-view-all">
 			<a href="<?php echo esc_url( $forms_hub_url ); ?>" class="btn btn-tertiary"><?php esc_html_e( 'View All Forms', 'ibew-local-53' ); ?></a>
