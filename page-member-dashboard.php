@@ -10,7 +10,7 @@
 get_header();
 
 $user = wp_get_current_user();
-$name = ($user && $user->exists()) ? $user->display_name : '';
+$greeting_name = ( $user && $user->exists() ) ? ibew_local_53_get_member_dashboard_greeting_first_name( $user ) : '';
 
 // Document resources: members-only first, then public (same document rules as Resources page).
 $dashboard_resources_query = new WP_Query(
@@ -95,12 +95,12 @@ if ( ! $forms_hub_url ) {
 <section class="archive-hero resources-hero member-dashboard-hero">
 	<div class="archive-hero-container reveal-fade-up">
 		<h1 class="hero-title">
-			<?php if ( $name ) : ?>
+			<?php if ( $greeting_name ) : ?>
 				<?php
 				printf(
-					/* translators: %s: member display name */
+					/* translators: %s: member first name */
 					esc_html__( 'Welcome back, %s', 'ibew-local-53' ),
-					esc_html( $name )
+					esc_html( $greeting_name )
 				);
 				?>
 			<?php else : ?>

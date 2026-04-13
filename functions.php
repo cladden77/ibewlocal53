@@ -1976,6 +1976,23 @@ function ibew_local_53_pmpro_assign_default_free_level_on_register($user_id) {
 add_action('user_register', 'ibew_local_53_pmpro_assign_default_free_level_on_register', 20, 1);
 
 /**
+ * First name for the member dashboard hero: PMPro membership checkout/billing field (pmpro_bfirstname), then WordPress first_name.
+ *
+ * @param WP_User $user Current user.
+ * @return string Trimmed first name, or empty if none set.
+ */
+function ibew_local_53_get_member_dashboard_greeting_first_name($user) {
+    if (!($user instanceof WP_User) || !$user->exists()) {
+        return '';
+    }
+    $billing_first = trim((string) get_user_meta($user->ID, 'pmpro_bfirstname', true));
+    if ($billing_first !== '') {
+        return $billing_first;
+    }
+    return trim($user->first_name);
+}
+
+/**
  * Permalink for the Member Dashboard page (used after login). Empty if missing/unpublished.
  *
  * @return string
