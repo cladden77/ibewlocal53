@@ -457,7 +457,7 @@ get_header();
                                 Contact Us
                                 <span class="material-icons">arrow_forward</span>
                             </a>
-                            <a href="#" class="btn btn-cta-secondary">Member Resources</a>
+                            <a href="/resources" class="btn btn-cta-secondary">Member Resources</a>
                         </div>
                     </div>
                 </div>
