@@ -35,7 +35,6 @@ get_header();
                 <span class="material-icons">security</span>
             </div>
             <div class="chip-content">
-                <div class="chip-label">Priority</div>
                 <div class="chip-title">Safety First</div>
             </div>
         </div>
@@ -44,7 +43,6 @@ get_header();
                 <span class="material-icons">handshake</span>
             </div>
             <div class="chip-content">
-                <div class="chip-label">Community</div>
                 <div class="chip-title">Brotherhood</div>
             </div>
         </div>
@@ -53,8 +51,7 @@ get_header();
                 <span class="material-icons">school</span>
             </div>
             <div class="chip-content">
-                <div class="chip-label">Growth</div>
-                <div class="chip-title">Apprenticeship</div>
+                <div class="chip-title">Training</div>
             </div>
         </div>
         <div class="feature-chip chip-benefits">
@@ -62,8 +59,7 @@ get_header();
                 <span class="material-icons">payments</span>
             </div>
             <div class="chip-content">
-                <div class="chip-label">Benefits</div>
-                <div class="chip-title">Fair Wages</div>
+                <div class="chip-title">Fair Compensation</div>
             </div>
         </div>
     </div>
