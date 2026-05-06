@@ -99,7 +99,7 @@ get_header();
                         </div>
                     </article>
                     <article class="officer-showcase-card">
-                        <div class="officer-showcase-photo">
+                        <div class="officer-showcase-photo" style="background-image: url('<?php echo get_template_directory_uri(); ?>/assets/images/officers/Gregory-Johnston.avif');">
                             <div class="officer-showcase-overlay">
                                 <h3 class="officer-showcase-name">Gregory Johnston</h3>
                                 <p class="officer-showcase-title">President</p>
@@ -107,7 +107,7 @@ get_header();
                         </div>
                     </article>
                     <article class="officer-showcase-card">
-                        <div class="officer-showcase-photo">
+                        <div class="officer-showcase-photo" style="background-image: url('<?php echo get_template_directory_uri(); ?>/assets/images/officers/Richard-Summers.avif');">
                             <div class="officer-showcase-overlay">
                                 <h3 class="officer-showcase-name">Richard Summers</h3>
                                 <p class="officer-showcase-title">Vice President</p>
@@ -115,7 +115,7 @@ get_header();
                         </div>
                     </article>
                     <article class="officer-showcase-card">
-                        <div class="officer-showcase-photo">
+                        <div class="officer-showcase-photo" style="background-image: url('<?php echo get_template_directory_uri(); ?>/assets/images/officers/Lisa-Mead.avif');">
                             <div class="officer-showcase-overlay">
                                 <h3 class="officer-showcase-name">Lisa Mead</h3>
                                 <p class="officer-showcase-title">Recording Secretary</p>
@@ -123,7 +123,7 @@ get_header();
                         </div>
                     </article>
                     <article class="officer-showcase-card">
-                        <div class="officer-showcase-photo">
+                        <div class="officer-showcase-photo" style="background-image: url('<?php echo get_template_directory_uri(); ?>/assets/images/officers/Douglas-Smith.avif');">
                             <div class="officer-showcase-overlay">
                                 <h3 class="officer-showcase-name">Douglas Smith</h3>
                                 <p class="officer-showcase-title">Treasurer</p>
