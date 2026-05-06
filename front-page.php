@@ -147,7 +147,7 @@ get_header();
                     <div class="members-indicator">
                         <img src="<?php echo get_template_directory_uri(); ?>/assets/images/members-sample.svg" alt="Members" class="members-icon" />
                         <div class="indicator-text">
-                            <strong>3,200+</strong> Members
+                            <strong>3,500+</strong> Members
                         </div>
                     </div>
                 </div>
