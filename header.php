@@ -19,17 +19,17 @@
             <?php else : ?>
                 <div class="site-logo">
                     <a href="<?php echo home_url('/'); ?>">
-                        <img src="<?php echo get_template_directory_uri(); ?>/assets/images/IBEW53.avif" alt="IBEW Local 53" class="logo-seal" />
+                        <img src="<?php echo get_template_directory_uri(); ?>/assets/images/53-logo-3-stars.png" alt="IBEW Local 53" class="logo-seal" />
                     </a>
                 </div>
             <?php endif; ?>
-            <div class="site-branding">
+            <!-- <div class="site-branding">
                 <h1 class="site-title">
                     <span class="title-line">IBEW LOCAL</span>
                     <span class="title-number">53</span>
                 </h1>
                 <p class="site-subtitle">International Brotherhood of Electrical Workers - Kansas City</p>
-            </div>
+            </div> -->
         </div>
         
         <div class="header-right">
