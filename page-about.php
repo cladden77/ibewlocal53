@@ -91,29 +91,44 @@ get_header();
 
                 <div class="officers-showcase reveal-fade-up reveal-delay-1">
                     <article class="officer-showcase-card">
-                        <div class="officer-showcase-photo" style="background-image: url('<?php echo get_template_directory_uri(); ?>/assets/images/officers/benjamin-bush.png'); background-size: cover; background-position: center;" aria-hidden="true"></div>
-                        <h3 class="officer-showcase-name">Benjamin Bush</h3>
-                        <p class="officer-showcase-title">Business Manager/Financial Secretary</p>
+                        <div class="officer-showcase-photo" style="background-image: url('<?php echo get_template_directory_uri(); ?>/assets/images/officers/benjamin-bush.png');">
+                            <div class="officer-showcase-overlay">
+                                <h3 class="officer-showcase-name">Benjamin Bush</h3>
+                                <p class="officer-showcase-title">Business Manager/Financial Secretary</p>
+                            </div>
+                        </div>
                     </article>
                     <article class="officer-showcase-card">
-                        <div class="officer-showcase-photo" aria-hidden="true"></div>
-                        <h3 class="officer-showcase-name">Gregory Johnston</h3>
-                        <p class="officer-showcase-title">President</p>
+                        <div class="officer-showcase-photo">
+                            <div class="officer-showcase-overlay">
+                                <h3 class="officer-showcase-name">Gregory Johnston</h3>
+                                <p class="officer-showcase-title">President</p>
+                            </div>
+                        </div>
                     </article>
                     <article class="officer-showcase-card">
-                        <div class="officer-showcase-photo" aria-hidden="true"></div>
-                        <h3 class="officer-showcase-name">Richard Summers</h3>
-                        <p class="officer-showcase-title">Vice President</p>
+                        <div class="officer-showcase-photo">
+                            <div class="officer-showcase-overlay">
+                                <h3 class="officer-showcase-name">Richard Summers</h3>
+                                <p class="officer-showcase-title">Vice President</p>
+                            </div>
+                        </div>
                     </article>
                     <article class="officer-showcase-card">
-                        <div class="officer-showcase-photo" aria-hidden="true"></div>
-                        <h3 class="officer-showcase-name">Lisa Mead</h3>
-                        <p class="officer-showcase-title">Recording Secretary</p>
+                        <div class="officer-showcase-photo">
+                            <div class="officer-showcase-overlay">
+                                <h3 class="officer-showcase-name">Lisa Mead</h3>
+                                <p class="officer-showcase-title">Recording Secretary</p>
+                            </div>
+                        </div>
                     </article>
                     <article class="officer-showcase-card">
-                        <div class="officer-showcase-photo" aria-hidden="true"></div>
-                        <h3 class="officer-showcase-name">Douglas Smith</h3>
-                        <p class="officer-showcase-title">Treasurer</p>
+                        <div class="officer-showcase-photo">
+                            <div class="officer-showcase-overlay">
+                                <h3 class="officer-showcase-name">Douglas Smith</h3>
+                                <p class="officer-showcase-title">Treasurer</p>
+                            </div>
+                        </div>
                     </article>
                 </div>
 
