@@ -215,10 +215,10 @@ $external_links_query = new WP_Query(array(
     
     <!-- How to use the Mobile App Section -->
     <?php
-    // Placeholder URLs for QR codes – replace with real instruction links when available
+    // URLs for QR codes
     $mobile_app_qr_ios_url = 'https://example.com/mobile-app-ios-instructions';
     $mobile_app_qr_android_url = 'https://example.com/mobile-app-android-instructions';
-    // Placeholder URLs for app store downloads – replace with your app's store listing URLs
+    // URLs for app store downloads
     $mobile_app_apple_store_url = 'https://apps.apple.com/us/app/laborpower-mobile/id1024823657';
     $mobile_app_google_play_url = 'https://play.google.com/store/apps/details?id=com.workingsystems.lpmobile&hl=en';
     ?>
