@@ -5363,6 +5363,47 @@ article.single-event {
     max-width: 560px;
 }
 
+.leadership-header--staff {
+    margin-top: 56px;
+}
+
+.officers-showcase {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 24px;
+    margin-bottom: 32px;
+}
+
+.officer-showcase-card {
+    text-align: center;
+}
+
+.officer-showcase-photo {
+    width: min(168px, 100%);
+    aspect-ratio: 1 / 1;
+    border-radius: 9999px;
+    margin: 0 auto 14px;
+    background: radial-gradient(circle at 35% 30%, #F9FAFB 0%, #D1D5DB 65%, #9CA3AF 100%);
+    border: 2px solid #FFFFFF;
+    box-shadow: 0px 10px 24px rgba(15, 23, 42, 0.12);
+}
+
+.officer-showcase-name {
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 1.4;
+    color: #111827;
+    margin: 0 0 6px;
+}
+
+.officer-showcase-title {
+    margin: 0;
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1.4;
+    color: #D0AA59;
+}
+
 .officers-grid {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -5589,6 +5630,10 @@ article.single-event {
 
 /* Responsive Styles for About Page */
 @media (max-width: 1024px) {
+    .officers-showcase {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
     .officers-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
     }
@@ -5607,6 +5652,27 @@ article.single-event {
     .about-section-title,
     .cta-title {
         font-size: 32px;
+    }
+
+    .officers-showcase {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 20px;
+    }
+
+    .officer-showcase-photo {
+        width: min(140px, 100%);
+    }
+
+    .officer-showcase-name {
+        font-size: 18px;
+    }
+
+    .officer-showcase-title {
+        font-size: 14px;
+    }
+
+    .leadership-header--staff {
+        margin-top: 40px;
     }
 
     .officers-grid {
@@ -5645,6 +5711,14 @@ article.single-event {
     .about-section-title,
     .cta-title {
         font-size: 28px;
+    }
+
+    .officers-showcase {
+        grid-template-columns: 1fr;
+    }
+
+    .officer-showcase-photo {
+        width: 132px;
     }
 
     .btn {

@@ -89,6 +89,39 @@ get_header();
                     <p class="leadership-intro">Dedicated individuals elected to serve the membership and guide the future of Local 53.</p>
                 </div>
 
+                <div class="officers-showcase reveal-fade-up reveal-delay-1">
+                    <article class="officer-showcase-card">
+                        <div class="officer-showcase-photo" aria-hidden="true"></div>
+                        <h3 class="officer-showcase-name">Benjamin Bush</h3>
+                        <p class="officer-showcase-title">Business Manager/Financial Secretary</p>
+                    </article>
+                    <article class="officer-showcase-card">
+                        <div class="officer-showcase-photo" aria-hidden="true"></div>
+                        <h3 class="officer-showcase-name">Gregory Johnston</h3>
+                        <p class="officer-showcase-title">President</p>
+                    </article>
+                    <article class="officer-showcase-card">
+                        <div class="officer-showcase-photo" aria-hidden="true"></div>
+                        <h3 class="officer-showcase-name">Richard Summers</h3>
+                        <p class="officer-showcase-title">Vice President</p>
+                    </article>
+                    <article class="officer-showcase-card">
+                        <div class="officer-showcase-photo" aria-hidden="true"></div>
+                        <h3 class="officer-showcase-name">Lisa Mead</h3>
+                        <p class="officer-showcase-title">Recording Secretary</p>
+                    </article>
+                    <article class="officer-showcase-card">
+                        <div class="officer-showcase-photo" aria-hidden="true"></div>
+                        <h3 class="officer-showcase-name">Douglas Smith</h3>
+                        <p class="officer-showcase-title">Treasurer</p>
+                    </article>
+                </div>
+
+                <div class="leadership-header leadership-header--staff reveal-fade-up">
+                    <h2 class="about-section-title about-section-title--left">Meet Your Staff</h2>
+                    <p class="leadership-intro">Our staff supports members across contracts, organizing, benefits, and day-to-day union operations.</p>
+                </div>
+
                 <div class="officers-grid reveal-fade-up reveal-delay-1">
                     <article class="officer-card">
                         <div class="officer-photo" style="background-image: url('<?php echo get_template_directory_uri(); ?>/assets/images/officers/benjamin-bush.png');">
