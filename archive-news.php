@@ -65,13 +65,6 @@ $search_query = get_search_query();
                     <?php endforeach; ?>
                 </ul>
             </div>
-            
-            <!-- Resources Promo Card -->
-            <div class="sidebar-card promo-card">
-                <h3 class="sidebar-card-title">Resources</h3>
-                <p class="promo-text">Access the latest agreements, bylaws, and forms.</p>
-                <a href="#" class="promo-link">Visit Document Library <span class="material-icons">arrow_forward</span></a>
-            </div>
         </aside>
         
         <!-- Right Content -->
