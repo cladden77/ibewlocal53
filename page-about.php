@@ -91,7 +91,7 @@ get_header();
 
                 <div class="officers-showcase reveal-fade-up reveal-delay-1">
                     <article class="officer-showcase-card">
-                        <div class="officer-showcase-photo" aria-hidden="true"></div>
+                        <div class="officer-showcase-photo" style="background-image: url('<?php echo get_template_directory_uri(); ?>/assets/images/officers/benjamin-bush.png'); background-size: cover; background-position: center;" aria-hidden="true"></div>
                         <h3 class="officer-showcase-name">Benjamin Bush</h3>
                         <p class="officer-showcase-title">Business Manager/Financial Secretary</p>
                     </article>
