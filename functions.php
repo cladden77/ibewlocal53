@@ -2122,6 +2122,63 @@ function ibew_local_53_login_redirect_member_dashboard_fallback($redirect_to, $r
 }
 add_filter('login_redirect', 'ibew_local_53_login_redirect_member_dashboard_fallback', 100, 3);
 
+/**
+ * Keep PMPro login flow for members, but use wp-login.php for /wp-admin redirects.
+ *
+ * @param string $login_url    Current login URL.
+ * @param string $redirect     Redirect target after login.
+ * @param bool   $force_reauth Whether to force re-authentication.
+ * @return string
+ */
+function ibew_local_53_force_default_wp_login_for_admin_redirects($login_url, $redirect, $force_reauth) {
+    if (empty($redirect) || strpos((string) $redirect, '/wp-admin') === false) {
+        return $login_url;
+    }
+
+    // Prevent recursive login_url filtering when calling wp_login_url() below.
+    remove_filter('login_url', 'ibew_local_53_force_default_wp_login_for_admin_redirects', 100);
+
+    if (has_filter('login_url', 'pmpro_login_url_filter')) {
+        remove_filter('login_url', 'pmpro_login_url_filter', 50);
+        $default_login_url = wp_login_url($redirect, $force_reauth);
+        add_filter('login_url', 'pmpro_login_url_filter', 50, 2);
+        add_filter('login_url', 'ibew_local_53_force_default_wp_login_for_admin_redirects', 100, 3);
+        return $default_login_url;
+    }
+
+    $default_login_url = wp_login_url($redirect, $force_reauth);
+    add_filter('login_url', 'ibew_local_53_force_default_wp_login_for_admin_redirects', 100, 3);
+    return $default_login_url;
+}
+add_filter('login_url', 'ibew_local_53_force_default_wp_login_for_admin_redirects', 100, 3);
+
+/**
+ * Hide native WP registration on wp-login.php while allowing custom member flows.
+ *
+ * @param mixed $pre_option Short-circuit value.
+ * @return int|mixed
+ */
+function ibew_local_53_disable_native_wp_login_registration($pre_option) {
+    global $pagenow;
+    if ($pagenow === 'wp-login.php') {
+        return 0;
+    }
+    return $pre_option;
+}
+add_filter('pre_option_users_can_register', 'ibew_local_53_disable_native_wp_login_registration');
+
+/**
+ * Block direct visits to wp-login.php?action=register.
+ */
+function ibew_local_53_block_wp_login_register_action() {
+    if (!isset($_REQUEST['action']) || $_REQUEST['action'] !== 'register') {
+        return;
+    }
+    wp_safe_redirect(wp_login_url());
+    exit;
+}
+add_action('login_init', 'ibew_local_53_block_wp_login_register_action', 1);
+
 require_once get_template_directory() . '/inc/member-dashboard-nav.php';
 
 /**

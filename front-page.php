@@ -13,7 +13,7 @@ get_header();
     <div class="hero-card">
         <div class="hero-background-overlay"></div>
         <div class="hero-content">
-            <div class="hero-pill">Est. 1910 • Kansas City, MO</div>
+            <div class="hero-pill">Est. 1917 • Kansas City, MO</div>
             <h1 class="hero-title">
                 POWERING THE FUTURE
                 <span>WITH <span class="gold-text">SKILLED LABOR</span></span>
