@@ -198,12 +198,13 @@ $external_links_query = new WP_Query(array(
             <?php if ($external_links_query->have_posts()) : ?>
                 <?php while ($external_links_query->have_posts()) : $external_links_query->the_post();
                     $link_url = get_post_meta(get_the_ID(), 'resource_link_url', true);
+                    $is_pdf_link = !empty($link_url) && preg_match('/\.pdf(\?.*)?$/i', $link_url);
                 ?>
                     <a href="<?php echo esc_url($link_url); ?>" class="external-link-item" target="_blank" rel="noopener noreferrer">
+                        <span class="material-icons external-link-type-icon <?php echo $is_pdf_link ? 'is-pdf' : 'is-url'; ?>" aria-hidden="true">
+                            <?php echo $is_pdf_link ? 'picture_as_pdf' : 'link'; ?>
+                        </span>
                         <span class="link-text"><?php the_title(); ?></span>
-                        <svg class="external-link-icon" width="14" height="17" viewBox="0 0 14 17" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M12.4444 12.1H1.55556V4.7H7V3.5H1.55556C0.855556 3.5 0.311111 4.04 0.311111 4.7L0.308333 12.1C0.308333 12.76 0.855556 13.3 1.55556 13.3H12.4444C13.1444 13.3 13.6889 12.76 13.6889 12.1V6.5H12.4444V12.1ZM8.55556 3.5V4.7H11.3633L3.91222 11.7505L4.78667 12.595L12.4444 5.3395V8.3H13.6889V3.5H8.55556Z" fill="currentColor"/>
-                        </svg>
                     </a>
                 <?php endwhile; ?>
                 <?php wp_reset_postdata(); ?>

@@ -6248,7 +6248,7 @@ article.single-event {
 .external-link-item {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    gap: 10px;
     padding: 8px;
     border-radius: 8px;
     background: transparent;
@@ -6271,14 +6271,15 @@ article.single-event {
     color: var(--color-primary-dark);
 }
 
-.external-link-icon {
+.external-link-type-icon {
     color: var(--color-primary);
+    font-size: 20px;
+    line-height: 1;
     flex-shrink: 0;
-    transition: transform 0.2s ease;
 }
 
-.external-link-item:hover .external-link-icon {
-    transform: translate(2px, -2px);
+.external-link-type-icon.is-pdf {
+    color: #dc2626;
 }
 
 .no-links-message {
