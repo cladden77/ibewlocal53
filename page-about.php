@@ -16,7 +16,7 @@ get_header();
         <section class="about-hero">
             <div class="about-hero-card">
                 <div class="about-hero-content">
-                    <div class="about-hero-pill">Est. 1910 • Kansas City, MO</div>
+                    <div class="about-hero-pill">Est. 1917 • Kansas City, MO</div>
                     <h1 class="about-hero-title">About IBEW Local 53</h1>
                     <p class="about-hero-subtext">Building a stronger future for our members, our industry,<br>and our community through unity and excellence.</p>
                 </div>
@@ -32,7 +32,7 @@ get_header();
                         <span class="eyebrow-text">Our Mission</span>
                         <span class="eyebrow-line"></span>
                     </div>
-                    <h2 class="about-section-title about-section-title--heavy">Empowering Electrical Workers<br>Since 1910</h2>
+                    <h2 class="about-section-title about-section-title--heavy">Empowering Electrical Workers<br>Since 1917</h2>
                 </div>
 
                 <div class="mission-content">
@@ -67,9 +67,9 @@ get_header();
                             <li>To secure employment</li>
                             <li>To reduce the hours of daily labor</li>
                             <li>To secure adequate pay for our work</li>
-                            <li>To seek a higher standard of living</li>
+                            <li>To seek a higher and higher standard of living</li>
                             <li>To seek security for the individual</li>
-                            <li>To properly elevate the moral, intellectual and social conditions of our members, their families and dependents, in the interest of a higher standard of citizenship.</li>
+                            <li>and by legal and proper means to elevate the moral, intellectual and social conditions of our members, their families and dependents, in the interest of a higher standard of citizenship.</li>
                         </ul>
                     </div>
                 </div>
