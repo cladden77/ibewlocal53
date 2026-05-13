@@ -37,7 +37,7 @@ get_header();
 
                 <div class="mission-content">
                     <div class="mission-image-card reveal-fade-right">
-                        <img src="<?php echo get_template_directory_uri(); ?>/assets/images/ibew-history.png" alt="IBEW Local 53 historical photo" class="mission-image" />
+                        <img src="<?php echo get_template_directory_uri(); ?>/assets/images/LU53-building-front.jpg" alt="IBEW Local 53 building" class="mission-image" />
                     </div>
                     <div class="mission-text reveal-fade-left reveal-delay-2">
                         <p>Charted November 3rd, 1917, the beginning of Brotherhood was created.</p>
