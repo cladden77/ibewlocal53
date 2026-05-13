@@ -11,7 +11,7 @@
                 </div>
                 <h3 class="footer-site-title">IBEW LOCAL 53</h3>
             </div>
-            <p class="footer-description">Representing the electrical workers of Greater Kansas City since 1910. Building better lives for our members and a brighter future for our community.</p>
+            <p class="footer-description">Representing the electrical workers of Greater Kansas City since 1917. Building better lives for our members and a brighter future for our community.</p>
             <div class="social-icons">
                 <a href="#" class="social-icon" aria-label="Facebook">f</a>
             </div>
@@ -33,9 +33,6 @@
             <ul>
                 <li><a href="https://members.ibewlocal53.org/">Member Login</a></li>
                 <li><a href="https://members.ibewlocal53.org/">Pay Dues</a></li>
-                <li><a href="#">Benefits Portal</a></li>
-                <li><a href="#">Job Board</a></li>
-                <li><a href="/events">Training Calendar</a></li>
             </ul>
         </div>
         
