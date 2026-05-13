@@ -154,7 +154,7 @@ get_header();
             </div>
             <div class="who-we-are-image reveal-fade-left reveal-delay-2">
                 <div class="illustration-card">
-                    <img src="<?php echo get_template_directory_uri(); ?>/assets/images/lineman-working.jpg" alt="Lineman Working" class="illustration-image" />
+                    <img src="<?php echo get_template_directory_uri(); ?>/assets/images/downed-lines.jpg" alt="Downed Lines" class="illustration-image" />
                 </div>
             </div>
         </div>
