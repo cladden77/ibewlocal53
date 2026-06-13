@@ -18,7 +18,7 @@ get_header();
                 POWERING THE FUTURE
                 <span>WITH <span class="gold-text">SKILLED LABOR</span></span>
             </h1>
-            <p class="hero-subtext">IBEW Local 53 is dedicated to providing the highest quality electrical workers<br>for our communities while securing fair wages, benefits, and safety for our<br>members.</p>
+            <p class="hero-subtext">IBEW Local 53 is dedicated to training and providing the highest quality electrical workers for our communities while securing fair wages, benefits, and safety for our members.</p>
             <div class="hero-buttons">
                 <a href="https://ibewyes.org" class="btn btn-primary" target="_blank" rel="noopener noreferrer">Join the Brotherhood <span class="btn-icon">arrow_forward</span></a>
                 <a href="<?php echo home_url('/events'); ?>" class="btn btn-secondary">View Upcoming Events</a>
