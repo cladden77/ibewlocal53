@@ -134,7 +134,7 @@ get_header();
 
                 <div class="leadership-header leadership-header--staff reveal-fade-up">
                     <h2 class="about-section-title about-section-title--left">Meet Your Staff</h2>
-                    <p class="leadership-intro">Our staff supports members across contracts, organizing, benefits, and day-to-day union operations.</p>
+                    <p class="leadership-intro">Our phenomenal staff support and assist our members by negotiating and facilitating over 35 contracts and by helping to organize labor throughout our entire jurisdiction.</p>
                 </div>
 
                 <div class="officers-grid reveal-fade-up reveal-delay-1">
