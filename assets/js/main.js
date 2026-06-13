@@ -504,6 +504,32 @@
         });
     }
 
+    // Shrink sticky header on scroll
+    function initStickyHeader() {
+        const header = document.querySelector('.site-header');
+        if (!header) {
+            return;
+        }
+
+        const scrollThreshold = 50;
+        let ticking = false;
+
+        function updateHeader() {
+            header.classList.toggle('is-scrolled', window.scrollY > scrollThreshold);
+            ticking = false;
+        }
+
+        function onScroll() {
+            if (!ticking) {
+                window.requestAnimationFrame(updateHeader);
+                ticking = true;
+            }
+        }
+
+        window.addEventListener('scroll', onScroll, { passive: true });
+        updateHeader();
+    }
+
     // Smooth scroll for pagination links
     function initPaginationScroll() {
         // Handle pagination link clicks
@@ -827,6 +853,7 @@
             initCalendar();
             initEventsCarousel();
             initMobileMenu();
+            initStickyHeader();
             initPaginationScroll();
             initResourcesFilter();
             initMemberDashboardResourcesPagination();
@@ -836,6 +863,7 @@
         initCalendar();
         initEventsCarousel();
         initMobileMenu();
+        initStickyHeader();
         initPaginationScroll();
         initResourcesFilter();
         initMemberDashboardResourcesPagination();

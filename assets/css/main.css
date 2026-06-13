@@ -110,6 +110,11 @@ a:hover {
     top: 0;
     z-index: 1000;
     width: 100%;
+    transition: box-shadow 0.3s ease;
+}
+
+.site-header.is-scrolled {
+    box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.1);
 }
 
 .header-container {
@@ -119,6 +124,11 @@ a:hover {
     justify-content: space-between;
     gap: 0;
     width: 100%;
+    transition: padding 0.3s ease;
+}
+
+.site-header.is-scrolled .header-container {
+    padding: 12px 48px;
 }
 
 .header-left {
@@ -132,6 +142,11 @@ a:hover {
     width: 300px;
     height: auto;
     flex-shrink: 0;
+    transition: width 0.3s ease;
+}
+
+.site-header.is-scrolled .site-logo {
+    width: 200px;
 }
 
 .logo-seal {
@@ -4318,6 +4333,10 @@ article.single-event {
         flex-wrap: nowrap;
         padding: 16px 24px;
     }
+
+    .site-header.is-scrolled .header-container {
+        padding: 10px 24px;
+    }
     
     .header-left {
         flex: 1;
@@ -4330,6 +4349,10 @@ article.single-event {
     .site-logo {
         width: 200px;
         flex-shrink: 0;
+    }
+
+    .site-header.is-scrolled .site-logo {
+        width: 150px;
     }
     
     .site-branding {
