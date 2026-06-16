@@ -352,8 +352,8 @@ function ibew_local_53_scripts() {
     // Enqueue Material Icons
     wp_enqueue_style('material-icons', 'https://fonts.googleapis.com/icon?family=Material+Icons', array(), null);
     wp_enqueue_style('ibew-local-53-style', get_stylesheet_uri(), array(), '1.0.0');
-    wp_enqueue_style('ibew-local-53-main', get_template_directory_uri() . '/assets/css/main.css', array(), '1.0.2');
-    wp_enqueue_script('ibew-local-53-main', get_template_directory_uri() . '/assets/js/main.js', array(), '1.0.2', true);
+    wp_enqueue_style('ibew-local-53-main', get_template_directory_uri() . '/assets/css/main.css', array(), '1.0.4');
+    wp_enqueue_script('ibew-local-53-main', get_template_directory_uri() . '/assets/js/main.js', array(), '1.0.4', true);
 }
 add_action('wp_enqueue_scripts', 'ibew_local_53_scripts');
 
