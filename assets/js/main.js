@@ -784,18 +784,18 @@
     }
 
     // Resources page filtering, search, and two-row pagination (matches theme breakpoints)
-    function initResourcesFilter() {
-        const filterChips = document.querySelectorAll('.resource-category-filters .filter-chip');
-        const searchInput = document.getElementById('resource-search');
-        const resourcesGrid = document.getElementById('resources-grid');
-        const noResultsMessage = document.getElementById('no-results-message');
-        const resourcesPagination = document.getElementById('resources-pagination');
-        const resourcesPaginationNav = document.getElementById('resources-pagination-nav');
-        
+    function initResourceDocumentsGrid(config) {
+        const resourcesGrid = document.getElementById(config.gridId);
+        const noResultsMessage = config.noResultsMessageId ? document.getElementById(config.noResultsMessageId) : null;
+        const resourcesPagination = config.paginationId ? document.getElementById(config.paginationId) : null;
+        const resourcesPaginationNav = config.paginationNavId ? document.getElementById(config.paginationNavId) : null;
+        const searchInput = config.searchInputId ? document.getElementById(config.searchInputId) : null;
+        const filterChips = config.filterChipsSelector ? document.querySelectorAll(config.filterChipsSelector) : [];
+
         if (!resourcesGrid) {
             return;
         }
-        
+
         const resourceCards = resourcesGrid.querySelectorAll('.resource-card');
         let activeCategory = 'all';
         let searchTerm = '';
@@ -870,7 +870,7 @@
                 filterResources();
             }, 150);
         });
-        
+
         filterChips.forEach(function(chip) {
             chip.addEventListener('click', function() {
                 filterChips.forEach(function(c) {
@@ -882,10 +882,10 @@
                 filterResources();
             });
         });
-        
+
         if (searchInput) {
             let searchTimeout;
-            
+
             searchInput.addEventListener('input', function() {
                 clearTimeout(searchTimeout);
                 searchTimeout = setTimeout(function() {
@@ -894,7 +894,7 @@
                     filterResources();
                 }, 200);
             });
-            
+
             searchInput.addEventListener('keypress', function(e) {
                 if (e.key === 'Enter') {
                     clearTimeout(searchTimeout);
@@ -903,7 +903,7 @@
                     filterResources();
                 }
             });
-            
+
             searchInput.addEventListener('keydown', function(e) {
                 if (e.key === 'Escape') {
                     searchInput.value = '';
@@ -916,6 +916,25 @@
         }
 
         filterResources();
+    }
+
+    function initResourcesFilter() {
+        initResourceDocumentsGrid({
+            gridId: 'resources-grid',
+            searchInputId: 'resource-search',
+            noResultsMessageId: 'no-results-message',
+            paginationId: 'resources-pagination',
+            paginationNavId: 'resources-pagination-nav',
+            filterChipsSelector: '#official-documents-section .resource-category-filters .filter-chip'
+        });
+
+        initResourceDocumentsGrid({
+            gridId: 'training-resources-grid',
+            searchInputId: 'training-resource-search',
+            noResultsMessageId: 'training-no-results-message',
+            paginationId: 'training-resources-pagination',
+            paginationNavId: 'training-resources-pagination-nav'
+        });
     }
 
     // Initialize on DOM ready
