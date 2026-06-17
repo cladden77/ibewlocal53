@@ -252,7 +252,7 @@ $external_links_query = new WP_Query(array(
         <section class="resources-documents-section training-resources-section" id="training-resources-section">
             <div class="section-header-row reveal-fade-up">
                 <div class="section-header-left">
-                    <h2 class="section-title">Training Resources</h2>
+                    <h2 class="section-title">Training</h2>
                 </div>
 
                 <div class="resource-search-container reveal-fade-up reveal-delay-1">
