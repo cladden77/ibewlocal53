@@ -15,7 +15,26 @@ $training_term_id = ($training_term && !is_wp_error($training_term)) ? (int) $tr
 // Get official documents data only for logged-in members.
 $resource_categories = array();
 $documents_query = null;
-$training_resources_query = null;
+
+$document_query_args = array(
+    'post_type' => 'resource',
+    'posts_per_page' => -1,
+    'orderby' => 'title',
+    'order' => 'ASC',
+    'meta_query' => array(
+        'relation' => 'OR',
+        array(
+            'key' => 'resource_type',
+            'value' => 'document',
+            'compare' => '=',
+        ),
+        array(
+            'key' => 'resource_type',
+            'compare' => 'NOT EXISTS',
+        ),
+    ),
+);
+
 if ($show_member_documents) {
     $category_args = array(
         'taxonomy' => 'resource_category',
@@ -25,25 +44,6 @@ if ($show_member_documents) {
         $category_args['exclude'] = array($training_term_id);
     }
     $resource_categories = get_terms($category_args);
-
-    $document_query_args = array(
-        'post_type' => 'resource',
-        'posts_per_page' => -1,
-        'orderby' => 'title',
-        'order' => 'ASC',
-        'meta_query' => array(
-            'relation' => 'OR',
-            array(
-                'key' => 'resource_type',
-                'value' => 'document',
-                'compare' => '=',
-            ),
-            array(
-                'key' => 'resource_type',
-                'compare' => 'NOT EXISTS',
-            ),
-        ),
-    );
 
     $documents_query = new WP_Query(array_merge($document_query_args, array(
         'tax_query' => $training_term_id ? array(
@@ -55,17 +55,18 @@ if ($show_member_documents) {
             ),
         ) : array(),
     )));
-
-    $training_resources_query = $training_term_id ? new WP_Query(array_merge($document_query_args, array(
-        'tax_query' => array(
-            array(
-                'taxonomy' => 'resource_category',
-                'field' => 'term_id',
-                'terms' => $training_term_id,
-            ),
-        ),
-    ))) : null;
 }
+
+// Training resources are public.
+$training_resources_query = $training_term_id ? new WP_Query(array_merge($document_query_args, array(
+    'tax_query' => array(
+        array(
+            'taxonomy' => 'resource_category',
+            'field' => 'term_id',
+            'terms' => $training_term_id,
+        ),
+    ),
+))) : null;
 
 // Get all external link resources
 $external_links_query = new WP_Query(array(
@@ -247,9 +248,8 @@ $external_links_query = new WP_Query(array(
         </div>
     </section>
 
-    <?php if ($show_member_documents) : ?>
-        <!-- Training Resources Section -->
-        <section class="resources-documents-section training-resources-section" id="training-resources-section">
+    <!-- Training Resources Section -->
+    <section class="resources-documents-section training-resources-section" id="training-resources-section">
             <div class="section-header-row reveal-fade-up">
                 <div class="section-header-left">
                     <h2 class="section-title">Training</h2>
@@ -314,7 +314,6 @@ $external_links_query = new WP_Query(array(
                 <p>No documents match your search criteria.</p>
             </div>
         </section>
-    <?php endif; ?>
 
     <!-- Help CTA Section -->
     <section class="resources-cta-section">
