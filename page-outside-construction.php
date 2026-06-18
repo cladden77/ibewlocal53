@@ -67,7 +67,7 @@ $mobile_app_google_play_url  = 'https://play.google.com/store/apps/details?id=co
         <div class="mobile-app-header reveal-fade-up">
             <div class="header-accent"></div>
             <div class="header-content">
-                <h2 class="section-title">How to use the Mobile App</h2>
+                <h2 class="section-title">Download the Labor Power Mobile App</h2>
                 <p class="section-subtitle">Scan the QR code below for your device to view instructions.</p>
             </div>
         </div>
