@@ -232,12 +232,10 @@ a:hover {
 }
 
 .nav-menu li.current-menu-item a,
+.nav-menu li.current_page_item a,
+.nav-menu li.current-menu-ancestor a,
+.nav-menu li.current_page_ancestor a,
 .nav-menu li a:hover {
-    color: var(--color-primary);
-}
-
-/* Home link should be red by default */
-.nav-menu li:first-child a {
     color: var(--color-red);
 }
 
@@ -427,12 +425,10 @@ a:hover {
 }
 
 .mobile-nav-menu li.current-menu-item a,
+.mobile-nav-menu li.current_page_item a,
+.mobile-nav-menu li.current-menu-ancestor a,
+.mobile-nav-menu li.current_page_ancestor a,
 .mobile-nav-menu li a:hover {
-    color: var(--color-primary);
-}
-
-/* Home link should be red by default */
-.mobile-nav-menu li:first-child a {
     color: var(--color-red);
 }
 

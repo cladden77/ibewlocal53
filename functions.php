@@ -53,6 +53,51 @@ function ibew_local_53_get_header_menu_location() {
     return 'primary';
 }
 
+/**
+ * Highlight the Events nav item on event archive and single event views.
+ *
+ * The menu links to the Events page, but /events/ is served by the event post
+ * type archive, so WordPress does not apply current-menu-item by default.
+ *
+ * @param string[] $classes Menu item CSS classes.
+ * @param WP_Post  $item    Menu item.
+ * @return string[]
+ */
+function ibew_local_53_nav_menu_current_for_events($classes, $item) {
+    if (!is_post_type_archive('event') && !is_singular('event')) {
+        return $classes;
+    }
+
+    $events_page = get_page_by_path('events', OBJECT, 'page');
+    $matches     = false;
+
+    if ($events_page && $item->type === 'post_type' && $item->object === 'page' && (int) $item->object_id === (int) $events_page->ID) {
+        $matches = true;
+    }
+
+    if (!$matches && !empty($item->url)) {
+        $item_url = untrailingslashit(strtok($item->url, '#'));
+        foreach (array_filter(array(
+            get_post_type_archive_link('event'),
+            $events_page ? get_permalink($events_page) : '',
+        )) as $compare_url) {
+            if ($item_url === untrailingslashit($compare_url)) {
+                $matches = true;
+                break;
+            }
+        }
+    }
+
+    if (!$matches) {
+        return $classes;
+    }
+
+    $classes[] = 'current-menu-item';
+
+    return array_values(array_unique(array_diff($classes, array('current_page_parent', 'current_page_ancestor'))));
+}
+add_filter('nav_menu_css_class', 'ibew_local_53_nav_menu_current_for_events', 10, 2);
+
 // Register block pattern category and patterns for page layouts
 function ibew_local_53_register_block_patterns() {
     register_block_pattern_category('ibew-layouts', array(
