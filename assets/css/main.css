@@ -111,6 +111,7 @@ a:hover {
     z-index: 1000;
     width: 100%;
     transition: box-shadow 0.3s ease;
+    border-radius: 0 0 var(--radius-md) var(--radius-md);
 }
 
 .site-header.is-scrolled {
