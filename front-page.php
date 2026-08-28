@@ -69,7 +69,7 @@ get_header();
 </section>
 
 <!-- Latest News Section -->
-<section class="latest-news-section">
+<!-- <section class="latest-news-section">
     <div class="section-container">
         <div class="section-header reveal-fade-up">
             <div class="section-header-left">
@@ -128,7 +128,7 @@ get_header();
             <a href="<?php echo home_url('/news'); ?>" class="view-all-link">View All News <span class="material-icons">arrow_forward</span></a>
         </div>
     </div>
-</section>
+</section> -->
 
 <!-- Who We Are Section -->
 <section class="who-we-are-section">

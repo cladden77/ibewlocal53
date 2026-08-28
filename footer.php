@@ -22,7 +22,7 @@
             <ul>
                 <li><a href="<?php echo home_url('/'); ?>">Home</a></li>
                 <li><a href="<?php echo home_url('/about'); ?>">About</a></li>
-                <li><a href="<?php echo home_url('/news'); ?>">News</a></li>
+                <!-- <li><a href="<?php echo home_url('/news'); ?>">News</a></li> -->
                 <li><a href="<?php echo home_url('/events'); ?>">Events</a></li>
                 <li><a href="<?php echo home_url('/resources'); ?>">Resources</a></li>
                 <li><a href="<?php echo home_url('/contact'); ?>">Contact Us</a></li>
