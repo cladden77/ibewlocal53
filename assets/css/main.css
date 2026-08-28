@@ -800,17 +800,65 @@ a:hover {
 }
 
 .chips-container {
-    max-width: 896px;
+    max-width: 968px;
     margin: 0 auto;
     display: flex;
     align-items: center;
     gap: 0;
     background-color: var(--color-white);
     border: 1px solid #f3f4f6;
+    border-bottom: 0;
     border-radius: 24px;
-    padding: 25px 0;
+    padding: 25px 0 28px;
     box-shadow: 0px 20px 25px -5px rgba(0, 0, 0, 0.1), 0px 8px 10px -6px rgba(0, 0, 0, 0.1);
     position: relative;
+    overflow: hidden;
+}
+
+.chips-container::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(
+        90deg,
+        #3c3b6e 0%,
+        #3c3b6e 42%,
+        #ffffff 42%,
+        #ffffff 58%,
+        #b22234 58%,
+        #b22234 100%
+    );
+    z-index: 1;
+}
+
+.chips-flag {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    padding: 0 20px 0 28px;
+    position: relative;
+}
+
+.chips-flag::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 1px;
+    height: 40px;
+    background-color: #e5e7eb;
+}
+
+.chips-flag img {
+    width: 48px;
+    height: 25px;
+    display: block;
+    border-radius: 2px;
+    box-shadow: 0 0 0 1px rgba(17, 24, 39, 0.12), 0 1px 2px rgba(0, 0, 0, 0.08);
 }
 
 .feature-chip {
@@ -819,7 +867,7 @@ a:hover {
     gap: 12px;
     flex: 1;
     position: relative;
-    padding: 0 36px;
+    padding: 0 28px;
 }
 
 .feature-chip:not(:last-child)::after {
@@ -5942,15 +5990,17 @@ article.single-event {
     }
 }
 
+.feature-chips .chips-flag,
 .feature-chips .feature-chip {
     opacity: 0;
     animation: chipFadeIn 0.5s ease-out forwards;
 }
 
-.feature-chips .feature-chip:nth-child(1) { animation-delay: 0.5s; }
-.feature-chips .feature-chip:nth-child(2) { animation-delay: 0.65s; }
-.feature-chips .feature-chip:nth-child(3) { animation-delay: 0.8s; }
-.feature-chips .feature-chip:nth-child(4) { animation-delay: 0.95s; }
+.feature-chips .chips-flag { animation-delay: 0.5s; }
+.feature-chips .feature-chip:nth-child(2) { animation-delay: 0.6s; }
+.feature-chips .feature-chip:nth-child(3) { animation-delay: 0.75s; }
+.feature-chips .feature-chip:nth-child(4) { animation-delay: 0.9s; }
+.feature-chips .feature-chip:nth-child(5) { animation-delay: 1.05s; }
 
 @keyframes chipFadeIn {
     0% {
@@ -5974,6 +6024,7 @@ article.single-event {
     .reveal-stagger > *,
     .hero-content,
     .feature-chips .chips-container,
+    .feature-chips .chips-flag,
     .feature-chips .feature-chip {
         opacity: 1;
         transform: none;

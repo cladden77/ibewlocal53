@@ -30,6 +30,9 @@ get_header();
 <!-- Feature Chips (Overlapping Hero) -->
 <section class="feature-chips">
     <div class="chips-container">
+        <div class="chips-flag" aria-hidden="true">
+            <img src="<?php echo esc_url(get_template_directory_uri() . '/assets/images/us-flag.svg'); ?>" alt="" width="48" height="25">
+        </div>
         <div class="feature-chip chip-priority">
             <div class="chip-icon-wrapper">
                 <span class="material-icons">security</span>
