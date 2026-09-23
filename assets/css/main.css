@@ -6410,6 +6410,15 @@ article.single-event {
     color: #dc2626;
 }
 
+.external-link-logo {
+    display: block;
+    width: auto;
+    height: 28px;
+    max-width: 72px;
+    object-fit: contain;
+    flex-shrink: 0;
+}
+
 .no-links-message {
     grid-column: 1 / -1;
     text-align: center;

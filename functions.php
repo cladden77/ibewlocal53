@@ -397,7 +397,7 @@ function ibew_local_53_scripts() {
     // Enqueue Material Icons
     wp_enqueue_style('material-icons', 'https://fonts.googleapis.com/icon?family=Material+Icons', array(), null);
     wp_enqueue_style('ibew-local-53-style', get_stylesheet_uri(), array(), '1.0.0');
-    wp_enqueue_style('ibew-local-53-main', get_template_directory_uri() . '/assets/css/main.css', array(), '1.0.7');
+    wp_enqueue_style('ibew-local-53-main', get_template_directory_uri() . '/assets/css/main.css', array(), '1.0.8');
     wp_enqueue_script('ibew-local-53-main', get_template_directory_uri() . '/assets/js/main.js', array(), '1.0.4', true);
 }
 add_action('wp_enqueue_scripts', 'ibew_local_53_scripts');
@@ -1112,6 +1112,7 @@ function ibew_local_53_resource_meta_box_callback($post) {
     $resource_type = get_post_meta($post->ID, 'resource_type', true) ?: 'document';
     $file_id = get_post_meta($post->ID, 'resource_file_id', true);
     $link_url = get_post_meta($post->ID, 'resource_link_url', true);
+    $logo_id = get_post_meta($post->ID, 'resource_link_logo_id', true);
     $display_order = get_post_meta($post->ID, 'resource_display_order', true);
     
     // Get file metadata if exists
@@ -1130,6 +1131,11 @@ function ibew_local_53_resource_meta_box_callback($post) {
             }
         }
         $file_type = strtoupper(pathinfo($file_path, PATHINFO_EXTENSION));
+    }
+
+    $logo_url = $logo_id ? wp_get_attachment_image_url($logo_id, 'medium') : '';
+    if ($logo_id && !$logo_url) {
+        $logo_url = wp_get_attachment_url($logo_id);
     }
     ?>
     <style>
@@ -1270,6 +1276,29 @@ function ibew_local_53_resource_meta_box_callback($post) {
                     <p class="description"><?php _e('Enter the full URL including https://. Links will appear in the "External Resources" section.', 'ibew-local-53'); ?></p>
                 </td>
             </tr>
+            <tr>
+                <th style="padding-left: 0; vertical-align: top;"><label><?php _e('Link Logo', 'ibew-local-53'); ?></label></th>
+                <td>
+                    <input type="hidden" id="resource_link_logo_id" name="resource_link_logo_id" value="<?php echo esc_attr($logo_id); ?>" />
+
+                    <div id="resource-logo-preview" style="margin-bottom: 12px; <?php echo $logo_url ? '' : 'display:none;'; ?>">
+                        <div style="background: #fff; padding: 12px; border-radius: 4px; border: 1px solid #ddd; display: inline-flex; align-items: center; gap: 12px;">
+                            <img id="resource-logo-image" src="<?php echo esc_url($logo_url); ?>" alt="" style="max-width: 120px; max-height: 48px; width: auto; height: auto; object-fit: contain;" />
+                        </div>
+                    </div>
+
+                    <button type="button" class="button button-secondary" id="upload-resource-logo-btn">
+                        <?php echo $logo_id ? __('Change Logo', 'ibew-local-53') : __('Upload Logo', 'ibew-local-53'); ?>
+                    </button>
+                    <button type="button" class="button" id="remove-resource-logo-btn" style="<?php echo $logo_id ? '' : 'display:none;'; ?>">
+                        <?php _e('Remove Logo', 'ibew-local-53'); ?>
+                    </button>
+
+                    <p class="description" style="margin-top: 8px;">
+                        <?php _e('Optional. Upload a logo to show next to this link. If no logo is set, the default link icon is used.', 'ibew-local-53'); ?>
+                    </p>
+                </td>
+            </tr>
         </table>
     </div>
     
@@ -1348,6 +1377,53 @@ function ibew_local_53_resource_meta_box_callback($post) {
             $(this).hide();
             $('#upload-resource-btn').text('<?php _e('Upload File', 'ibew-local-53'); ?>');
         });
+
+        // Media uploader for external link logos
+        var logoUploader;
+
+        $('#upload-resource-logo-btn').on('click', function(e) {
+            e.preventDefault();
+
+            if (logoUploader) {
+                logoUploader.open();
+                return;
+            }
+
+            logoUploader = wp.media({
+                title: '<?php echo esc_js(__('Select or Upload a Logo', 'ibew-local-53')); ?>',
+                button: {
+                    text: '<?php echo esc_js(__('Use this logo', 'ibew-local-53')); ?>'
+                },
+                multiple: false,
+                library: {
+                    type: 'image'
+                }
+            });
+
+            logoUploader.on('select', function() {
+                var attachment = logoUploader.state().get('selection').first().toJSON();
+                var previewUrl = (attachment.sizes && attachment.sizes.medium)
+                    ? attachment.sizes.medium.url
+                    : attachment.url;
+
+                $('#resource_link_logo_id').val(attachment.id);
+                $('#resource-logo-image').attr('src', previewUrl);
+                $('#resource-logo-preview').show();
+                $('#remove-resource-logo-btn').show();
+                $('#upload-resource-logo-btn').text('<?php echo esc_js(__('Change Logo', 'ibew-local-53')); ?>');
+            });
+
+            logoUploader.open();
+        });
+
+        $('#remove-resource-logo-btn').on('click', function(e) {
+            e.preventDefault();
+            $('#resource_link_logo_id').val('');
+            $('#resource-logo-image').attr('src', '');
+            $('#resource-logo-preview').hide();
+            $(this).hide();
+            $('#upload-resource-logo-btn').text('<?php echo esc_js(__('Upload Logo', 'ibew-local-53')); ?>');
+        });
     });
     </script>
     <?php
@@ -1403,6 +1479,16 @@ function ibew_local_53_save_resource_meta($post_id) {
         }
     }
 
+    // Save external link logo
+    if (isset($_POST['resource_link_logo_id'])) {
+        $logo_id = absint($_POST['resource_link_logo_id']);
+        if ($logo_id) {
+            update_post_meta($post_id, 'resource_link_logo_id', $logo_id);
+        } else {
+            delete_post_meta($post_id, 'resource_link_logo_id');
+        }
+    }
+
     // Save display order
     if (isset($_POST['resource_display_order'])) {
         update_post_meta($post_id, 'resource_display_order', absint($_POST['resource_display_order']));
@@ -1418,6 +1504,60 @@ function ibew_local_53_enqueue_resource_admin_scripts($hook) {
     }
 }
 add_action('admin_enqueue_scripts', 'ibew_local_53_enqueue_resource_admin_scripts');
+
+/**
+ * Allow SVG uploads so external resource logos can use vector artwork.
+ *
+ * @param array $mimes Allowed MIME types.
+ * @return array
+ */
+function ibew_local_53_allow_svg_uploads($mimes) {
+    if (current_user_can('upload_files')) {
+        $mimes['svg'] = 'image/svg+xml';
+        $mimes['svgz'] = 'image/svg+xml';
+    }
+    return $mimes;
+}
+add_filter('upload_mimes', 'ibew_local_53_allow_svg_uploads');
+
+/**
+ * Fix SVG filetype detection so WordPress accepts uploaded SVG logos.
+ *
+ * @param array  $data     File data values.
+ * @param string $file     Full path to the file.
+ * @param string $filename File name.
+ * @param array  $mimes    Allowed MIME types.
+ * @return array
+ */
+function ibew_local_53_fix_svg_filetype($data, $file, $filename, $mimes) {
+    $ext = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
+    if ($ext === 'svg' || $ext === 'svgz') {
+        $data['ext'] = $ext;
+        $data['type'] = 'image/svg+xml';
+    }
+    return $data;
+}
+add_filter('wp_check_filetype_and_ext', 'ibew_local_53_fix_svg_filetype', 10, 4);
+
+/**
+ * Get the logo URL for an external link resource, if one is set.
+ *
+ * @param int $post_id Resource post ID.
+ * @return string|null Logo URL or null when no logo is available.
+ */
+function ibew_local_53_get_resource_link_logo_url($post_id) {
+    $logo_id = absint(get_post_meta($post_id, 'resource_link_logo_id', true));
+    if (!$logo_id) {
+        return null;
+    }
+
+    $logo_url = wp_get_attachment_image_url($logo_id, 'medium');
+    if (!$logo_url) {
+        $logo_url = wp_get_attachment_url($logo_id);
+    }
+
+    return $logo_url ? $logo_url : null;
+}
 
 // Helper function to get resource file info
 function ibew_local_53_get_resource_file_info($post_id) {

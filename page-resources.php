@@ -233,11 +233,22 @@ $external_links_query = new WP_Query(array(
                 <?php while ($external_links_query->have_posts()) : $external_links_query->the_post();
                     $link_url = get_post_meta(get_the_ID(), 'resource_link_url', true);
                     $is_pdf_link = !empty($link_url) && preg_match('/\.pdf(\?.*)?$/i', $link_url);
+                    $logo_url = ibew_local_53_get_resource_link_logo_url(get_the_ID());
                 ?>
                     <a href="<?php echo esc_url($link_url); ?>" class="external-link-item" target="_blank" rel="noopener noreferrer">
-                        <span class="material-icons external-link-type-icon <?php echo $is_pdf_link ? 'is-pdf' : 'is-url'; ?>" aria-hidden="true">
-                            <?php echo $is_pdf_link ? 'picture_as_pdf' : 'link'; ?>
-                        </span>
+                        <?php if ($logo_url) : ?>
+                            <img
+                                class="external-link-logo"
+                                src="<?php echo esc_url($logo_url); ?>"
+                                alt=""
+                                loading="lazy"
+                                decoding="async"
+                            />
+                        <?php else : ?>
+                            <span class="material-icons external-link-type-icon <?php echo $is_pdf_link ? 'is-pdf' : 'is-url'; ?>" aria-hidden="true">
+                                <?php echo $is_pdf_link ? 'picture_as_pdf' : 'link'; ?>
+                            </span>
+                        <?php endif; ?>
                         <span class="link-text"><?php the_title(); ?></span>
                     </a>
                 <?php endwhile; ?>
