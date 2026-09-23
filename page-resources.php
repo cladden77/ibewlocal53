@@ -236,19 +236,21 @@ $external_links_query = new WP_Query(array(
                     $logo_url = ibew_local_53_get_resource_link_logo_url(get_the_ID());
                 ?>
                     <a href="<?php echo esc_url($link_url); ?>" class="external-link-item" target="_blank" rel="noopener noreferrer">
-                        <?php if ($logo_url) : ?>
-                            <img
-                                class="external-link-logo"
-                                src="<?php echo esc_url($logo_url); ?>"
-                                alt=""
-                                loading="lazy"
-                                decoding="async"
-                            />
-                        <?php else : ?>
-                            <span class="material-icons external-link-type-icon <?php echo $is_pdf_link ? 'is-pdf' : 'is-url'; ?>" aria-hidden="true">
-                                <?php echo $is_pdf_link ? 'picture_as_pdf' : 'link'; ?>
-                            </span>
-                        <?php endif; ?>
+                        <span class="external-link-logo-slot">
+                            <?php if ($logo_url) : ?>
+                                <img
+                                    class="external-link-logo"
+                                    src="<?php echo esc_url($logo_url); ?>"
+                                    alt=""
+                                    loading="lazy"
+                                    decoding="async"
+                                />
+                            <?php else : ?>
+                                <span class="material-icons external-link-type-icon <?php echo $is_pdf_link ? 'is-pdf' : 'is-url'; ?>" aria-hidden="true">
+                                    <?php echo $is_pdf_link ? 'picture_as_pdf' : 'link'; ?>
+                                </span>
+                            <?php endif; ?>
+                        </span>
                         <span class="link-text"><?php the_title(); ?></span>
                     </a>
                 <?php endwhile; ?>
