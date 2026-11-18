@@ -478,7 +478,11 @@
             const wasUsingMobileNav = header.classList.contains('use-mobile-nav');
             header.classList.remove('use-mobile-nav');
 
-            const availableWidth = container.clientWidth - headerLeft.offsetWidth;
+            // Always measure against the full-size logo (not the live, possibly
+            // mid-transition width) so the nav mode never flips because of scroll.
+            const rootStyles = window.getComputedStyle(document.documentElement);
+            const logoWidth = parseFloat(rootStyles.getPropertyValue('--header-logo-width')) || headerLeft.offsetWidth;
+            const availableWidth = container.clientWidth - logoWidth;
             const neededWidth = headerRight.scrollWidth;
             const needsMobileNav = neededWidth > availableWidth;
 
@@ -502,7 +506,6 @@
         }
 
         window.addEventListener('resize', scheduleUpdate, { passive: true });
-        window.addEventListener('scroll', scheduleUpdate, { passive: true });
 
         if (typeof ResizeObserver !== 'undefined') {
             const resizeObserver = new ResizeObserver(scheduleUpdate);
@@ -583,11 +586,23 @@
             return;
         }
 
-        const scrollThreshold = 50;
+        // Hysteresis: shrink well past the top, only expand again near the top.
+        // A single threshold makes the header toggle back and forth because
+        // shrinking changes the page layout, which nudges the scroll position.
+        const shrinkAt = 120;
+        const expandAt = 20;
+        let isScrolled = false;
         let ticking = false;
 
         function updateHeader() {
-            header.classList.toggle('is-scrolled', window.scrollY > scrollThreshold);
+            const y = window.scrollY;
+            if (!isScrolled && y > shrinkAt) {
+                isScrolled = true;
+                header.classList.add('is-scrolled');
+            } else if (isScrolled && y < expandAt) {
+                isScrolled = false;
+                header.classList.remove('is-scrolled');
+            }
             ticking = false;
         }
 

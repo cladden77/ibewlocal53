@@ -50,6 +50,15 @@
     /* Container */
     --container-max: 1400px;
     --container-padding: 1.5rem;
+    --header-logo-width: 300px;
+    --header-logo-width-scrolled: 200px;
+}
+
+/* The sticky header changes height when it shrinks. Without this, the browser
+   "anchors" the scroll position to compensate, which moves scrollY back across
+   the shrink threshold and makes the header flicker/shake while scrolling. */
+html {
+    overflow-anchor: none;
 }
 
 body {
@@ -142,14 +151,14 @@ a:hover {
 }
 
 .site-logo {
-    width: 300px;
+    width: var(--header-logo-width);
     height: auto;
     flex-shrink: 0;
     transition: width 0.3s ease;
 }
 
 .site-header.is-scrolled .site-logo {
-    width: 200px;
+    width: var(--header-logo-width-scrolled);
 }
 
 .logo-seal {
@@ -4407,12 +4416,9 @@ article.single-event {
 }
 
 @media (max-width: 1024px) {
-    .site-logo {
-        width: 240px;
-    }
-
-    .site-header.is-scrolled .site-logo {
-        width: 180px;
+    :root {
+        --header-logo-width: 240px;
+        --header-logo-width-scrolled: 180px;
     }
 
     .nav-menu {
