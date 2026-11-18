@@ -339,8 +339,8 @@ $external_links_query = new WP_Query(array(
                 Email Us
                 <span class="material-icons">arrow_forward</span>
             </a>
-            <a href="tel:+18164315434" class="btn btn-cta-outline">
-                Call (816) 431-5434
+            <a href="tel:+18164215464" class="btn btn-cta-outline">
+                Call (816) 421-5464
             </a>
         </div>
     </section>
