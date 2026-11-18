@@ -99,25 +99,25 @@ get_header();
                         </div>
                     </article>
                     <article class="officer-showcase-card">
-                        <div class="officer-showcase-photo" style="background-image: url('<?php echo get_template_directory_uri(); ?>/assets/images/officers/Gregory-johnston.avif');">
+                        <div class="officer-showcase-photo" style="background-image: url('<?php echo get_template_directory_uri(); ?>/assets/images/officers/johnny-whitaker.png');">
                             <div class="officer-showcase-overlay">
-                                <h3 class="officer-showcase-name">Gregory Johnston</h3>
+                                <h3 class="officer-showcase-name">Johnny Whitaker</h3>
                                 <p class="officer-showcase-title">President</p>
                             </div>
                         </div>
                     </article>
                     <article class="officer-showcase-card">
-                        <div class="officer-showcase-photo" style="background-image: url('<?php echo get_template_directory_uri(); ?>/assets/images/officers/Richard-Summers.avif');">
+                        <div class="officer-showcase-photo" style="background-image: url('<?php echo get_template_directory_uri(); ?>/assets/images/officers/Brad-Watring.avif');">
                             <div class="officer-showcase-overlay">
-                                <h3 class="officer-showcase-name">Richard Summers</h3>
+                                <h3 class="officer-showcase-name">Brad Watring</h3>
                                 <p class="officer-showcase-title">Vice President</p>
                             </div>
                         </div>
                     </article>
                     <article class="officer-showcase-card">
-                        <div class="officer-showcase-photo" style="background-image: url('<?php echo get_template_directory_uri(); ?>/assets/images/officers/lisa-mead.avif');">
+                        <div class="officer-showcase-photo" style="background-image: url('<?php echo get_template_directory_uri(); ?>/assets/images/officers/Dennis-Ebert.avif');">
                             <div class="officer-showcase-overlay">
-                                <h3 class="officer-showcase-name">Lisa Mead</h3>
+                                <h3 class="officer-showcase-name">Dennis Ebert</h3>
                                 <p class="officer-showcase-title">Recording Secretary</p>
                             </div>
                         </div>
@@ -166,40 +166,6 @@ get_header();
                                 <span class="material-icons contact-icon">email</span>
                                 <a href="mailto:Bbush@ibewlocal53.org" class="contact-value">Bbush@ibewlocal53.org</a>
                             </div>
-                        </div>
-                    </article>
-
-                    <article class="officer-card">
-                        <div class="officer-photo" style="background-image: url('<?php echo get_template_directory_uri(); ?>/assets/images/officers/kyle-neuenschwander.png');">
-                            <div class="officer-photo-overlay">
-                                <div>
-                                    <h3 class="officer-name">Kyle Neuenschwander</h3>
-                                    <p class="officer-title">Construction Business Representative</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="officer-contact">
-                            <div class="contact-item">
-                                <span class="material-icons contact-icon">phone</span>
-                                <div class="contact-details">
-                                    <span class="contact-label">Work</span>
-                                    <span class="contact-value">(816) 421-5464 (Ext 214)</span>
-                                </div>
-                            </div>
-                            <div class="contact-item">
-                                <span class="material-icons contact-icon">smartphone</span>
-                                <div class="contact-details">
-                                    <span class="contact-label">Cell</span>
-                                    <span class="contact-value">(816) 489-2533</span>
-                                </div>
-                            </div>
-                            <div class="contact-item contact-email">
-                                <span class="material-icons contact-icon">email</span>
-                                <a href="mailto:Kneuenschwander@ibewlocal53.org" class="contact-value">Kneuenschwander@ibewlocal53.org</a>
-                            </div>
-                        </div>
-                        <div class="officer-committees">
-                            <p class="committee-text">Dispatcher, Outside Construction, Telecommunications, City of Butler, Osage Valley Electric Coop, Southwest Electric Coop, Benefits, Veterans Committee</p>
                         </div>
                     </article>
 
