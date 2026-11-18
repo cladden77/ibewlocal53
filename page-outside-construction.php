@@ -15,10 +15,10 @@ $jurisdiction_missouri_url   = content_url('uploads/2026/04/LU-53-Jurisdiction-M
 
 // URLs for QR codes
 $mobile_app_qr_ios_url     = 'https://apps.apple.com/us/app/laborpower/id1612891005';
-$mobile_app_qr_android_url = 'https://play.google.com/store/apps/details?id=com.workingsystems.apps.lpmobile&pcampaignid=web_share';
+$mobile_app_qr_android_url = 'https://play.google.com/store/apps/details?id=com.workingsystems.apps.lpmobile&hl=en';
 // URLs for app store downloads
-$mobile_app_apple_store_url  = 'https://apps.apple.com/us/app/laborpower-mobile/id1024823657';
-$mobile_app_google_play_url  = 'https://play.google.com/store/apps/details?id=com.workingsystems.lpmobile&hl=en';
+$mobile_app_apple_store_url  = 'https://apps.apple.com/us/app/laborpower/id1612891005';
+$mobile_app_google_play_url  = 'https://play.google.com/store/apps/details?id=com.workingsystems.apps.lpmobile&hl=en';
 ?>
 
 <!-- Outside Construction Hero Section -->
@@ -110,8 +110,8 @@ $mobile_app_google_play_url  = 'https://play.google.com/store/apps/details?id=co
                 Email Us
                 <span class="material-icons">arrow_forward</span>
             </a>
-            <a href="tel:+18164315434" class="btn btn-cta-outline">
-                Call (816) 431-5434
+            <a href="tel:+18164215464" class="btn btn-cta-outline">
+                Call (816) 421-5464
             </a>
         </div>
     </section>
